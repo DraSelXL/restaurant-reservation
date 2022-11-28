@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\admin\AdminController;
+use App\Http\Controllers\customer\CustomerController;
 use App\Http\Controllers\index\IndexController;
 
 /*
@@ -33,9 +34,10 @@ Route::prefix('admin')->group(function () {
 });
 
 Route::prefix('customer')->group(function () {
-    Route::get('dashboard', [AdminController::class,"masterDashboard"]);
-    Route::get('customer', [AdminController::class,"masterCustomer"]);
-    Route::get('restaurant', [AdminController::class,"masterRestaurant"]);
-    Route::get('settings', [AdminController::class,"masterSettings"]);
+    Route::get('home', [CustomerController::class,"masterHome"]);
+    Route::get('explore', [CustomerController::class,"masterExplore"]);
+    Route::get('favorite', [CustomerController::class,"masterFavorite"]);
+    Route::get('history', [CustomerController::class,"masterHistory"]);
+    Route::get('profile', [CustomerController::class,"masterProfile"]);
 
 });
