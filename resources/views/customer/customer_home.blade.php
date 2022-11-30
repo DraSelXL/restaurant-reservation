@@ -23,7 +23,7 @@
 @endsection
 
 @section('custom_css')
-    <link rel="stylesheet" href="{{asset('build/css/customer_home.css')}}">
+    {{-- <link rel="stylesheet" href="{{asset('build/css/customer_home.css')}}"> --}}
     <style>
         .navigation:hover{
             transform: scale(1.2);
@@ -40,45 +40,7 @@
 @section('content')
     <div class="container">
         {{-- NAVBAR --}}
-        <ul class="nav py-3">
-            <div class="row w-100">
-                {{-- LOGO --}}
-                <div class="col">
-                    <h1 class="m-0" style="cursor: pointer;">
-                        <span class="text-light bg-dark p-3">
-                            ρσятαвℓє
-                        </span>
-                    </h1>
-                </div>
-                {{-- NAVIGATION --}}
-                <div class="col d-flex justify-content-center align-items-center">
-                    <li class="nav-item" style=" {{($currPage === 'home') ? 'border-bottom: 1px solid black' : ''}}">
-                        <a class="nav-link text-dark navigation" href="{{route("customer_home")}}">Home</a>
-                    </li>
-                    <li class="nav-item" style=" {{($currPage === 'search') ? 'border-bottom: 1px solid black' : ''}}">
-                        <a class="nav-link text-dark navigation" href="{{route("customer_search")}}">Search</a>
-                    </li>
-                    <li class="nav-item" style=" {{($currPage === 'favorite') ? 'border-bottom: 1px solid black' : ''}}">
-                        <a class="nav-link text-dark navigation" href="{{route("customer_favorite")}}">Favorite</a>
-                    </li>
-                    <li class="nav-item" style=" {{($currPage === 'history') ? 'border-bottom: 1px solid black' : ''}}">
-                        <a class="nav-link text-dark navigation" href="{{route("customer_history")}}">History</a>
-                    </li>
-                    <li class="nav-item" style=" {{($currPage === 'profile') ? 'border-bottom: 1px solid black' : ''}}">
-                        <a class="nav-link text-dark navigation" href="{{route("customer_profile")}}">Profile</a>
-                    </li>
-                </div>
-                {{-- PROFILE --}}
-                <div class="col d-flex justify-content-end align-items-center">
-                    <div class="notification me-4" style="cursor: pointer">
-                        <img class="navigation" src="{{asset("images/admin/notification.png")}}" alt="" width="30px">
-                    </div>
-                    <div class="profile">
-                        <img src="{{asset("images/customer/pp.jpg")}}" alt="" width="45px" height="45px" style="border-radius: 50%">
-                    </div>
-                </div>
-            </div>
-        </ul>
+        @include('customer.partial.navbar')
         {{-- JUMBOTRON --}}
         <div class="jumbotron row m-0 w-100" style="height: 60vh;">
             <div class="col-6 d-flex justify-content-end align-items-center" >
@@ -169,8 +131,10 @@
                             <br><br>
                             Phone : <br>
                             ISTTS - 082122907788 <br>
-                            Ian William - 089674436016 <br>
+                            Albertus Marco - 0817305455 <br>
+                            Andrew Anderson - 081298771483 <br>
                             Antonio Christopher - 085755115331 <br>
+                            Ian William - 089674436016 <br>
 
                         </p>
                     </div>

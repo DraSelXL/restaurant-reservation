@@ -31,6 +31,16 @@
         p,h1,h2,h3,h4,h5,h6{
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
         }
+        @font-face{
+            font-family: "helvetica_regular";
+            src: url("../../font/Helvetica/FreeSans.otf");
+        }
+
+        @font-face{
+            font-family: "helvetica_bold";
+            src: url("../../font/Helvetica/FreeSansBold.otf");
+        }
+
     </style>
 </head>
 <body>
