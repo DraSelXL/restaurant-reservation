@@ -14,8 +14,11 @@ return new class extends Migration
     public function up()
     {
         Schema::create('reviews', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
+            $table->id("id");
+            $table->integer("user_id",2);
+            $table->integer("restaurant_id",2);
+            $table->integer("rating",2)->default(0);
+            $table->string("message",255)->default("-");
         });
     }
 
