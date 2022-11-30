@@ -27,7 +27,8 @@
     <style>
         .navigation:hover{
             transform: scale(1.2);
-            font-weight: 600
+            font-weight: 600;
+            cursor: pointer;
         }
     </style>
 @endsection
@@ -38,7 +39,6 @@
 
 @section('content')
     <div class="container">
-
         {{-- NAVBAR --}}
         <ul class="nav py-3">
             <div class="row w-100">
@@ -52,20 +52,20 @@
                 </div>
                 {{-- NAVIGATION --}}
                 <div class="col d-flex justify-content-center align-items-center">
-                    <li class="nav-item" style="border-bottom: 1px solid black">
-                        <a class="nav-link text-dark navigation" href="#">Home</a>
+                    <li class="nav-item" style=" {{($currPage === 'home') ? 'border-bottom: 1px solid black' : ''}}">
+                        <a class="nav-link text-dark navigation" href="{{route("customer_home")}}">Home</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-dark navigation" href="#">Search</a>
+                    <li class="nav-item" style=" {{($currPage === 'search') ? 'border-bottom: 1px solid black' : ''}}">
+                        <a class="nav-link text-dark navigation" href="{{route("customer_search")}}">Search</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-dark navigation" href="#">Favorite</a>
+                    <li class="nav-item" style=" {{($currPage === 'favorite') ? 'border-bottom: 1px solid black' : ''}}">
+                        <a class="nav-link text-dark navigation" href="{{route("customer_favorite")}}">Favorite</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-dark navigation" href="#">History</a>
+                    <li class="nav-item" style=" {{($currPage === 'history') ? 'border-bottom: 1px solid black' : ''}}">
+                        <a class="nav-link text-dark navigation" href="{{route("customer_history")}}">History</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-dark navigation" href="#">Profile</a>
+                    <li class="nav-item" style=" {{($currPage === 'profile') ? 'border-bottom: 1px solid black' : ''}}">
+                        <a class="nav-link text-dark navigation" href="{{route("customer_profile")}}">Profile</a>
                     </li>
                 </div>
                 {{-- PROFILE --}}
@@ -79,7 +79,6 @@
                 </div>
             </div>
         </ul>
-
         {{-- JUMBOTRON --}}
         <div class="jumbotron row m-0 w-100" style="height: 60vh;">
             <div class="col-6 d-flex justify-content-end align-items-center" >
@@ -103,6 +102,108 @@
             </div>
             <div class="col-6 d-flex justify-content-end align-items-center">
                 <img src="{{asset('images/customer/banner1.png')}}" width="100%" alt="">
+            </div>
+        </div>
+        {{-- EASY ACCESS --}}
+        <div class="easy-access mt-3 px-5 py-4 rounded-3 bg-dark">
+            <h3 class="text-light" style="font-family: helvetica_bold">Book a Table</h3>
+
+            <form class="mt-3" method="POST" action="/customer/checkAvailability">
+                <div class="row m-0">
+                    <div class="col">
+                        <div class="mb-3">
+                            <input type="text" class="form-control p-3" id="restaurant_name" name="restaurant_name" placeholder="Restaurant Name">
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="mb-3">
+                            <input type="date" class="form-control p-3" id="reservation_date" name="reservation_date">
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="mb-3">
+                            <input type="time" class="form-control p-3" id="reservation_date" name="reservation_date">
+                        </div>
+                    </div>
+                    <div class="col">
+                        <button type="submit" class="btn text-light w-100 p-3" style="background-color: #ed3b27">Check Availability</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        {{-- PARALAX --}}
+        <div class="paralax my-5">
+            <div class="row m-0">
+                <div class="col mx-2 text-center rounded-4 p-4" >
+                    <img src="{{asset('images/customer/home/order.png')}}" alt="">
+                    <h3>Order</h3>
+                    <p class="my-2">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Debitis repellendus aspernatur voluptatem ex ea minima.</p>
+                </div>
+                <div class="col mx-2 text-center rounded-4 p-4">
+                    <img src="{{asset('images/customer/home/ticket.png')}}" alt="">
+                    <h3>Ticket</h3>
+                    <p class="my-2">Lorem ipsum dolor sit amet consectetur adipisicing elit. Porro, cumque nesciunt dolorem hic fugit officiis.</p>
+                </div>
+                <div class="col mx-2 text-center rounded-4 p-4">
+                    <img src="{{asset('images/customer/home/meet.png')}}" alt="">
+                    <h3>Confirm</h3>
+                    <p class="my-2">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Debitis repellendus aspernatur voluptatem ex ea minima.</p>
+                </div>
+                <div class="col mx-2 text-center rounded-4 p-4">
+                    <img src="{{asset('images/customer/home/dine.png')}}" alt="">
+                    <h3>Dine</h3>
+                    <p class="my-2">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Debitis repellendus aspernatur voluptatem ex ea minima.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="about_us bg-dark text-light">
+        <div class="container">
+            <div class="py-5">
+                <div class="row m-0">
+                    <div class="col">
+                        <p class="m-0" style="font-size: 1.5em;font-family: helvetica_regular;">Contacts</p>
+                        <p class="mt-3" style="color: rgb(200, 200, 200);">
+                            Address : <br>
+                            Jl. Ngagel Jaya Tengah No.73-77, Baratajaya, Kec. Gubeng, Kota SBY, Jawa Timur 60284
+                            <br><br>
+                            Phone : <br>
+                            ISTTS - 082122907788 <br>
+                            Ian William - 089674436016 <br>
+                            Antonio Christopher - 085755115331 <br>
+
+                        </p>
+                    </div>
+                    <div class="col">
+                        <p class="m-0" style="font-size: 1.5em;font-family: helvetica_regular;">Menu</p>
+                        <div class="mt-3">
+                            <p><span class="navigation">Home</span> </p>
+                            <p><span class="navigation">Search</span> </p>
+                            <p><span class="navigation">Favorite</span> </p>
+                            <p><span class="navigation">History</span> </p>
+                            <p><span class="navigation">Profile</span> </p>
+
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <p class="m-0" style="font-size: 1.5em;font-family: helvetica_regular;">Reviews</p>
+                        <form class="mt-3" action="">
+                            <div class="input-group mb-3">
+                                <input type="text" class="form-control p-3" placeholder="Please kindly review our service :)">
+                                <button type="submit" class="btn text-light p-3" style="background-color: #ed3b27">Submit Review</button>
+                            </div>
+                        </form>
+
+                        <p class="my-1" style="color: rgb(200, 200, 200);">
+                            If you want to know more about our developer. <a href="">Click me!</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="copyright text-center">
+                <p class="m-0 py-3" style="color: rgb(200, 200, 200);">
+                    &copy; 2022. Institut Sains dan Teknologi Terpadu Surabaya
+                </p>
             </div>
         </div>
     </div>

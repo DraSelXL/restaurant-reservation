@@ -34,10 +34,10 @@ Route::prefix('admin')->group(function () {
 });
 
 Route::prefix('customer')->group(function () {
-    Route::get('home', [CustomerController::class,"masterHome"]);
-    Route::get('explore', [CustomerController::class,"masterExplore"]);
-    Route::get('favorite', [CustomerController::class,"masterFavorite"]);
-    Route::get('history', [CustomerController::class,"masterHistory"]);
-    Route::get('profile', [CustomerController::class,"masterProfile"]);
+    Route::get('home', [CustomerController::class,"masterHome"])->name("customer_home");
+    Route::get('explore', [CustomerController::class,"masterExplore"])->name("customer_search");
+    Route::get('favorite', [CustomerController::class,"masterFavorite"])->name("customer_favorite");
+    Route::get('history', [CustomerController::class,"masterHistory"])->name("customer_history");
+    Route::get('profile', [CustomerController::class,"masterProfile"])->name("customer_profile");
 
 });

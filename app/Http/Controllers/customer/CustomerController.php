@@ -9,22 +9,27 @@ class CustomerController extends Controller
 {
     public function masterHome(Request $request)
     {
-        return view('customer.customer_home');
+        $currPage = "home";
+        return view('customer.customer_home',compact('currPage'));
     }
     public function masterExplore(Request $request)
     {
-
+        $currPage = "search";
+        return view('customer.customer_search',compact('currPage'));
     }
     public function masterFavorite(Request $request)
     {
-        # code...
+        $currPage = "favorite";
+        return view('customer.customer_favorite',compact('currPage'));
     }
     public function masterHistory(Request $request)
     {
-        # code...
+        $currPage = "history";
+        return view('customer.customer_history',compact('currPage'));
     }
     public function masterProfile(Request $request)
     {
-        # code...
+        $currPage = "profile";
+        return view('customer.customer_profile',compact('currPage'));
     }
 }
