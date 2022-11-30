@@ -17,7 +17,10 @@ class ReviewMigrasiFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'user_id'=>$this->faker->random_int(1,10),
+            'restaurant_id'=>$this->faker->random_int(1,10),
+            'rating'=>$this->faker->random_int(3,5),
+            'message'=>$this->faker->sentence()
         ];
     }
 }

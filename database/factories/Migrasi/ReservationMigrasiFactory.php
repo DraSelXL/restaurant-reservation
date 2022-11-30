@@ -21,7 +21,7 @@ class ReservationMigrasiFactory extends Factory
             'restaurant_id'=>$this->faker->random_int(1,10),
             'table_id'=>$this->faker->random_int(1,20),
             'reservation_date_time'=>$this->faker->dateTimeBetween("-1 years","now"),
-            'reservation_status'=>$this->faker->randomElement([0,1])
+            'reservation_status'=>$this->faker->randomElement(['0','1'])
         ];
     }
 }

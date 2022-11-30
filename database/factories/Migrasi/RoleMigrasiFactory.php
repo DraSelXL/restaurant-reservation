@@ -17,7 +17,7 @@ class RoleMigrasiFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'name'=>$this->faker->randomElement(['customer','restaurant','admin'])
         ];
     }
 }

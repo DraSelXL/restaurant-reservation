@@ -4,6 +4,7 @@ namespace Database\Factories\Migrasi;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 
+
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Migrasi\RestaurantMigrasi>
  */
@@ -16,8 +17,13 @@ class RestaurantMigrasiFactory extends Factory
      */
     public function definition()
     {
+        $firstname = $this->faker->firstName();
+        $lastname = $this->faker->lastName();
         return [
-            'full_name'=>$this->faker->
+            'full_name'=>"$firstname $lastname",
+            'address'=>$this->faker->address(),
+            'phone'=>$this->faker->phoneNumber(),
+            'average_rating'=>$this->faker->randomFloat(1,1,5)
         ];
     }
 }

@@ -17,7 +17,7 @@ class GenderMigrasiFactory extends Factory
     public function definition()
     {
         return [
-            'nama'=>$this->faker->randomElement([1,2])
+            'nama'=>$this->faker->randomElement(['1','2'])
         ];
     }
 }
