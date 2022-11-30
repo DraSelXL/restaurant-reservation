@@ -15,10 +15,11 @@ return new class extends Migration
     {
         Schema::create('restaurants', function (Blueprint $table) {
             $table->id("id");
-            $table->string("fullname",50);
-            $table->string("address",50);
-            $table->string("phone",20);
-            $table->integer("average_rating",3);
+            $table->string("full_name");
+            $table->string("address");
+            $table->string("phone");
+            $table->integer("average_rating");
+
             $table->timestamps();
             $table->softDeletes();
         });

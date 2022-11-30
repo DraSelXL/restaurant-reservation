@@ -17,11 +17,13 @@ class ReservationMigrasiFactory extends Factory
     public function definition()
     {
         return [
-            'user_id'=>$this->faker->random_int(1,10),
-            'restaurant_id'=>$this->faker->random_int(1,10),
-            'table_id'=>$this->faker->random_int(1,20),
+            'user_id'=>$this->faker->numberBetween(1,10),
+            'restaurant_id'=>$this->faker->numberBetween(1,10),
+            'table_id'=>$this->faker->numberBetween(1,20),
             'reservation_date_time'=>$this->faker->dateTimeBetween("-1 years","now"),
-            'reservation_status'=>$this->faker->randomElement(['0','1'])
+            'reservation_status'=>$this->faker->randomElement(['0','1']),
+            'created_at'=>now(),
+            'updated_at'=>now()
         ];
     }
 }

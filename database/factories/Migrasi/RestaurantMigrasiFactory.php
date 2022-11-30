@@ -23,7 +23,9 @@ class RestaurantMigrasiFactory extends Factory
             'full_name'=>"$firstname $lastname",
             'address'=>$this->faker->address(),
             'phone'=>$this->faker->phoneNumber(),
-            'average_rating'=>$this->faker->randomFloat(1,1,5)
+            'average_rating'=>$this->faker->randomFloat(1,1,5),
+            'created_at'=>now(),
+            'updated_at'=>now()
         ];
     }
 }

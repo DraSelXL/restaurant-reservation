@@ -8,4 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class reviewMigrasi extends Model
 {
     use HasFactory;
+
+    protected $table = "reviews";
+    protected $primaryKey = "id";
+
+    public $timestamps = false;
 }

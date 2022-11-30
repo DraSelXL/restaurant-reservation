@@ -13,11 +13,15 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('tables', function (Blueprint $table) {
+        Schema::create('transactions', function (Blueprint $table) {
             $table->id("id");
-            $table->integer("restaurant_id",2);
-            $table->tinyInteger("seats",1);
-            $table->integer("status",1);
+            $table->integer("user_id");
+            $table->integer("restaurant_id");
+            $table->bigInteger("reservation_id");
+            $table->integer("payment_amount");
+            $table->tinyInteger("payment_status");
+            $table->date("payment_date_at");
+            $table->timestamps();
             $table->softDeletes();
         });
     }
@@ -29,6 +33,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tables');
+        Schema::dropIfExists('transactions');
     }
 };

@@ -17,8 +17,8 @@ class TableMigrasiFactory extends Factory
     public function definition()
     {
         return [
-            'restaurant_id'=>$this->faker->random_int(1,10),
-            'seats'=>$this->faker->random_int(1,20),
+            'restaurant_id'=>$this->faker->numberBetween(1,10),
+            'seats'=>$this->faker->numberBetween(1,20),
             'status'=>$this->faker->randomElement(['0','1'])
         ];
     }

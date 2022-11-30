@@ -17,12 +17,14 @@ class TransactionMigrasiFactory extends Factory
     public function definition()
     {
         return [
-            'user_id'=>$this->faker->random_int(1,10),
-            'restaurant_id'=>$this->faker->random_int(1,10),
-            'reservation_id'=>$this->faker->random_int(1,10),
+            'user_id'=>$this->faker->numberBetween(1,10),
+            'restaurant_id'=>$this->faker->numberBetween(1,10),
+            'reservation_id'=>$this->faker->numberBetween(1,10),
             'payment_amount'=>$this->faker->randomFloat(2,10000,60000),
-            'payment_status'=>$this->faker->random_int(0,1),
-            'payment_date_at'=>$this->faker->dateTimeBetween("-1 years","now")
+            'payment_status'=>$this->faker->numberBetween(0,1),
+            'payment_date_at'=>$this->faker->dateTimeBetween("-1 years","now"),
+            'created_at'=>now(),
+            'updated_at'=>now()
         ];
     }
 }

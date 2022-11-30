@@ -28,9 +28,12 @@ class UserMigrasiFactory extends Factory
             'address'=>$this->faker->address(),
             'email'=>Str::lower($firstname)."@gmail.com",
             'phone'=>$this->faker->phoneNumber(),
-            'gender'=>$this->faker->random_int(1,2),
-            'balance'=>$this->faker->randomFloat(2,1000,100000),
-            'role_id'=>$this->faker->random_int(1,3),
+            'gender'=>$this->faker->numberBetween(1,2),
+            'balance'=>$this->faker->numberBetween(1000,100000),
+            'blocked'=>$this->faker->numberBetween(0,0),
+            'role_id'=>$this->faker->numberBetween(1,3),
+            'created_at'=>now(),
+            'updated_at'=>now()
         ];
     }
 }
