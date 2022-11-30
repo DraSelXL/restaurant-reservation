@@ -32,4 +32,32 @@ class CustomerController extends Controller
         $currPage = "profile";
         return view('customer.customer_profile',compact('currPage'));
     }
+    public function loginCheck(Request $req)
+    {
+        $req->validate([
+            'username'=>'required',
+            'password'=>'required',
+        ]);
+        $username = $req->username;
+        $password = $req->password;
+
+        // if($username == "admin" && $password == "admin"){
+
+        // }
+        // elseif()
+    }
+    public function registerCheck(Request $req)
+    {
+        $req->validate([
+            'username'=>'required',
+            'password'=>'required',
+        ]);
+        $username = $req->username;
+        $password = $req->password;
+
+        // if($username == "admin" && $password == "admin"){
+
+        // }
+        // elseif()
+    }
 }
