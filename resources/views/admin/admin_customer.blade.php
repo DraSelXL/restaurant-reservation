@@ -64,11 +64,11 @@
                                     <img class="bg-light rounded-3 p-2 me-3" src="{{asset("images/admin/order.png")}}" alt="" width="60px">
                                     <div class="">
                                         <p class="m-0">Total</p>
-                                        <p class="m-0 overview_sub">November 22nd</p>
+                                        <p class="m-0 overview_sub">{{date("F")}} {{date("jS")}}</p>
                                     </div>
                                 </div>
                                 <div class="d-flex justify-content-end w-100">
-                                    <h1 class="font-weight-bold">2231</h1>
+                                    <h1 class="font-weight-bold">{{$countUser}}</h1>
                                 </div>
                             </div>
                         </div>
@@ -78,7 +78,7 @@
                                     <img class="bg-light rounded-3 p-2 me-3" src="{{asset("images/admin/order.png")}}" alt="" width="60px">
                                     <div class="">
                                         <p class="m-0">Online</p>
-                                        <p class="m-0 overview_sub">November 22nd</p>
+                                        <p class="m-0 overview_sub">{{date("F")}} {{date("jS")}}</p>
                                     </div>
                                 </div>
                                 <div class="d-flex justify-content-end w-100">
@@ -92,7 +92,7 @@
                                     <img class="bg-light rounded-3 p-2 me-3" src="{{asset("images/admin/order.png")}}" alt="" width="60px">
                                     <div class="">
                                         <p class="m-0">Offline</p>
-                                        <p class="m-0 overview_sub">November 22nd</p>
+                                        <p class="m-0 overview_sub">{{date("F")}} {{date("jS")}}</p>
                                     </div>
                                 </div>
                                 <div class="d-flex justify-content-end w-100">
@@ -106,7 +106,7 @@
                     <div class="row">
                         <div class="col-12 d-flex justify-content-end align-items-center">
                             <div class="searchBar w-100">
-                                <form action="/admin/dashboard/search" class="d-flex" role="search" method="POST">
+                                <form action="/admin/customer/search" class="d-flex" role="search" method="POST">
                                     @csrf
                                     <input class="form-control" type="text" placeholder="Search" aria-label="Search" name="keyword">
                                     <button class="btn border-0" type="submit"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
@@ -159,22 +159,26 @@
                             <th>Action</th>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>1</td>
-                                <td>Anton_io11</td>
-                                <td>25/11/2022</td>
-                                <td>1273 $</td>
-                                <td>4166 $</td>
-                                <td>25/11/2022</td>
-                                <td>
-                                    <div class="btn btn-danger">
-                                        Ban
-                                    </div>
-                                    <div class="btn btn-success">
-                                        Detail
-                                    </div>
-                                </td>
-                            </tr>
+                            @foreach ($userList as $key=>$user)
+                                <tr>
+                                    <td>{{$key+1}}</td>
+                                    <td>{{$user->username}}</td>
+                                    <td>{{substr($user->created_at,0,10)}}</td>
+                                    <td>Rp. {{$user->balance}},00</td>
+                                    <td>Rp. </td>
+                                    <td>25/11/2022</td>
+                                    <td>
+                                        @if ($user->trashed())
+                                            <a href="{{url("admin/customer/banUser/$user->id")}}" class="btn btn-success">Unban</a>
+                                        @else
+                                            <a href="{{url("admin/customer/banUser/$user->id")}}" class="btn btn-danger">Ban</a>
+                                        @endif
+                                        <div class="btn btn-success">
+                                            Detail
+                                        </div>
+                                    </td>
+                                </tr>
+                                @endforeach
                         </tbody>
                     </table>
                 </div>

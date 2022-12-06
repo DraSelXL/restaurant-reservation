@@ -71,7 +71,7 @@
                                 <img class="bg-light rounded-3 p-2 me-3" src="{{asset("images/admin/sale.png")}}" alt="" width="60px">
                                 <div class="">
                                     <p class="m-0">Total Sales</p>
-                                    <p class="m-0 overview_sub">November 22nd</p>
+                                    <p class="m-0 overview_sub">{{date("F")}} {{date("jS")}}</p>
                                 </div>
                             </div>
                             <div class="d-flex justify-content-end w-100">
@@ -85,7 +85,7 @@
                                 <img class="bg-light rounded-3 p-2 me-3" src="{{asset("images/admin/order.png")}}" alt="" width="60px">
                                 <div class="">
                                     <p class="m-0">Total Orders</p>
-                                    <p class="m-0 overview_sub">{{date("F")}} 22nd</p>
+                                    <p class="m-0 overview_sub">{{date("F")}} {{date("jS")}}</p>
                                 </div>
                             </div>
                             <div class="d-flex justify-content-end w-100">
@@ -99,7 +99,7 @@
                                 <img class="bg-light rounded-3 p-2 me-3" src="{{asset("images/admin/growth.png")}}" alt="" width="60px">
                                 <div class="">
                                     <p class="m-0">Audience Growth</p>
-                                    <p class="m-0 overview_sub">November 22nd</p>
+                                    <p class="m-0 overview_sub">{{date("F")}} {{date("jS")}}</p>
                                 </div>
                             </div>
                             <div class="d-flex justify-content-end w-100">

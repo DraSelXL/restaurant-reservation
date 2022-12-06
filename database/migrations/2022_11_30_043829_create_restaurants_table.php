@@ -20,6 +20,8 @@ return new class extends Migration
             $table->string("phone");
             $table->integer("average_rating");
             $table->integer("user_id");
+            $table->integer("col");
+            $table->integer("row");
 
             $table->timestamps();
             $table->softDeletes();

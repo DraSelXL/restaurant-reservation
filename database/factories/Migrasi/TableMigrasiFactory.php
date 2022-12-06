@@ -2,6 +2,8 @@
 
 namespace Database\Factories\Migrasi;
 
+use App\Models\Migrasi\restaurantMigrasi;
+use App\Models\Migrasi\userMigrasi;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**

@@ -31,9 +31,21 @@ Route::prefix('/')->group(function () {
 
 Route::prefix('admin')->group(function () {
     Route::get('dashboard', [AdminController::class,"masterDashboard"]);
-    Route::get('customer', [AdminController::class,"masterCustomer"]);
+
+    Route::get('customer', [AdminController::class,"masterCustomer"])->name('homeCustomerAdmin');
+    Route::get('customer/banUser/{id}', [AdminController::class,"banUser"]);
+
+    Route::post('customer/search',[AdminController::class,"searchCustomer"]);
+    Route::get('customer/search/{keyword}', [AdminController::class,"masterCustomer"]);
+
     Route::get('restaurant', [AdminController::class,"masterRestaurant"]);
+    Route::get('restaurant/banRestaurant/{id}', [AdminController::class,"banRestaurant"]);
+
+    Route::post('restaurant/search',[AdminController::class,"searchRestaurant"]);
+    Route::get('restaurant/search/{keyword}', [AdminController::class,"masterRestaurant"])->name('homeRestaurantAdmin');
+
     Route::get('settings', [AdminController::class,"masterSettings"]);
+
 });
 
 Route::prefix('customer')->group(function () {
