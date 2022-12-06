@@ -4,6 +4,9 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\admin\AdminController;
 use App\Http\Controllers\customer\CustomerController;
 use App\Http\Controllers\index\IndexController;
+use App\Models\Migrasi\userMigrasi;
+use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\Hash;
 
 /*
 |--------------------------------------------------------------------------

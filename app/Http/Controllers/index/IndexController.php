@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\index;
 
 use App\Http\Controllers\Controller;
+use App\Models\Migrasi\userMigrasi;
 use Illuminate\Http\Request;
 
 class IndexController extends Controller
@@ -22,10 +23,18 @@ class IndexController extends Controller
         $username = $request->username;
         $password = $request->password;
 
-        // if($username == "admin" && $password == "admin"){
+        if($username == "admin" && $password == "admin"){
+            return redirect('admin/dashboard');
+        }
+        $userData = userMigrasi::all()->where('username','=',$username);
+        $user = $userData[0];
+        if(password_verify($password, $user['password'])){
+            return redirect()->route('customer_home');
+        }
+        else{
+            return redirect()->back()->with('pesan','Password False');
+        }
 
-        // }
-        // elseif()
     }
 
     public function checkRegister(Request $request)
@@ -38,10 +47,7 @@ class IndexController extends Controller
         $username = $request->username;
         $password = $request->password;
 
-        // if($username == "admin" && $password == "admin"){
 
-        // }
-        // elseif()
     }
 
     public function logout(Request $request)

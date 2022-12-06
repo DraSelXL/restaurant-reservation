@@ -72,7 +72,9 @@
                             </div>
                             <input type="submit" class="submit btn p-2 text-light" value="Sign in" style="background-color: #6C4AB6" id="submit">
                         </form>
-
+                        @if (Session::has('pesan'))
+                            <h5 style="color: red">{{Session::get('pesan')}}</h5>
+                        @endif
                         <p class="my-4" style="">By clicking the sign in button, you are agree to the Privacy and Policy, for more information you can read about our policy <a href="">here</a>.</p>
 
                         {{-- LOGIN REGISTER TOGGLER --}}
