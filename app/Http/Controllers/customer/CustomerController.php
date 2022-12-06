@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\customer;
 
 use App\Http\Controllers\Controller;
+use App\Models\Migrasi\restaurantMigrasi;
 use Illuminate\Http\Request;
 
 class CustomerController extends Controller
@@ -15,7 +16,8 @@ class CustomerController extends Controller
     public function masterExplore(Request $request)
     {
         $currPage = "search";
-        return view('customer.customer_search',compact('currPage'));
+        $restaurants = restaurantMigrasi::all();
+        return view('customer.customer_search',compact('currPage','restaurants'));
     }
     public function masterFavorite(Request $request)
     {

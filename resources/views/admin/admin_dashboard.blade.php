@@ -75,7 +75,7 @@
                                 </div>
                             </div>
                             <div class="d-flex justify-content-end w-100">
-                                <h1 class="font-weight-bold">$4759</h1>
+                                <h1 class="font-weight-bold">Rp. {{$totaltransaction}},00</h1>
                             </div>
                         </div>
                 </div>
@@ -85,11 +85,11 @@
                                 <img class="bg-light rounded-3 p-2 me-3" src="{{asset("images/admin/order.png")}}" alt="" width="60px">
                                 <div class="">
                                     <p class="m-0">Total Orders</p>
-                                    <p class="m-0 overview_sub">November 22nd</p>
+                                    <p class="m-0 overview_sub">{{date("F")}} 22nd</p>
                                 </div>
                             </div>
                             <div class="d-flex justify-content-end w-100">
-                                <h1 class="font-weight-bold">231</h1>
+                                <h1 class="font-weight-bold">{{$countTotalOrder}}</h1>
                             </div>
                         </div>
                 </div>
