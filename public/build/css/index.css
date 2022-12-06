@@ -43,7 +43,7 @@ textarea:focus ~ .bar:before {
 }
 
 input[type=password] {
-  letter-spacing: 0.3em;
+  /* letter-spacing: 0.3em; */
 }
 
 label {
@@ -139,4 +139,5 @@ label {
 }
 .submit{
     width: 100%;
+
 }

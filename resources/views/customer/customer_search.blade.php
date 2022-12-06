@@ -38,9 +38,13 @@
 @endsection
 
 @section('content')
+    {{-- RESERVATION POP_UP --}}
+    @include('customer.partial.reservation_popup')
+
     <div class="container" style="heigh: 100vh;">
         {{-- NAVBAR --}}
         @include('customer.partial.navbar')
+
         {{-- CONTENT --}}
         <div class="content pb-3 overflow-auto" style="height: calc(100vh - 98px)">
             {{-- SEARCH BAR --}}
@@ -83,187 +87,226 @@
                                 <p class="m-0" style="font-family: helvetica_regular;color: rgb(111, 111, 111);">Location</p>
                                 <input type="text" class="form-control" placeholder="...">
                             </div>
-                            <button type="submit" class="btn text-light w-100 mt-3" style="background-color: #ed3b27">Filter!</button>
+                            <button type="submit" class="btn text-light w-100 mt-3" style="background-color: #ed3b27" >Filter!</button>
                         </form>
                     </div>
                     {{-- RESTAURANT LIST --}}
                     <div class="col">
                         <div class="row m-0">
 
+                            {{-- TEMPLATE CARD --}}
+                            <div class="col-4 mb-3" style="position: relative;">
+                                <a class="text-dark p-0"  style="text-decoration: none;" href="/customer/restaurant/{{"Pavillion Restaurant"}}">
+                                    {{-- RESTAURANT EVENT --}}
+                                    <div class="event_container w-100" style="position: absolute;top:30px;">
+                                        <div class="event_label text-light w-25 px-2 rounded-end" style="background-color: #ed3b27;">Sale</div>
+                                        <div class="event_label text-light w-50 px-2 rounded-end" style="background-color: #6C4AB6; ">Best Seller</div>
+                                    </div>
+                                    {{-- CARD CONTENT --}}
+                                    <div class="restaurant_card bg-light p-3" >
+                                        <div class="image_container" style="height: 10rem">
+                                            <img class="navigation" src="{{asset('images/customer/search/restaurant_1.jpg')}}" alt="" width="100%" height="100%">
+                                        </div>
+
+                                        {{-- RATING AND FAVORITE --}}
+                                        <div class="row m-0 mt-2">
+                                            <div class="col p-0">
+                                                <img src="{{asset('images/customer/search/star.png')}}" alt="" width="15%">
+                                                <img src="{{asset('images/customer/search/star.png')}}" alt="" width="15%">
+                                                <img src="{{asset('images/customer/search/star.png')}}" alt="" width="15%">
+                                                <img src="{{asset('images/customer/search/star.png')}}" alt="" width="15%">
+                                                <img src="{{asset('images/customer/search/star.png')}}" alt="" width="15%">
+                                            </div>
+                                            <div class="col p-0 text-end">
+                                                <img class="navigation" src="{{asset('images/customer/search/fav.png')}}" alt="" width="15%">
+                                            </div>
+                                        </div>
+                                        {{-- RESTAURANT INFO --}}
+                                        <div class="restaurant_info overflow-auto" style="height: 4rem">
+                                            <p class="m-0 mt-2" style="font-family: helvetica_regular">Pavillion Restaurant</p>
+                                            <p class="m-0" style="font-family: helvetica_regular;font-size: 0.8em;color: rgb(111, 111, 111);">Asian, Indonesian, Steak</p>
+                                        </div>
+
+
+                                        {{-- PRICE AND RESERVE BUTTON --}}
+                                        <div class="d-flex w-100">
+                                            <h3 class="p-0" style="font-family: helvetica_bold">$$</h3>
+
+                                            <a class="text-dark d-flex ms-auto" style="text-decoration: none">
+                                                <button class="btn btn-warning text-light" onclick="open_popup()">Reserve</button>
+                                            </a>
+                                        </div>
+
+                                    </div>
+                                </a>
+                            </div>
+
                             {{-- CARD --}}
                             <div class="col-4 mb-3" style="position: relative;">
-                                {{-- RESTAURANT EVENT --}}
-                                <div class="event_container w-100" style="position: absolute;top:30px;">
-                                    <div class="event_label text-light w-25 px-2 rounded-end" style="background-color: #ed3b27;">Sale</div>
-                                    <div class="event_label text-light w-50 px-2 rounded-end" style="background-color: #6C4AB6; ">Best Seller</div>
-                                </div>
-                                {{-- CARD CONTENT --}}
-                                <div class="restaurant_card bg-light p-3" >
-                                    <div class="image_container" style="height: 10rem">
-                                        <img class="navigation" src="{{asset('images/customer/search/restaurant_1.jpg')}}" alt="" width="100%" height="100%">
+                                <a class="text-dark"  style="text-decoration: none;" href="/customer/shop/shopname">
+                                    {{-- RESTAURANT EVENT --}}
+                                    <div class="event_container w-100" style="position: absolute;top:30px;">
+                                        <div class="event_label text-light w-25 px-2 rounded-end" style="background-color: #ed3b27;">Sale</div>
+                                        <div class="event_label text-light w-50 px-2 rounded-end d-none" style="background-color: #6C4AB6; ">Best Seller</div>
+                                    </div>
+                                    {{-- CARD CONTENT --}}
+                                    <div class="restaurant_card bg-light p-3" >
+                                        <div class="image_container" style="height: 10rem">
+                                            <img class="navigation" src="{{asset('images/customer/search/restaurant_2.jpg')}}" alt="" width="100%" height="100%">
+                                        </div>
+
+                                        {{-- RATING AND FAVORITE --}}
+                                        <div class="row m-0 mt-2">
+                                            <div class="col p-0">
+                                                <img src="{{asset('images/customer/search/star.png')}}" alt="" width="15%">
+                                                <img src="{{asset('images/customer/search/star.png')}}" alt="" width="15%">
+                                                <img src="{{asset('images/customer/search/star.png')}}" alt="" width="15%">
+                                                <img src="{{asset('images/customer/search/star.png')}}" alt="" width="15%">
+                                            </div>
+                                            <div class="col p-0 text-end">
+                                                <img class="navigation" src="{{asset('images/customer/search/fav.png')}}" alt="" width="15%">
+                                            </div>
+                                        </div>
+
+                                        <div class="restaurant_info overflow-auto" style="height: 4rem">
+                                            <p class="m-0 mt-2" style="font-family: helvetica_regular">Imari Japanese Restaurant</p>
+                                            <p class="m-0" style="font-family: helvetica_regular;font-size: 0.8em;color: rgb(111, 111, 111);">Asian, Japanese, Sushi</p>
+                                            <p class="m-0 mt-2" style="font-family: helvetica_regular">Description</p>
+                                            <p class="" style="font-family: helvetica_regular;font-size: 0.8em;color: rgb(111, 111, 111);">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Facere animi, quis molestias illum deserunt sit voluptate exercitationem cupiditate harum quod nisi sunt? Voluptatibus impedit veritatis amet recusandae illo, molestias dolorem?</p>
+                                        </div>
+
+                                        {{-- PRICE AND RESERVE BUTTON --}}
+                                        <div class="row m-0 mt-2">
+                                            <div class="col p-0">
+                                                <h3 style="font-family: helvetica_bold">$$</h3>
+                                            </div>
+                                            <div class="col p-0 text-end">
+                                                <div class="btn btn-warning text-light">Reserve</div>
+                                            </div>
+                                        </div>
                                     </div>
 
-                                    {{-- RATING AND FAVORITE --}}
-                                    <div class="row m-0 mt-2">
-                                        <div class="col p-0">
-                                            <img src="{{asset('images/customer/search/star.png')}}" alt="" width="15%">
-                                            <img src="{{asset('images/customer/search/star.png')}}" alt="" width="15%">
-                                            <img src="{{asset('images/customer/search/star.png')}}" alt="" width="15%">
-                                            <img src="{{asset('images/customer/search/star.png')}}" alt="" width="15%">
-                                            <img src="{{asset('images/customer/search/star.png')}}" alt="" width="15%">
-                                        </div>
-                                        <div class="col p-0 text-end">
-                                            <img class="navigation" src="{{asset('images/customer/search/fav.png')}}" alt="" width="15%">
-                                        </div>
-                                    </div>
-                                    {{-- RESTAURANT INFO --}}
-                                    <div class="restaurant_info overflow-auto" style="height: 4rem">
-                                        <p class="m-0 mt-2" style="font-family: helvetica_regular">Pavillion Restaurant</p>
-                                        <p class="m-0" style="font-family: helvetica_regular;font-size: 0.8em;color: rgb(111, 111, 111);">Asian, Indonesian, Steak</p>
-                                    </div>
-
-                                    {{-- PRICE AND RESERVE BUTTON --}}
-                                    <div class="row m-0 mt-2">
-                                        <div class="col p-0">
-                                            <h3 style="font-family: helvetica_bold">$</h3>
-                                        </div>
-                                        <div class="col p-0 text-end">
-                                            <div class="btn btn-warning text-light">Reserve</div>
-                                        </div>
-                                    </div>
-                                </div>
+                                </a>
                             </div>
                             {{-- CARD --}}
                             <div class="col-4 mb-3" style="position: relative;">
-                                {{-- RESTAURANT EVENT --}}
-                                <div class="event_container w-100" style="position: absolute;top:30px;">
-                                    <div class="event_label text-light w-25 px-2 rounded-end" style="background-color: #ed3b27;">Sale</div>
-                                    <div class="event_label text-light w-50 px-2 rounded-end d-none" style="background-color: #6C4AB6; ">Best Seller</div>
-                                </div>
-                                {{-- CARD CONTENT --}}
-                                <div class="restaurant_card bg-light p-3" >
-                                    <div class="image_container" style="height: 10rem">
-                                        <img class="navigation" src="{{asset('images/customer/search/restaurant_2.jpg')}}" alt="" width="100%" height="100%">
+
+                                <a class="text-dark"  style="text-decoration: none;" href="/customer/shop/shopname">
+                                    {{-- RESTAURANT EVENT --}}
+                                    <div class="event_container w-100" style="position: absolute;top:30px;">
+                                        <div class="event_label text-light w-25 px-2 rounded-end d-none" style="background-color: #ed3b27;">Sale</div>
+                                        <div class="event_label text-light w-50 px-2 rounded-end" style="background-color: #6C4AB6; ">Best Seller</div>
                                     </div>
 
-                                    {{-- RATING AND FAVORITE --}}
-                                    <div class="row m-0 mt-2">
-                                        <div class="col p-0">
-                                            <img src="{{asset('images/customer/search/star.png')}}" alt="" width="15%">
-                                            <img src="{{asset('images/customer/search/star.png')}}" alt="" width="15%">
-                                            <img src="{{asset('images/customer/search/star.png')}}" alt="" width="15%">
-                                            <img src="{{asset('images/customer/search/star.png')}}" alt="" width="15%">
+                                    {{-- CARD CONTENT --}}
+                                    <div class="restaurant_card bg-light p-3" >
+                                        <div class="image_container" style="height: 10rem">
+                                            <img class="navigation"src="{{asset('images/customer/search/restaurant_3.jpg')}}" alt="" width="100%" height="100%">
                                         </div>
-                                        <div class="col p-0 text-end">
-                                            <img class="navigation" src="{{asset('images/customer/search/fav.png')}}" alt="" width="15%">
+
+                                        {{-- RATING AND FAVORITE --}}
+                                        <div class="row m-0 mt-2">
+                                            <div class="col p-0">
+                                                <img src="{{asset('images/customer/search/star.png')}}" alt="" width="15%">
+                                                <img src="{{asset('images/customer/search/star.png')}}" alt="" width="15%">
+                                                <img src="{{asset('images/customer/search/star.png')}}" alt="" width="15%">
+                                            </div>
+                                            <div class="col p-0 text-end">
+                                                <img class="navigation" src="{{asset('images/customer/search/fav_filled.png')}}" alt="" width="15%">
+                                            </div>
+                                        </div>
+                                        {{-- RESTAURANT INFO --}}
+                                        <div class="restaurant_info overflow-auto" style="height: 4rem">
+                                            <p class="m-0 mt-2" style="font-family: helvetica_regular">Cloud 22 Rooftop Bar</p>
+                                            <p class="m-0" style="font-family: helvetica_regular;font-size: 0.8em;color: rgb(111, 111, 111);">Bar, Pub, Winebar, Diner</p>
+                                            <p class="m-0 mt-2" style="font-family: helvetica_regular">Description</p>
+                                            <p class="" style="font-family: helvetica_regular;font-size: 0.8em;color: rgb(111, 111, 111);">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Facere animi, quis molestias illum deserunt sit voluptate exercitationem cupiditate harum quod nisi sunt? Voluptatibus impedit veritatis amet recusandae illo, molestias dolorem?</p>
+                                        </div>
+
+                                        {{-- PRICE AND RESERVE BUTTON --}}
+                                        <div class="row m-0 mt-2">
+                                            <div class="col p-0">
+                                                <h3 style="font-family: helvetica_bold">$$$</h3>
+                                            </div>
+                                            <div class="col p-0 text-end">
+                                                <div class="btn btn-warning text-light">Reserve</div>
+                                            </div>
                                         </div>
                                     </div>
 
-                                    <div class="restaurant_info overflow-auto" style="height: 4rem">
-                                        <p class="m-0 mt-2" style="font-family: helvetica_regular">Imari Japanese Restaurant</p>
-                                        <p class="m-0" style="font-family: helvetica_regular;font-size: 0.8em;color: rgb(111, 111, 111);">Asian, Japanese, Sushi</p>
-                                        <p class="m-0 mt-2" style="font-family: helvetica_regular">Description</p>
-                                        <p class="" style="font-family: helvetica_regular;font-size: 0.8em;color: rgb(111, 111, 111);">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Facere animi, quis molestias illum deserunt sit voluptate exercitationem cupiditate harum quod nisi sunt? Voluptatibus impedit veritatis amet recusandae illo, molestias dolorem?</p>
-                                    </div>
-
-                                    {{-- PRICE AND RESERVE BUTTON --}}
-                                    <div class="row m-0 mt-2">
-                                        <div class="col p-0">
-                                            <h3 style="font-family: helvetica_bold">$$</h3>
-                                        </div>
-                                        <div class="col p-0 text-end">
-                                            <div class="btn btn-warning text-light">Reserve</div>
-                                        </div>
-                                    </div>
-                                </div>
+                                </a>
                             </div>
                             {{-- CARD --}}
                             <div class="col-4 mb-3" style="position: relative;">
-                                {{-- RESTAURANT EVENT --}}
-                                <div class="event_container w-100" style="position: absolute;top:30px;">
-                                    <div class="event_label text-light w-25 px-2 rounded-end d-none" style="background-color: #ed3b27;">Sale</div>
-                                    <div class="event_label text-light w-50 px-2 rounded-end" style="background-color: #6C4AB6; ">Best Seller</div>
-                                </div>
 
-                                {{-- CARD CONTENT --}}
-                                <div class="restaurant_card bg-light p-3" >
-                                    <div class="image_container" style="height: 10rem">
-                                        <img class="navigation"src="{{asset('images/customer/search/restaurant_3.jpg')}}" alt="" width="100%" height="100%">
+                                <a class="text-dark"  style="text-decoration: none;" href="/customer/shop/shopname">
+                                    {{-- RESTAURANT EVENT --}}
+                                    <div class="event_container w-100" style="position: absolute;top:30px;">
+                                        <div class="event_label text-light w-25 px-2 rounded-end" style="background-color: #ed3b27;">Sale</div>
+                                        <div class="event_label text-light w-50 px-2 rounded-end" style="background-color: #6C4AB6; ">Best Seller</div>
                                     </div>
 
-                                    {{-- RATING AND FAVORITE --}}
-                                    <div class="row m-0 mt-2">
-                                        <div class="col p-0">
-                                            <img src="{{asset('images/customer/search/star.png')}}" alt="" width="15%">
-                                            <img src="{{asset('images/customer/search/star.png')}}" alt="" width="15%">
-                                            <img src="{{asset('images/customer/search/star.png')}}" alt="" width="15%">
+                                    {{-- CARD CONTENT --}}
+                                    <div class="restaurant_card bg-light p-3" >
+                                        <div class="image_container" style="height: 10rem">
+                                            <img class="navigation"src="{{asset('images/customer/search/restaurant_4.jpg')}}" alt="" width="100%" height="100%">
                                         </div>
-                                        <div class="col p-0 text-end">
-                                            <img class="navigation" src="{{asset('images/customer/search/fav_filled.png')}}" alt="" width="15%">
+
+                                        {{-- RATING AND FAVORITE --}}
+                                        <div class="row m-0 mt-2">
+                                            <div class="col p-0">
+                                                <img src="{{asset('images/customer/search/star.png')}}" alt="" width="15%">
+                                                <img src="{{asset('images/customer/search/star.png')}}" alt="" width="15%">
+                                                <img src="{{asset('images/customer/search/star.png')}}" alt="" width="15%">
+                                            </div>
+                                            <div class="col p-0 text-end">
+                                                <img class="navigation" src="{{asset('images/customer/search/fav_filled.png')}}" alt="" width="15%">
+                                            </div>
                                         </div>
-                                    </div>
-                                    {{-- RESTAURANT INFO --}}
-                                    <div class="restaurant_info overflow-auto" style="height: 4rem">
-                                        <p class="m-0 mt-2" style="font-family: helvetica_regular">Cloud 22 Rooftop Bar</p>
-                                        <p class="m-0" style="font-family: helvetica_regular;font-size: 0.8em;color: rgb(111, 111, 111);">Bar, Pub, Winebar, Diner</p>
-                                        <p class="m-0 mt-2" style="font-family: helvetica_regular">Description</p>
-                                        <p class="" style="font-family: helvetica_regular;font-size: 0.8em;color: rgb(111, 111, 111);">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Facere animi, quis molestias illum deserunt sit voluptate exercitationem cupiditate harum quod nisi sunt? Voluptatibus impedit veritatis amet recusandae illo, molestias dolorem?</p>
+                                        {{-- RESTAURANT INFO --}}
+                                        <div class="restaurant_info overflow-auto" style="height: 4rem">
+                                            <p class="m-0 mt-2" style="font-family: helvetica_regular">Cloud 22 Rooftop Bar</p>
+                                            <p class="m-0" style="font-family: helvetica_regular;font-size: 0.8em;color: rgb(111, 111, 111);">Bar, Pub, Winebar, Diner</p>
+                                        </div>
+
+                                        {{-- PRICE AND RESERVE BUTTON --}}
+                                        <div class="row m-0 mt-2">
+                                            <div class="col p-0">
+                                                <h3 style="font-family: helvetica_bold">$$$</h3>
+                                            </div>
+                                            <div class="col p-0 text-end">
+                                                <div class="btn btn-warning text-light">Reserve</div>
+                                            </div>
+                                        </div>
                                     </div>
 
-                                    {{-- PRICE AND RESERVE BUTTON --}}
-                                    <div class="row m-0 mt-2">
-                                        <div class="col p-0">
-                                            <h3 style="font-family: helvetica_bold">$$$</h3>
-                                        </div>
-                                        <div class="col p-0 text-end">
-                                            <div class="btn btn-warning text-light">Reserve</div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            {{-- CARD --}}
-                            <div class="col-4 mb-3" style="position: relative;">
-                                {{-- RESTAURANT EVENT --}}
-                                <div class="event_container w-100" style="position: absolute;top:30px;">
-                                    <div class="event_label text-light w-25 px-2 rounded-end" style="background-color: #ed3b27;">Sale</div>
-                                    <div class="event_label text-light w-50 px-2 rounded-end" style="background-color: #6C4AB6; ">Best Seller</div>
-                                </div>
-
-                                {{-- CARD CONTENT --}}
-                                <div class="restaurant_card bg-light p-3" >
-                                    <div class="image_container" style="height: 10rem">
-                                        <img class="navigation"src="{{asset('images/customer/search/restaurant_4.jpg')}}" alt="" width="100%" height="100%">
-                                    </div>
-
-                                    {{-- RATING AND FAVORITE --}}
-                                    <div class="row m-0 mt-2">
-                                        <div class="col p-0">
-                                            <img src="{{asset('images/customer/search/star.png')}}" alt="" width="15%">
-                                            <img src="{{asset('images/customer/search/star.png')}}" alt="" width="15%">
-                                            <img src="{{asset('images/customer/search/star.png')}}" alt="" width="15%">
-                                        </div>
-                                        <div class="col p-0 text-end">
-                                            <img class="navigation" src="{{asset('images/customer/search/fav_filled.png')}}" alt="" width="15%">
-                                        </div>
-                                    </div>
-                                    {{-- RESTAURANT INFO --}}
-                                    <div class="restaurant_info overflow-auto" style="height: 4rem">
-                                        <p class="m-0 mt-2" style="font-family: helvetica_regular">Cloud 22 Rooftop Bar</p>
-                                        <p class="m-0" style="font-family: helvetica_regular;font-size: 0.8em;color: rgb(111, 111, 111);">Bar, Pub, Winebar, Diner</p>
-                                    </div>
-
-                                    {{-- PRICE AND RESERVE BUTTON --}}
-                                    <div class="row m-0 mt-2">
-                                        <div class="col p-0">
-                                            <h3 style="font-family: helvetica_bold">$$$</h3>
-                                        </div>
-                                        <div class="col p-0 text-end">
-                                            <div class="btn btn-warning text-light">Reserve</div>
-                                        </div>
-                                    </div>
-                                </div>
+                                </a>
                             </div>
 
+                        </div>
+
+                        {{-- PAGINATION --}}
+                        <div class="d-flex justify-content-end">
+                            <nav aria-label="Page navigation example">
+                                <ul class="pagination">
+                                    {{-- PREV --}}
+                                    <li class="page-item">
+                                        <a class="page-link text-dark" href="#" aria-label="Previous">
+                                        <span aria-hidden="true">&laquo;</span>
+                                        </a>
+                                    </li>
+
+                                    <li class="page-item"><a class="page-link bg-dark text-light" href="#">1</a></li>
+                                    <li class="page-item"><a class="page-link text-dark" href="#">2</a></li>
+                                    <li class="page-item"><a class="page-link text-dark" href="#">3</a></li>
+                                    {{-- NEXT --}}
+                                    <li class="page-item">
+                                        <a class="page-link text-dark" href="#" aria-label="Next">
+                                        <span aria-hidden="true">&raquo;</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </nav>
                         </div>
                     </div>
                 </div>
@@ -283,11 +326,19 @@
 @endsection
 
 @section('js_script')
-
     <script>
         $(document).ready(function(){
             console.log('Welcome Customer!');
-
         });
+        function open_popup(){
+            $(".popup_container").removeClass("d-none",function(){
+                $(".popup").css("height","90vh");
+                $(".blank").animate({height : '0vh'},"slow");
+            });
+        }
+        function close_popup(){
+            $(".popup_container").addClass("d-none");
+            $(".blank").animate({height : '90vh'});
+        }
     </script>
 @endsection

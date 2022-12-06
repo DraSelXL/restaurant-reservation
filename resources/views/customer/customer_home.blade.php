@@ -30,6 +30,7 @@
             font-weight: 600;
             cursor: pointer;
         }
+
     </style>
 @endsection
 
@@ -94,7 +95,7 @@
             </form>
         </div>
         {{-- PARALAX --}}
-        <div class="paralax my-5">
+        <div class="paralax mt-5">
             <div class="row m-0">
                 <div class="col mx-2 text-center rounded-4 p-4" >
                     <img src="{{asset('images/customer/home/order.png')}}" alt="">
@@ -115,6 +116,30 @@
                     <img src="{{asset('images/customer/home/dine.png')}}" alt="">
                     <h3>Dine</h3>
                     <p class="my-2">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Debitis repellendus aspernatur voluptatem ex ea minima.</p>
+                </div>
+            </div>
+        </div>
+        {{-- JUMBOTRON --}}
+        <div class="jumbotron row m-0 w-100 mb-5" style="height: 60vh;">
+            <div class="col-6 d-flex justify-content-end align-items-center">
+                <img src="{{asset('images/customer/banner2.png')}}" width="100%" alt="">
+            </div>
+            <div class="col-6 d-flex justify-content-end align-items-center" >
+                <div class="right_content">
+
+                    {{-- BANNER TEXT --}}
+                    <div class="banner_text">
+                        <p class="text-start " style="font-size: 3.5em;font-family: helvetica_bold">Restaurant Owner?</p>
+                        <p class="text-start " style="font-size: 3.5em;font-family: helvetica_bold;margin-top:-20px;">Open Table now!</p>
+                        <p class="text-start " style="font-family: helvetica_regular;">Lorem ipsum dolor sit amet consectetur adipisicing elit. Earum dignissimos nobis ad sequi aliquid impedit iusto officia ea enim? Cum eius dolore labore tempore assumenda, quia quas cupiditate? Officia, voluptatum.</p>
+                    </div>
+
+                    {{-- BUTTON --}}
+                    <div class="d-flex justify-content-start mt-4">
+                        <div class="btn me-2" style="background-color: #ed3b27;color:white;">Create Restaurant Account</div>
+                    </div>
+
+
                 </div>
             </div>
         </div>

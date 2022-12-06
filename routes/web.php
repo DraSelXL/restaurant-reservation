@@ -23,7 +23,7 @@ Route::get('/logout', [IndexController::class,'logout']);
 Route::prefix('/')->group(function () {
     Route::get('index', [IndexController::class,'masterIndex'])->name("index");
     Route::post('checkLogin', [IndexController::class,'checkLogin']);
-    Route::get('checkRegister', [IndexController::class,'checkRegister']);
+    Route::post('checkRegister', [IndexController::class,'checkRegister']);
 });
 
 Route::prefix('admin')->group(function () {
@@ -40,4 +40,6 @@ Route::prefix('customer')->group(function () {
     Route::get('history', [CustomerController::class,"masterHistory"])->name("customer_history");
     Route::get('profile', [CustomerController::class,"masterProfile"])->name("customer_profile");
 
+
+    Route::get('restaurant/{restaurant_name}', [CustomerController::class,"masterRestaurant"])->name("customer_restaurant");
 });

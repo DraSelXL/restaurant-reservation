@@ -32,6 +32,7 @@ class CustomerController extends Controller
         $currPage = "profile";
         return view('customer.customer_profile',compact('currPage'));
     }
+<<<<<<< Updated upstream
     public function loginCheck(Request $req)
     {
         $req->validate([
@@ -59,5 +60,12 @@ class CustomerController extends Controller
 
         // }
         // elseif()
+=======
+
+    public function masterRestaurant(Request $request)
+    {
+        $currPage = "restaurant";
+        return view('customer.customer_restaurant',compact('currPage'));
+>>>>>>> Stashed changes
     }
 }
