@@ -20,7 +20,7 @@ class ReviewMigrasiFactory extends Factory
             'user_id'=>$this->faker->numberBetween(1,10),
             'restaurant_id'=>$this->faker->numberBetween(1,10),
             'rating'=>$this->faker->numberBetween(3,5),
-            'message'=>$this->faker->sentence()
+            'message'=>$this->faker->sentence(),
         ];
     }
 }

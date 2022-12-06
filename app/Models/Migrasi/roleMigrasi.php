@@ -8,7 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 class roleMigrasi extends Model
 {
     use HasFactory;
-
     protected $table = "roles";
-    protected $primaryKey = "id";
+    public $timestamps = false;
+
+    public function user()
+    {
+        return $this->belongsTo(userMigrasi::class);
+    }
 }

@@ -9,11 +9,16 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class tableMigrasi extends Model
 {
     use HasFactory;
-
     use SoftDeletes;
-
     protected $table = "tables";
-    protected $primaryKey = "id";
+    public $timestamps=false;
 
-    public $timestamps = false;
+    public function restaurant()
+    {
+        return $this->belongsTo(restaurantMigrasi::class);
+    }
+    public function reservation()
+    {
+        return $this->hasMany(reservationMigrasi::class);
+    }
 }

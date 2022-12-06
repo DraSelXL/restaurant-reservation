@@ -8,8 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 class genderMigrasi extends Model
 {
     use HasFactory;
-
-    protected $table = "genders";
-    protected $primaryKey = "id";
     public $timestamps = false;
+    protected $table = "genders";
+
+    public function user()
+    {
+        return $this->belongsTo(userMigrasi::class);
+    }
 }

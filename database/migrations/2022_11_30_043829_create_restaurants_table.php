@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string("address");
             $table->string("phone");
             $table->integer("average_rating");
+            $table->integer("user_id");
 
             $table->timestamps();
             $table->softDeletes();
