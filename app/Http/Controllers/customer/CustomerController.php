@@ -34,4 +34,9 @@ class CustomerController extends Controller
         $currPage = "profile";
         return view('customer.customer_profile',compact('currPage'));
     }
+    public function masterRestaurant(Request $request)
+    {
+        $currPage = "search";
+        return view('customer.customer_restaurant',compact('currPage'));
+    }
 }

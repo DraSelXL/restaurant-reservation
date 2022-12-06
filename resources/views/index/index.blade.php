@@ -118,8 +118,6 @@
                                     <label>Confrim Password</label>
                                 </div>
                             </div>
-                            <p class="mb-4" style="">By clicking the register button, you are agree to the Privacy and Policy, for more information you can read about our policy <a href="">here</a>.</p>
-
                             <input type="submit" class="submit btn p-2 text-light" value="Register" style="background-color: #FEB139" id="submit">
                         </form>
 
@@ -136,7 +134,7 @@
 
     {{-- MOBILE MODE XS SIZE : WIDTH <768px --}}
     <div class="mobile_mode login_bg d-none" id="mobile_mode">
-        <div class="container d-flex flex-column justify-content-center" style="height: 100vh;">
+        <div class="container d-flex flex-column justify-content-center overflow-auto" style="height: 100vh;width:100%;">
             {{-- IMAGE --}}
             <div class="d-flex justify-content-center w-100" style="height: 50%">
                 <img class="" src="{{asset('images/login/banner1.png')}}" alt="" height="100%" id="jumbotron_mobile">
