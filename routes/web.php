@@ -64,4 +64,6 @@ Route::prefix('restaurant')->controller(RestaurantController::class)->group(func
     Route::get('home', 'getHomePage');
     Route::get('history', 'getHistoryPage');
     Route::get('statistic', 'getStatisticPage');
+
+    Route::post('/updateRestaurant/{id}');
 });
