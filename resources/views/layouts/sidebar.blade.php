@@ -49,6 +49,7 @@
             color: white;
         }
     </style>
+    @yield('custom-css-extended')
 @endsection
 
 @section('content')

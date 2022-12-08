@@ -5,7 +5,7 @@
 @endsection
 
 @section('sidebar-menu')
-    <ul>
+    <ul class="list-unstyled">
         <a href="/restaurant/home">
             <li @if($active == "home") class="active" @endif>
                 <span class="material-symbols-outlined">home</span>
@@ -26,7 +26,7 @@
         </a>
     </ul>
 
-    <ul class="mt-auto">
+    <ul class="mt-auto list-unstyled">
         <a href="/logout">
             <li class="danger">
                 <span class="material-symbols-outlined">logout</span>
