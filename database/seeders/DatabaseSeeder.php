@@ -37,5 +37,7 @@ class DatabaseSeeder extends Seeder
         \App\Models\Migrasi\reviewMigrasi::factory(50)->create();
         \App\Models\Migrasi\restaurantMigrasi::factory(3)->create();
         \App\Models\Migrasi\reservationMigrasi::factory(20)->create();
+        \App\Models\Migrasi\postMigrasi::factory(5)->create();
+        \App\Models\Migrasi\favouriteMigrasi::factory(3)->create();
     }
 }

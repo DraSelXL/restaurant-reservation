@@ -103,7 +103,7 @@
                                 </div>
                             </div>
                             <div class="d-flex justify-content-end w-100">
-                                <h1 class="font-weight-bold">345</h1>
+                                <h1 class="font-weight-bold">{{$audienceGrowth->count()}}</h1>
                             </div>
                         </div>
                 </div>
@@ -123,86 +123,16 @@
                             <th>Today</th>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>1</td>
-                                <td>Imari Japanese Restaurant</td>
-                                <td>Ngagel Jaya Tengah V/17</td>
-                                <td>1273 $</td>
-                                <td>4166 $</td>
-                                <td>88 $</td>
-                            </tr>
-                            <tr>
-                                <td>1</td>
-                                <td>Imari Japanese Restaurant</td>
-                                <td>Ngagel Jaya Tengah V/17</td>
-                                <td>1273 $</td>
-                                <td>4166 $</td>
-                                <td>88 $</td>
-                            </tr>
-                            <tr>
-                                <td>2</td>
-                                <td>Imari Japanese Restaurant</td>
-                                <td>Ngagel Jaya Tengah V/17</td>
-                                <td>1273 $</td>
-                                <td>4166 $</td>
-                                <td>88 $</td>
-                            </tr>
-                            <tr>
-                                <td>3</td>
-                                <td>Imari Japanese Restaurant</td>
-                                <td>Ngagel Jaya Tengah V/17</td>
-                                <td>1273 $</td>
-                                <td>4166 $</td>
-                                <td>88 $</td>
-                            </tr>
-                            <tr>
-                                <td>3</td>
-                                <td>Imari Japanese Restaurant</td>
-                                <td>Ngagel Jaya Tengah V/17</td>
-                                <td>1273 $</td>
-                                <td>4166 $</td>
-                                <td>88 $</td>
-                            </tr>
-                            <tr>
-                                <td>3</td>
-                                <td>Imari Japanese Restaurant</td>
-                                <td>Ngagel Jaya Tengah V/17</td>
-                                <td>1273 $</td>
-                                <td>4166 $</td>
-                                <td>88 $</td>
-                            </tr>
-                            <tr>
-                                <td>3</td>
-                                <td>Imari Japanese Restaurant</td>
-                                <td>Ngagel Jaya Tengah V/17</td>
-                                <td>1273 $</td>
-                                <td>4166 $</td>
-                                <td>88 $</td>
-                            </tr>
-                            <tr>
-                                <td>3</td>
-                                <td>Imari Japanese Restaurant</td>
-                                <td>Ngagel Jaya Tengah V/17</td>
-                                <td>1273 $</td>
-                                <td>4166 $</td>
-                                <td>88 $</td>
-                            </tr>
-                            <tr>
-                                <td>3</td>
-                                <td>Imari Japanese Restaurant</td>
-                                <td>Ngagel Jaya Tengah V/17</td>
-                                <td>1273 $</td>
-                                <td>4166 $</td>
-                                <td>88 $</td>
-                            </tr>
-                            <tr>
-                                <td>3</td>
-                                <td>Imari Japanese Restaurant</td>
-                                <td>Ngagel Jaya Tengah V/17</td>
-                                <td>1273 $</td>
-                                <td>4166 $</td>
-                                <td>88 $</td>
-                            </tr>
+                            @foreach ($topSales as $key=>$topSale)
+                                <tr>
+                                    <td>{{$key+1}}</td>
+                                    <td>{{$topSale->full_name}}</td>
+                                    <td>{{$topSale->address}}</td>
+                                    <td>Rp.00</td>
+                                    <td>4166 $</td>
+                                    <td>88 $</td>
+                                </tr>
+                            @endforeach
                         </tbody>
                     </table>
                 </div>

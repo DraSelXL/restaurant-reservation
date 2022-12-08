@@ -25,10 +25,11 @@ class AdminController extends Controller
         // foreach ($transactions as $transaction) {
         //     $getMonth = substr($transaction->created_at,5,2);
         // }
-        // $audienceGrowth = transactionMigrasi::where('created_at',date("m"))->get();
-
-        //dd($audienceGrowth);
-        return view('admin.admin_dashboard',compact('currPage','totaltransaction','countTotalOrder'));
+        $monthNow = date("m");
+        $audienceGrowth = userMigrasi::whereMonth('created_at','=',$monthNow)->get();
+        $topSales = DB::select("select r.id, r.full_name, r.address, SUM(t.payment_amount) FROM restaurants r JOIN transactions t ON r.id = t.restaurant_id GROUP BY r.id");
+        // dd($topSales);
+        return view('admin.admin_dashboard',compact('currPage','totaltransaction','countTotalOrder','audienceGrowth','topSales'));
     }
     public function masterCustomer(Request $request)
     {
