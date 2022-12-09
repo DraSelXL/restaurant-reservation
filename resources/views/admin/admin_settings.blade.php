@@ -62,7 +62,7 @@
                     <div class="col-10">
                         {{-- ADD POST --}}
                         <h2 class="mb-3">𝑪𝒓𝒆𝒂𝒕𝒆 𝒂 𝒑𝒐𝒔𝒕...</h2>
-                        <form action="" method="POST">
+                        <form action="{{url('admin/settings/addPost')}}" method="POST">
                             @csrf
                             <div class="row">
                                 <div class="col-10">
@@ -97,24 +97,32 @@
             </div>
 
             <h3>Announcement</h3>
+            @foreach ($posts as $post)
             <div class="bg-light rounded-4 p-4 my-4">
                 <div class="row h-100">
                     <div class="col-2 d-flex justify-content-center align-items-center">
                         <img class="" src="{{asset('images/admin/post.png')}}" alt="" width="100px" height="100px">
                     </div>
-                    <div class="col-8">
-                        {{-- <h4>{{$post->post_title}}</h4>
-                        <p>{{$post->post_caption}}</p> --}}
-                        <h4>Welcome to PorTable!</h4>
-                        <p class="m-0">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Odio numquam tenetur atque laudantium corporis? Inventore quod ipsam incidunt ex sit eligendi! Saepe blanditiis atque mollitia voluptas a eos delectus distinctio.</p>
-                    </div>
-                    <div class="col-2 d-flex justify-content-end align-items-center">
-                        <a class="w-75" href={{url("/toko/posts/deletePost/")}}>
-                            <button class="btn btn-danger w-100">Delete Post</button>
-                        </a>
+                        <div class="col-8">
+                            {{-- <h4>{{$post->post_title}}</h4>
+                            <p>{{$post->post_caption}}</p> --}}
+                            <h4>{{$post->title}}</h4>
+                            <p class="m-0">{{$post->caption}}</p>
+                        </div>
+                        <div class="col-2 d-flex justify-content-end align-items-center">
+                            @if($post->trashed())
+                                <a class="w-75" href={{url("admin/settings/deletePost/$post->id")}}>
+                                    <button class="btn btn-success w-100">Restore Post</button>
+                                </a>
+                            @else
+                                <a class="w-75" href={{url("admin/settings/deletePost/$post->id")}}>
+                                    <button class="btn btn-danger w-100">Delete Post</button>
+                                </a>
+                            @endif
+                        </div>
                     </div>
                 </div>
-            </div>
+                @endforeach
         </div>
 
     </div>

@@ -20,6 +20,8 @@ class RestaurantMigrasiFactory extends Factory
     {
         $firstname = $this->faker->firstName();
         $lastname = $this->faker->lastName();
+        $random_start = $this->faker->numberBetween(9,10);
+        $random_start_am = "am";
         return [
             'full_name'=>"$firstname $lastname",
             'address'=>$this->faker->address(),
@@ -28,6 +30,8 @@ class RestaurantMigrasiFactory extends Factory
             'user_id'=>$this->faker->unique()->numberBetween(1,3),
             'col'=>$this->faker->randomNumber(1,10),
             'row'=>$this->faker->randomNumber(1,10),
+            'start_time'=>"$random_start $random_start_am",
+            'description'=>$this->faker->sentence(20),
 
             'created_at'=>now(),
             'updated_at'=>now()

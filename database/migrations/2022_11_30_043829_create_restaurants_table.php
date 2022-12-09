@@ -22,6 +22,8 @@ return new class extends Migration
             $table->integer("user_id");
             $table->integer("col");
             $table->integer("row");
+            $table->string("start_time");
+            $table->string("description");
 
             $table->timestamps();
             $table->softDeletes();

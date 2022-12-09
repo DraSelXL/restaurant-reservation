@@ -45,6 +45,8 @@ Route::prefix('admin')->group(function () {
     Route::get('restaurant/search/{keyword}', [AdminController::class,"masterRestaurant"])->name('homeRestaurantAdmin');
 
     Route::get('settings', [AdminController::class,"masterSettings"]);
+    Route::get('settings/deletePost/{id}', [AdminController::class,"deletePost"]);
+    Route::post('settings/addPost',[AdminController::class,"addPost"]);
 
 });
 

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Migrasi\postMigrasi;
 use App\Models\Migrasi\restaurantMigrasi;
 use App\Models\Migrasi\transactionMigrasi;
 use App\Models\Migrasi\userMigrasi;
@@ -129,6 +130,32 @@ class AdminController extends Controller
     public function masterSettings(Request $request)
     {
         $currPage = "settings";
-        return view('admin.admin_settings',compact('currPage'));
+        $posts = postMigrasi::withTrashed()->get();
+        return view('admin.admin_settings',compact('currPage','posts'));
+    }
+    public function addPost(Request $request)
+    {
+        //dd($request->all());
+        $post = new postMigrasi;
+        $post->title = $request->title;
+        $post->caption = $request->caption;
+        $post->save();
+        return redirect()->back();
+    }
+    public function deletePost(Request $request)
+    {
+        $selectedPost = postMigrasi::withTrashed()->find($request->id);
+        if($selectedPost->trashed()){
+            $result = $selectedPost->restore();
+        }
+        else{
+            $result = $selectedPost->delete();
+        }
+        if($result){
+            return redirect()->back()->with('pesan','Post Banned');
+        }
+        else{
+            return redirect()->back()->with('pesan','Error');
+        }
     }
 }
