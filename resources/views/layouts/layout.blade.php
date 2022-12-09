@@ -11,7 +11,6 @@
     {{-- JQUERY --}}
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
-
     @yield('custom_css')
     @yield('dependencies')
 
@@ -40,7 +39,6 @@
             font-family: "helvetica_bold";
             src: url("../../font/Helvetica/FreeSansBold.otf");
         }
-
     </style>
 </head>
 <body>

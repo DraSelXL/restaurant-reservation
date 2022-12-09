@@ -8,7 +8,7 @@
     data dari meja tersebut kemudian akan masuk kedalam form
     ketika form disubmit maka transaksi baru akan terbuat
 --}}
-<div class=" popup_container position-fixed w-100 d-flex align-items-end flex-column d-none" style="background-color: rgb(0, 0, 0, 0.4);z-index: 2;">
+<div class=" popup_container position-fixed w-100 d-flex align-items-end flex-column d-none" style="background-color: rgb(0, 0, 0, 0.4);z-index: 100;">
     {{-- CLOSE BUTTON --}}
     <div class="close d-flex justify-content-end align-items-center w-100 px-5" style="height: 10vh;">
         <div class="btn btn-outline-light" onclick="close_popup()">X</div>

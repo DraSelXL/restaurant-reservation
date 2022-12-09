@@ -145,7 +145,7 @@
                                 {{-- CARD CONTENT --}}
                                 <div class="restaurant_card bg-light p-3" >
                                     <div class="image_container" style="height: 18rem">
-                                        <img class="navigation" src="{{asset('images/customer/search/restaurant_1.jpg')}}" alt="" width="100%" height="100%">
+                                        <img class="navigation" src="{{asset('images/restaurant/Tina Feeney/restaurant_1.jpg')}}" alt="" width="100%" height="100%">
                                     </div>
 
                                     {{-- RESTAURANT INFO --}}

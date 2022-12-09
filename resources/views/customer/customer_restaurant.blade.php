@@ -30,8 +30,12 @@
             font-weight: 600;
             cursor: pointer;
         }
-        .carousel_bg{
-            background-image: url({{url('images/customer/search/restaurant_1.jpg')}});
+        .info{
+            background-image: linear-gradient( rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2));
+            position: absolute;
+            z-index:2;
+            width: 100%;
+            height: 100%;
         }
     </style>
 @endsection
@@ -50,44 +54,73 @@
 
         {{-- CAROUSEL --}}
         <div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="false" style="height: 70vh;">
+            <div class="info text-light">
+                <h1 style="font-family: helvetica_bold; position: absolute;top: 5%;left: 5%;z-index:3;">
+                    <a href="/customer/explore" style="text-decoration: none;">
+                        <span class="btn btn-outline-light p-0">
+                            <img src="{{asset("images/customer/back.png")}}" width="30px" height="30px">
+                        </span>
+                    </a>
+                    {{$restaurant->full_name}}
+                </h1>
 
+                {{-- NEXT PREV BUTTON --}}
+                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                </button>
+            </div>
+            {{-- IMAGE --}}
             <div class="carousel-inner h-100">
-              <div class="carousel-item active h-100" style="">
-
-                <div class="carousel-caption d-none d-md-block">
-                  <h5>First slide label</h5>
-                  <p>Some representative placeholder content for the first slide.</p>
-                </div>
+              <div class="carousel-item active">
+                <img src="{{asset("images/customer/search/$restaurant->full_name/restaurant_1.jpg")}}" class="d-block w-100" alt="...">
               </div>
 
               <div class="carousel-item">
-                <img src="..." class="d-block w-100" alt="...">
-                <div class="carousel-caption d-none d-md-block">
-                  <h5>Second slide label</h5>
-                  <p>Some representative placeholder content for the second slide.</p>
-                </div>
+                <img src="{{asset("images/customer/search/$restaurant->full_name/restaurant_2.jpg")}}" class="d-block w-100" alt="...">
               </div>
 
               <div class="carousel-item">
-                <img src="..." class="d-block w-100" alt="...">
-                <div class="carousel-caption d-none d-md-block">
-                  <h5>Third slide label</h5>
-                  <p>Some representative placeholder content for the third slide.</p>
-                </div>
+                <img src="{{asset("images/customer/search/$restaurant->full_name/restaurant_3.jpg")}}" class="d-block w-100" alt="...">
               </div>
             </div>
 
-            {{-- NEXT PREV BUTTON --}}
-            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
-              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-              <span class="visually-hidden">Previous</span>
-            </button>
-            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
-              <span class="carousel-control-next-icon" aria-hidden="true"></span>
-              <span class="visually-hidden">Next</span>
-            </button>
-          </div>
+        </div>
+        {{-- TIME --}}
+        <div class="easy_access bg-dark text-light px-5 d-flex align-items-center" style="height: calc(30vh - 80px)">
+            <div class="row m-0 w-100">
+                <div class="col-sm-12 col-lg-6">
+                    <h3 class="text-light">Available time</h3>
+                    <div class="time_available mt-3">
+                        @php
+                            $total_shift = 8;
+                            $start_hour = 11;
+                            $start_minute = 30;
+                        @endphp
+                        @for ($i = 0; $i<$total_shift;$i++)
+                            <div class="btn btn-outline-light">
+                                {{$start_hour+$i.":".$start_minute}}
+                            </div>
+                        @endfor
+                    </div>
+                </div>
+                <div class="col-sm-12 col-lg-3">
+                    <h3 class="text-light">Description</h3>
+                    <p class="m-0" style="font-family: helvetica_regular;color: rgb(111, 111, 111);">{{$restaurant->address}}</p>
+                    <p class="m-0" style="font-family: helvetica_regular;color: rgb(111, 111, 111);">{{$restaurant->phone}}</p>
+                </div>
+                <div class="col-sm-12 col-lg-3">
+                    <button class="btn btn-light h-100 w-100" onclick="open_popup()">Book table!</button>
+                </div>
+            </div>
+        </div>
     </div>
+
+    {{-- FOOTER --}}
     {{-- <div class="about_us bg-dark text-light">
         <div class="container">
             <div class="copyright text-center">
@@ -105,5 +138,15 @@
             console.log('Welcome Customer!');
         });
 
+        function open_popup(){
+            $(".popup_container").removeClass("d-none",function(){
+                $(".popup").css("height","90vh");
+                $(".blank").animate({height : '0vh'},"slow");
+            });
+        }
+        function close_popup(){
+            $(".popup_container").addClass("d-none");
+            $(".blank").animate({height : '90vh'});
+        }
     </script>
 @endsection

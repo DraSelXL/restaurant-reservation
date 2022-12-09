@@ -51,12 +51,19 @@ Route::prefix('admin')->group(function () {
 });
 
 Route::prefix('customer')->group(function () {
+    // NAVIGATION
     Route::get('home', [CustomerController::class,"masterHome"])->name("customer_home");
     Route::get('explore', [CustomerController::class,"masterExplore"])->name("customer_search");
     Route::get('favorite', [CustomerController::class,"masterFavorite"])->name("customer_favorite");
     Route::get('history', [CustomerController::class,"masterHistory"])->name("customer_history");
     Route::get('profile', [CustomerController::class,"masterProfile"])->name("customer_profile");
+    Route::get('notification', [CustomerController::class,"masterNotification"])->name("customer_notification");
 
-
+    // RESTAURANT DETAIL
     Route::get('restaurant/{restaurant_name}', [CustomerController::class,"masterRestaurant"])->name("customer_restaurant");
+
+    // RESGITER RESTAURANT
+    Route::get('/register_restaurant', [CustomerController::class,"masterRegister"])->name("register_restaurant");
+    Route::post('/register_restaurant/do_register', [CustomerController::class,"registerRestaurant"]);
+
 });

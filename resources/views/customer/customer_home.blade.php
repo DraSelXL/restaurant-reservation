@@ -38,6 +38,10 @@
     <script src="//code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 @endsection
 
+@section("header")
+    @include('partial.flashMessage')
+@endsection
+
 @section('content')
     <div class="container">
         {{-- NAVBAR --}}
@@ -56,8 +60,12 @@
 
                     {{-- BUTTON --}}
                     <div class="d-flex justify-content-end mt-4">
-                        <div class="btn me-2" style="background-color: #ed3b27;color:white;">Explore Restaurant</div>
-                        <div class="btn" style="border:1px solid #ed3b27; color: #ed3b27;">Favorite</div>
+                        <a href="{{route('customer_search')}}">
+                            <div class="btn me-2" style="background-color: #ed3b27;color:white;">Explore Restaurant</div>
+                        </a>
+                        <a href="{{route('customer_favorite')}}">
+                            <div class="btn" style="border:1px solid #ed3b27; color: #ed3b27;">Favorite</div>
+                        </a>
                     </div>
 
 
@@ -136,7 +144,9 @@
 
                     {{-- BUTTON --}}
                     <div class="d-flex justify-content-start mt-4">
-                        <div class="btn me-2" style="background-color: #ed3b27;color:white;">Create Restaurant Account</div>
+                        <a href="/customer/register_restaurant" style="text-decoration: none">
+                            <div class="btn me-2" style="background-color: #ed3b27;color:white;">Create Restaurant Account</div>
+                        </a>
                     </div>
 
 

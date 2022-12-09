@@ -41,7 +41,7 @@
     {{-- RESERVATION POP_UP --}}
     @include('customer.partial.reservation_popup')
 
-    <div class="container" style="heigh: 100vh;">
+    <div class="container" style="height: 100vh;">
         {{-- NAVBAR --}}
         @include('customer.partial.navbar')
 
@@ -64,7 +64,7 @@
             <div class="catalog">
                 <div class="row m-0">
                     {{-- FILTER --}}
-                    <div class="col-3 border-end">
+                    <div class="col-sm-12 col-lg-3 border-end">
                         <h3 style="font-family: helvetica_bold">Filter</h3>
                         <form action="" style="font-family: helvetica_regular">
                             <div class="price mt-3">
@@ -95,7 +95,7 @@
                         <div class="row m-0">
                             @foreach ($restaurants as $restaurant)
                                 {{-- TEMPLATE CARD --}}
-                                <div class="col-4 mb-3" style="position: relative;">
+                                <div class="col-sm-6 col-lg-4 mb-3" style="position: relative;">
                                     <a class="text-dark p-0"  style="text-decoration: none;" href="/customer/restaurant/{{$restaurant->full_name}}">
                                         {{-- RESTAURANT EVENT --}}
                                         <div class="event_container w-100" style="position: absolute;top:30px;">
@@ -105,7 +105,7 @@
                                         {{-- CARD CONTENT --}}
                                         <div class="restaurant_card bg-light p-3" >
                                             <div class="image_container" style="height: 10rem">
-                                                <img class="navigation" src="{{asset("images/customer/search/$restaurant->full_name/restaurant_1.jpg")}}" alt="" width="100%" height="100%">
+                                                <img class="navigation" src="{{asset("images/restaurant/$restaurant->full_name/restaurant_1.jpg")}}" alt="" width="100%" height="100%">
                                             </div>
 
                                             {{-- RATING AND FAVORITE --}}

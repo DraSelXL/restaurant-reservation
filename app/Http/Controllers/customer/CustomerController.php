@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 
 class CustomerController extends Controller
 {
+    // NAVIGATION (NAVBAR) RELATED
     public function masterHome(Request $request)
     {
         $currPage = "home";
@@ -22,7 +23,8 @@ class CustomerController extends Controller
     public function masterFavorite(Request $request)
     {
         $currPage = "favorite";
-        return view('customer.customer_favorite',compact('currPage'));
+        $restaurants = restaurantMigrasi::all();
+        return view('customer.customer_favorite',compact('currPage','restaurants'));
     }
     public function masterHistory(Request $request)
     {
@@ -34,9 +36,30 @@ class CustomerController extends Controller
         $currPage = "profile";
         return view('customer.customer_profile',compact('currPage'));
     }
+    public function masterNotification(Request $request)
+    {
+        $currPage = "notification";
+        return view('customer.customer_notification',compact('currPage'));
+    }
+
     public function masterRestaurant(Request $request)
     {
         $currPage = "search";
-        return view('customer.customer_restaurant',compact('currPage'));
+        $restaurant_name = $request->restaurant_name;
+        $restaurant = restaurantMigrasi::where('full_name',$restaurant_name)->first();
+
+        return view('customer.customer_restaurant',compact('currPage','restaurant'));
+    }
+
+
+    public function masterRegister(Request $request)
+    {
+        $currPage = "home";
+        return view('customer.customer_register',compact('currPage'));
+    }
+    public function registerRestaurant(Request $request)
+    {
+        $currPage = "home";
+        return redirect()->route("customer_home")->with("successMessage","Restaurant account has been registered!");
     }
 }
