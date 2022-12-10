@@ -48,4 +48,28 @@ class RestaurantController extends Controller
             'active' => RestaurantController::$ACTIVE_STATISTIC
         ]);
     }
+
+    /**
+     * Update the reservation with the specified id in the URL status to attended.
+     */
+    public function confirmReservation(Request $request)
+    {
+        // TODO: Confirm the status of the reservation and update the database.
+    }
+
+    /**
+     * Update the reservation with the specified id in the URL status to rejected.
+     */
+    public function rejectReservation(Request $request)
+    {
+        // TODO: Reject the status of the reservation and update the database.
+    }
+
+    /**
+     * Update the restaurant data with the given properties.
+     */
+    public function updateRestaurant(Request $request)
+    {
+        // TODO: Handle the new data to update the database.
+    }
 }

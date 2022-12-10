@@ -65,5 +65,9 @@ Route::prefix('restaurant')->controller(RestaurantController::class)->group(func
     Route::get('history', 'getHistoryPage');
     Route::get('statistic', 'getStatisticPage');
 
-    Route::post('/updateRestaurant/{id}');
+    // Interact with reservation orders
+    Route::get('confirm/{id}', 'confirmReservation');
+    Route::get('reject/{id}', 'rejectReservation');
+
+    Route::post('/updateRestaurant/{id}', 'updateRestaurant');
 });
