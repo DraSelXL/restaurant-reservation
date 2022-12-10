@@ -72,7 +72,7 @@
                 </div>
             </div>
             <div class="col-6 d-flex justify-content-end align-items-center">
-                <img src="{{asset('images/customer/banner1.png')}}" width="100%" alt="">
+                <img src="{{asset('storage/images/customer/banner1.png')}}" width="100%" alt="">
             </div>
         </div>
         {{-- EASY ACCESS --}}
@@ -106,22 +106,22 @@
         <div class="paralax mt-5">
             <div class="row m-0">
                 <div class="col mx-2 text-center rounded-4 p-4" >
-                    <img src="{{asset('images/customer/home/order.png')}}" alt="">
+                    <img src="{{asset('storage/images/customer/home/order.png')}}" alt="">
                     <h3>Order</h3>
                     <p class="my-2">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Debitis repellendus aspernatur voluptatem ex ea minima.</p>
                 </div>
                 <div class="col mx-2 text-center rounded-4 p-4">
-                    <img src="{{asset('images/customer/home/ticket.png')}}" alt="">
+                    <img src="{{asset('storage/images/customer/home/ticket.png')}}" alt="">
                     <h3>Ticket</h3>
                     <p class="my-2">Lorem ipsum dolor sit amet consectetur adipisicing elit. Porro, cumque nesciunt dolorem hic fugit officiis.</p>
                 </div>
                 <div class="col mx-2 text-center rounded-4 p-4">
-                    <img src="{{asset('images/customer/home/meet.png')}}" alt="">
+                    <img src="{{asset('storage/images/customer/home/meet.png')}}" alt="">
                     <h3>Confirm</h3>
                     <p class="my-2">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Debitis repellendus aspernatur voluptatem ex ea minima.</p>
                 </div>
                 <div class="col mx-2 text-center rounded-4 p-4">
-                    <img src="{{asset('images/customer/home/dine.png')}}" alt="">
+                    <img src="{{asset('storage/images/customer/home/dine.png')}}" alt="">
                     <h3>Dine</h3>
                     <p class="my-2">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Debitis repellendus aspernatur voluptatem ex ea minima.</p>
                 </div>
@@ -130,7 +130,7 @@
         {{-- JUMBOTRON --}}
         <div class="jumbotron row m-0 w-100 mb-5" style="height: 60vh;">
             <div class="col-6 d-flex justify-content-end align-items-center">
-                <img src="{{asset('images/customer/banner2.png')}}" width="100%" alt="">
+                <img src="{{asset('storage/images/customer/banner2.png')}}" width="100%" alt="">
             </div>
             <div class="col-6 d-flex justify-content-end align-items-center" >
                 <div class="right_content">

@@ -44,10 +44,10 @@
                 </div>
                 <div class="col-2 d-flex justify-content-end align-items-center">
                     <div class="notification me-4">
-                        <img src="{{asset("images/admin/notification.png")}}" alt="" width="30px">
+                        <img src="{{asset("storage/images/admin/notification.png")}}" alt="" width="30px">
                     </div>
                     <div class="profile">
-                        <img src="{{asset("images/admin/profile.jpg")}}" alt="" width="45px" height="45px" style="border-radius: 50%">
+                        <img src="{{asset("storage/images/admin/profile.jpg")}}" alt="" width="45px" height="45px" style="border-radius: 50%">
                     </div>
                 </div>
 
@@ -57,7 +57,7 @@
             <div class="bg-light rounded-4 p-4 my-4" id="postContainer" >
                 <div class="row h-100">
                     <div class="col-2 d-flex justify-content-center align-items-center">
-                        <img class="" src="{{asset('images/admin/post.png')}}" alt="" width="100px" height="100px">
+                        <img class="" src="{{asset('storage/images/admin/post.png')}}" alt="" width="100px" height="100px">
                     </div>
                     <div class="col-10">
                         {{-- ADD POST --}}
@@ -101,7 +101,7 @@
             <div class="bg-light rounded-4 p-4 my-4">
                 <div class="row h-100">
                     <div class="col-2 d-flex justify-content-center align-items-center">
-                        <img class="" src="{{asset('images/admin/post.png')}}" alt="" width="100px" height="100px">
+                        <img class="" src="{{asset('storage/images/admin/post.png')}}" alt="" width="100px" height="100px">
                     </div>
                         <div class="col-8">
                             {{-- <h4>{{$post->post_title}}</h4>

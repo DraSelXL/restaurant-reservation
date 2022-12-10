@@ -111,20 +111,32 @@
                     {{-- NAME --}}
                     <div class="mb-3">
                         <label class="form-label">Restaurant name</label>
-                        <input type="text" class="form-control" placeholder="Input your restaurant fullname here...">
+                        <input type="text" class="form-control" placeholder="Input your restaurant fullname here..." name="full_name" value="{{old('full_name')}}">
+
+                        @error('full_name')
+                            @include('partial.validationMessage')
+                        @enderror
                     </div>
                     {{-- PHONE ADDRESS --}}
                     <div class="row m-0">
                         <div class="col ps-0">
                             <div class="mb-3">
                                 <label class="form-label">Address</label>
-                                <input type="text" class="form-control" placeholder="Restaurant address...">
+                                <input type="text" class="form-control" placeholder="Restaurant address..." name="address" value="{{old('address')}}">
+
+                                @error('address')
+                                    @include('partial.validationMessage')
+                                @enderror
                             </div>
                         </div>
                         <div class="col pe-0">
                             <div class="mb-3">
                                 <label class="form-label">Phone</label>
-                                <input type="number" class="form-control" placeholder="Phone number...">
+                                <input type="number" class="form-control" placeholder="Phone number..." value="{{old('phone')}}">
+
+                                @error('phone')
+                                    @include('partial.validationMessage')
+                                @enderror
                             </div>
                         </div>
                     </div>
@@ -137,7 +149,7 @@
                     {{-- DESCRIPTION --}}
                     <div class="mb-2">Description</div>
                     <div class="form-floating">
-                        <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea2" style="height: 100px"></textarea>
+                        <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea2" style="height: 100px" name="description">{{old('description')}}</textarea>
                         <label for="floatingTextarea2">Description e.g : Asian, Steak, etc</label>
                     </div>
                     {{-- OPEN TIME, SHIFTS --}}
@@ -157,7 +169,7 @@
                     </div>
 
                     <input class="btn me-2 w-100 mt-2 disabled" id="submit" type="submit" style="background-color: #ed3b27;color:white;" value="Create Restaurant Account">
-                    <div class="text-secondary">*Please read our terms and agreements first</div>
+                    <div class="text-secondary">* Please check the i have read and agree with PorTable's Terms and Agreements checkbox</div>
                 </form>
             </div>
         </div>

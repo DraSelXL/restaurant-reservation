@@ -77,15 +77,15 @@
             {{-- IMAGE --}}
             <div class="carousel-inner h-100">
               <div class="carousel-item active">
-                <img src="{{asset("images/customer/search/$restaurant->full_name/restaurant_1.jpg")}}" class="d-block w-100" alt="...">
+                <img src="{{asset("images/restaurant/$restaurant->full_name/restaurant_1.jpg")}}" class="d-block w-100" alt="...">
               </div>
 
               <div class="carousel-item">
-                <img src="{{asset("images/customer/search/$restaurant->full_name/restaurant_2.jpg")}}" class="d-block w-100" alt="...">
+                <img src="{{asset("images/restaurant/$restaurant->full_name/restaurant_2.jpg")}}" class="d-block w-100" alt="...">
               </div>
 
               <div class="carousel-item">
-                <img src="{{asset("images/customer/search/$restaurant->full_name/restaurant_3.jpg")}}" class="d-block w-100" alt="...">
+                <img src="{{asset("images/restaurant/$restaurant->full_name/restaurant_3.jpg")}}" class="d-block w-100" alt="...">
               </div>
             </div>
 

@@ -57,7 +57,7 @@
                         <div class="bg-light rounded-4 p-4 my-4">
                             <div class="row h-100">
                                 <div class="col-sm-12 col-lg-4 d-flex">
-                                    <img class="" src="{{asset("images/restaurant/Brad Pollich/restaurant_1.jpg")}}" alt="" width="100%">
+                                    <img class="" src="{{asset("storage/images/restaurant/Brad Pollich/restaurant_1.jpg")}}" alt="" width="100%">
                                 </div>
                                 <div class="col-sm-12 col-lg-8">
                                     <div class="restaurant_info mb-2">
@@ -104,7 +104,7 @@
                                 {{-- CARD CONTENT --}}
                                 <div class="restaurant_card bg-light p-3" >
                                     <div class="image_container" style="height: 18rem">
-                                        <img class="navigation" src="{{asset('images/restaurant/Tina Feeney/restaurant_1.jpg')}}" alt="" width="100%" height="100%">
+                                        <img class="navigation" src="{{asset('storage/images/restaurant/Tina Feeney/restaurant_1.jpg')}}" alt="" width="100%" height="100%">
                                     </div>
 
                                     {{-- RESTAURANT INFO --}}
@@ -117,7 +117,7 @@
                                         </div>
                                         <div class="col-6 d-flex justify-content-end align-items-center">
                                             <p class="m-0">3</p>
-                                            <img  src="{{asset('images/customer/person.png')}}" alt="" width="30px" height="30px">
+                                            <img  src="{{asset('storage/images/customer/person.png')}}" alt="" width="30px" height="30px">
                                         </div>
                                     </div>
 

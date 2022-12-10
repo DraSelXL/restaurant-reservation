@@ -105,20 +105,18 @@
                                         {{-- CARD CONTENT --}}
                                         <div class="restaurant_card bg-light p-3" >
                                             <div class="image_container" style="height: 10rem">
-                                                <img class="navigation" src="{{asset("images/restaurant/$restaurant->full_name/restaurant_1.jpg")}}" alt="" width="100%" height="100%">
+                                                <img class="navigation" src="{{asset("storage/images/restaurant/$restaurant->full_name/restaurant_1.jpg")}}" alt="" width="100%" height="100%">
                                             </div>
 
                                             {{-- RATING AND FAVORITE --}}
                                             <div class="row m-0 mt-2">
                                                 <div class="col p-0">
-                                                    <img src="{{asset('images/customer/search/star.png')}}" alt="" width="15%">
-                                                    <img src="{{asset('images/customer/search/star.png')}}" alt="" width="15%">
-                                                    <img src="{{asset('images/customer/search/star.png')}}" alt="" width="15%">
-                                                    <img src="{{asset('images/customer/search/star.png')}}" alt="" width="15%">
-                                                    <img src="{{asset('images/customer/search/star.png')}}" alt="" width="15%">
+                                                    @for ($i=0;$i<3;$i++)
+                                                        <img src="{{asset('storage/images/customer/search/star.png')}}" alt="" width="15%">
+                                                    @endfor
                                                 </div>
                                                 <div class="col p-0 text-end">
-                                                    <img class="navigation" src="{{asset('images/customer/search/fav.png')}}" alt="" width="15%">
+                                                    <img class="navigation" src="{{asset('storage/images/customer/search/fav.png')}}" alt="" width="15%">
                                                 </div>
                                             </div>
                                             {{-- RESTAURANT INFO --}}

@@ -31,12 +31,12 @@
                 <div class="col d-flex justify-content-end align-items-center">
                     <div class="notification me-4" style="cursor: pointer">
                         <a href="{{route("customer_notification")}}">
-                            <img class="navigation" src="{{asset("images/admin/notification.png")}}" alt="" width="30px">
+                            <img class="navigation" src="{{asset("storage/images/admin/notification.png")}}" alt="" width="30px">
                         </a>
                     </div>
                     <div class="profile">
                         <li class="dropdown-center">
-                            <img class="dropdown-toggle" role="button" data-bs-toggle="dropdown" src="{{asset("images/customer/pp.jpg")}}" alt="" width="45px" height="45px" style="border-radius: 50%">
+                            <img class="dropdown-toggle" role="button" data-bs-toggle="dropdown" src="{{asset("storage/images/customer/pp.jpg")}}" alt="" width="45px" height="45px" style="border-radius: 50%">
                             <ul class="dropdown-menu">
                                 <li><a class="dropdown-item" href="#">Balance : Rp 73.500</a></li>
                                 <li><hr class="dropdown-divider"></li>

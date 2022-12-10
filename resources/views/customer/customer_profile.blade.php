@@ -57,7 +57,7 @@
                             <p class="m-0 ">Profile Picture</p>
                         </div>
                         <div class="col d-flex align-items-center">
-                            <img class="dropdown-toggle" role="button" data-bs-toggle="dropdown" src="{{asset("images/customer/pp.jpg")}}" alt="" width="70px" height="70px" style="border-radius: 50%">
+                            <img class="dropdown-toggle" role="button" data-bs-toggle="dropdown" src="{{asset("storage/images/customer/pp.jpg")}}" alt="" width="70px" height="70px" style="border-radius: 50%">
                         </div>
                     </div>
                     {{-- NAME --}}
@@ -145,7 +145,7 @@
                                 {{-- CARD CONTENT --}}
                                 <div class="restaurant_card bg-light p-3" >
                                     <div class="image_container" style="height: 18rem">
-                                        <img class="navigation" src="{{asset('images/restaurant/Tina Feeney/restaurant_1.jpg')}}" alt="" width="100%" height="100%">
+                                        <img class="navigation" src="{{asset('storage/images/restaurant/Tina Feeney/restaurant_1.jpg')}}" alt="" width="100%" height="100%">
                                     </div>
 
                                     {{-- RESTAURANT INFO --}}
@@ -158,7 +158,7 @@
                                         </div>
                                         <div class="col-6 d-flex justify-content-end align-items-center">
                                             <p class="m-0">3</p>
-                                            <img  src="{{asset('images/customer/person.png')}}" alt="" width="30px" height="30px">
+                                            <img  src="{{asset('storage/images/customer/person.png')}}" alt="" width="30px" height="30px">
                                         </div>
                                     </div>
 

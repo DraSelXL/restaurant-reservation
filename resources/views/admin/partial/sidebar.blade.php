@@ -5,7 +5,7 @@
         <img src="{{asset('images/logo/logo.png')}}" alt="" width="70px">
     </div>
     {{-- NAVIGATION --}}
-    <div class="">
+    <div class="h-100">
         <a href="/admin/dashboard" style="text-decoration: none;color:white">
             <p class="btn_orange {{($currPage === 'dashboard') ? 'btn_orange_active' : ''}} w-100 p-2 d-flex" >
                 <img class="me-2" src="{{asset('images/admin/dashboard.png')}}" alt="" width="25px">
@@ -34,7 +34,7 @@
             </p>
         </a>
 
-        <a href="/logout" style="text-decoration: none;color:white">
+        <a href="/logout"  style="text-decoration: none;color:white;">
             <p class="btn_orange p-2 d-flex">
                 <img class="me-2" src="{{asset('images/admin/logout.png')}}" alt="" width="25px">
                 <span class="d-none d-md-block">Logout</span>

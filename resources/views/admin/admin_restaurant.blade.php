@@ -45,10 +45,10 @@
 
                 <div class="col-2 d-flex justify-content-end align-items-center">
                     <div class="notification me-4">
-                        <img src="{{asset("images/admin/notification.png")}}" alt="" width="30px">
+                        <img src="{{asset("storage/images/admin/notification.png")}}" alt="" width="30px">
                     </div>
                     <div class="profile">
-                        <img src="{{asset("images/admin/profile.jpg")}}" alt="" width="45px" height="45px" style="border-radius: 50%">
+                        <img src="{{asset("storage/images/admin/profile.jpg")}}" alt="" width="45px" height="45px" style="border-radius: 50%">
                     </div>
                 </div>
 
@@ -61,7 +61,7 @@
                         <div class="col">
                             <div class="overview_1 p-4 mb-3 mb-lg-0">
                                 <div class="d-flex align-items-center">
-                                    <img class="bg-light rounded-3 p-2 me-3" src="{{asset("images/admin/order.png")}}" alt="" width="60px">
+                                    <img class="bg-light rounded-3 p-2 me-3" src="{{asset("storage/images/admin/order.png")}}" alt="" width="60px">
                                     <div class="">
                                         <p class="m-0">Total</p>
                                         <p class="m-0 overview_sub">{{date("F")}} {{date("jS")}}</p>
@@ -75,7 +75,7 @@
                         <div class="col">
                             <div class="overview_2 p-4 mb-3 mb-lg-0">
                                 <div class="d-flex align-items-center">
-                                    <img class="bg-light rounded-3 p-2 me-3" src="{{asset("images/admin/order.png")}}" alt="" width="60px">
+                                    <img class="bg-light rounded-3 p-2 me-3" src="{{asset("storage/images/admin/order.png")}}" alt="" width="60px">
                                     <div class="">
                                         <p class="m-0">Online</p>
                                         <p class="m-0 overview_sub">{{date("F")}} {{date("jS")}}</p>
@@ -89,7 +89,7 @@
                         <div class="col">
                             <div class="overview_3 p-4 mb-3 mb-lg-0">
                                 <div class="d-flex align-items-center">
-                                    <img class="bg-light rounded-3 p-2 me-3" src="{{asset("images/admin/order.png")}}" alt="" width="60px">
+                                    <img class="bg-light rounded-3 p-2 me-3" src="{{asset("storage/images/admin/order.png")}}" alt="" width="60px">
                                     <div class="">
                                         <p class="m-0">Offline</p>
                                         <p class="m-0 overview_sub">{{date("F")}} {{date("jS")}}</p>

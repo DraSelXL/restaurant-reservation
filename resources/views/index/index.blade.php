@@ -50,7 +50,7 @@
                 {{-- JUMBOTRON  --}}
                 {{-- COLOR : 6C4AB6 8D72E1 8D9EFF B9E0FF 7743DB --}}
                 <div class="col-6 border-leftside d-flex align-items-center" style="background-color: #7743DB;" id="left_form">
-                    <img class="" src="{{asset('images/login/banner1.png')}}" alt="" width="100%" id="jumbotron">
+                    <img class="" src="{{asset('storage/images/login/banner1.png')}}" alt="" width="100%" id="jumbotron">
                 </div>
                 {{-- FORM --}}
                 <div class="col-6 p-5 border-rightside d-flex align-items-center" style="background-color: white;" id="right_form">
@@ -137,7 +137,7 @@
         <div class="container d-flex flex-column justify-content-center overflow-auto" style="height: 100vh;width:100%;">
             {{-- IMAGE --}}
             <div class="d-flex justify-content-center w-100" style="height: 50%">
-                <img class="" src="{{asset('images/login/banner1.png')}}" alt="" height="100%" id="jumbotron_mobile">
+                <img class="" src="{{asset('storage/images/login/banner1.png')}}" alt="" height="100%" id="jumbotron_mobile">
             </div>
             {{-- FORM --}}
             <div class="px-4" style="height: 50%">
@@ -291,11 +291,11 @@
                 $(elementId).toggle("slide",{direction:slide_direction},function(){
                     if(page == "login"){
                         page = "register";
-                        $(elementId).attr("src","/images/login/banner2.png");
+                        $(elementId).attr("src","/storage/images/login/banner2.png");
                         $(elementId).toggle("slide");
                     }else {
                         page = "login";
-                        $(elementId).attr("src","/images/login/banner1.png");
+                        $(elementId).attr("src","/storage/images/login/banner1.png");
                         $(elementId).toggle("slide",{direction:slide_direction});
                     }
                 });

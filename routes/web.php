@@ -8,50 +8,131 @@ use App\Models\Migrasi\userMigrasi;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Hash;
 
+// PENJELASAN FLOW PorTable
 /*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
+    PorTable Application Flow :
+    1. User register & login to PorTable
+        Tipe User :
+        a. Customer
+        b. Restaurant
+        c. Admin
+
+        Note :
+        - ketika register pada index maka user akan didaftarkan default sebagai akun customer,
+          untuk membuat akun restoran maka customer perlu mendaftarkan
+          kembali akun dan melengkapi syarat & ketentuan
+        - akun admin bawaan adalah 1 buah akun, untuk membuat akun admin lainnya harus lewat
+          akun admin lainnya atau langsung dri Database XD
+
+    2. Customer's Features :
+
+        <> Proposal :                                                           STATUS
+        - Browse restoran (catalog)                                             -- DONE
+        - Browse rekomendasi                                                    -- DONE
+        - Mencari restoran (searchbar)                                          -- DONE
+        - Filter restoran (Review, harga, meja tersedia)                        --
+        - Membayar dengan e-money atau e-banking (API midtrans/ipayment)        --
+        - Top-up e-money                                                        --
+        - Favorite restoran                                                     --
+        - Melakukan reservasi (Book table yang available)                       --
+        - Melihat sejarah reservasi (Transaction History)                       -- DONE
+        - Melihat reservasi saat ini (Active Transaction)                       -- DONE
+        - Membatalkan reservasi saat ini (Uang reservasi tidak dikembalikan)    --
+        - CRUD review kepada restoran yang sudah pernah direservasi             --
+
+        <> Tambahan :
+        - Register akun restoran                                                -- DONE
+        - Page notifikasi                                                       -- DONE
+
+    3. Restaurant's Features :
+
+        <> Proposal :                                                           STATUS
+        - Melihat reservasi dan transaksi                                       --
+        - Mengganti jumlah atau layout dari meja                                --
+        - Menambah atau mengganti deskripsi restoran                            --
+        - Menambah atau mengganti waktu aktif restoran                          --
+        - Mengganti jumlah yang harus dibayar di aplikasi                       --
+        - Menandai review spam agar di review oleh admin                        --
+
+        <> Tambahan :
+        - Melihat dashboard/ statistic restoran                                 --
+        - Edit status reservasi saat ini (meja available/ tidak)                --
+
+    4. Admin's Features :
+
+        <> Proposal :                                                           STATUS
+        - CRUD akun restoran                                                    --
+        - CRUD akun pelanggan                                                   -- DONE
+        - Ban akun restoran                                                     --
+        - Ban akun pelanggan                                                    --
+        - Melihat semua transaksi                                               --
+        - Melihat semua review di restoran                                      --
+        - Mereview review spam restoran                                         --
+        - Menambah review pada restoran                                         --
+        - Menghilangkan review pada restoran                                    --
+        - Membatalkan reservasi pelanggan                                       --
+
+        <> Tambahan :
+        - Dashboard/ Summary                                                    -- DONE
+        - Developer Post/Notification                                           -- DONE
 */
 
-Route::get('/', function () { return redirect()->route("index"); });
 
+Route::get('/', function () { return redirect()->route("index"); });
 Route::get('/logout', [IndexController::class,'logout']);
 
 Route::prefix('/')->group(function () {
+    /*
+        Index Route :
+        1. index : consist login & register form
+        2. checkLogin : login algrorithm
+        3. checkRegister : register algorithm
+    */
     Route::get('index', [IndexController::class,'masterIndex'])->name("index");
     Route::post('checkLogin', [IndexController::class,'checkLogin']);
     Route::post('checkRegister', [IndexController::class,'checkRegister']);
 });
 
 Route::prefix('admin')->group(function () {
+    /*
+        Admin Route :
+        1. dashboard : summary of sales, order, growth, top 10 restaurant and user activity
+        2. customer :  customer list, ban/unban
+        3. restaurant : restaurant list, ban/unban
+        4. settings : developer post/notification -> will be shown at users notification page
+    */
+
     Route::get('dashboard', [AdminController::class,"masterDashboard"]);
 
-    Route::get('customer', [AdminController::class,"masterCustomer"])->name('homeCustomerAdmin');
-    Route::get('customer/banUser/{id}', [AdminController::class,"banUser"]);
+    Route::prefix('customer')->group(function () {
+        Route::get('/', [AdminController::class,"masterCustomer"])->name('homeCustomerAdmin');
+        Route::get('banUser/{id}', [AdminController::class,"banUser"]);
+        Route::post('search',[AdminController::class,"searchCustomer"]);
+    });
 
-    Route::post('customer/search',[AdminController::class,"searchCustomer"]);
-    Route::get('customer/search/{keyword}', [AdminController::class,"masterCustomer"]);
+    Route::prefix('restaurant')->group(function () {
+        Route::get('/', [AdminController::class,"masterRestaurant"])->name('homeRestaurantAdmin');
+        Route::get('banRestaurant/{id}', [AdminController::class,"banRestaurant"]);
+        Route::post('search',[AdminController::class,"searchRestaurant"]);
+    });
 
-    Route::get('restaurant', [AdminController::class,"masterRestaurant"]);
-    Route::get('restaurant/banRestaurant/{id}', [AdminController::class,"banRestaurant"]);
-
-    Route::post('restaurant/search',[AdminController::class,"searchRestaurant"]);
-    Route::get('restaurant/search/{keyword}', [AdminController::class,"masterRestaurant"])->name('homeRestaurantAdmin');
-
-    Route::get('settings', [AdminController::class,"masterSettings"]);
-    Route::get('settings/deletePost/{id}', [AdminController::class,"deletePost"]);
-    Route::post('settings/addPost',[AdminController::class,"addPost"]);
-
+    Route::prefix('settings')->group(function () {
+        Route::get('/', [AdminController::class,"masterSettings"]);
+        Route::get('/eletePost/{id}', [AdminController::class,"deletePost"]);
+        Route::post('addPost',[AdminController::class,"addPost"]);
+    });
 });
 
 Route::prefix('customer')->group(function () {
-    // NAVIGATION
+    /*
+        Customer Route :
+        1. home : showcase
+        2. explore :  restaurants catalog
+        3. favorite : liked restaurants
+        4. history : customer's transactions history
+        5. profile : customer's profile detail
+        6. notification : PorTable notification system
+    */
     Route::get('home', [CustomerController::class,"masterHome"])->name("customer_home");
     Route::get('explore', [CustomerController::class,"masterExplore"])->name("customer_search");
     Route::get('favorite', [CustomerController::class,"masterFavorite"])->name("customer_favorite");
