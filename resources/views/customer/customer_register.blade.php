@@ -106,7 +106,7 @@
                     <h3 style="font-family: helvetica_bold;">Restaurant Details</h3>
                 </div>
                 {{-- FORM --}}
-                <form action="/customer/register_restaurant/do_register" method="POST">
+                <form action="/customer/register_restaurant/do_register" method="POST" enctype="multipart/form-data">
                     @csrf
                     {{-- NAME --}}
                     <div class="mb-3">
@@ -132,7 +132,7 @@
                         <div class="col pe-0">
                             <div class="mb-3">
                                 <label class="form-label">Phone</label>
-                                <input type="number" class="form-control" placeholder="Phone number..." value="{{old('phone')}}">
+                                <input type="number" class="form-control" placeholder="Phone number..." name="phone" value="{{old('phone')}}">
 
                                 @error('phone')
                                     @include('partial.validationMessage')
@@ -144,6 +144,9 @@
                     <div class="mb-2">
                         <label class="form-label">Upload restaurant photo(3 files of jpg/png/jpeg): </label>
                         <input type="file" name="foto[]" id="" class="form-control" multiple>
+                        @error('foto[]')
+                            @include('partial.validationMessage')
+                        @enderror
                     </div>
 
                     {{-- DESCRIPTION --}}
@@ -157,13 +160,21 @@
                         <div class="col ps-0">
                             <div class="mb-3">
                                 <label class="form-label">Open at</label>
-                                <input type="time" class="form-control" placeholder="Time your restaurant open...">
+                                <input type="time" class="form-control" placeholder="Time your restaurant open..." name="open_at" value="{{old('open_at')}}">
+
+                                @error('open_at')
+                                    @include('partial.validationMessage')
+                                @enderror
                             </div>
                         </div>
                         <div class="col pe-0">
                             <div class="mb-3">
                                 <label class="form-label">Shifts</label>
-                                <input type="number" class="form-control" placeholder="Shifts with 1 hour interval...">
+                                <input type="number" class="form-control" placeholder="Shifts with 1 hour interval..." name="shift" value="{{old('shift')}}">
+
+                                @error('shift')
+                                    @include('partial.validationMessage')
+                                @enderror
                             </div>
                         </div>
                     </div>

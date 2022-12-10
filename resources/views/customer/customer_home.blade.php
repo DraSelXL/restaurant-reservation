@@ -80,6 +80,7 @@
             <h3 class="text-light" style="font-family: helvetica_bold">Book a Table</h3>
 
             <form class="mt-3" method="POST" action="/customer/checkAvailability">
+                @csrf
                 <div class="row m-0">
                     <div class="col">
                         <div class="mb-3">
@@ -93,7 +94,7 @@
                     </div>
                     <div class="col">
                         <div class="mb-3">
-                            <input type="time" class="form-control p-3" id="reservation_date" name="reservation_date">
+                            <input type="time" class="form-control p-3" id="reservation_time" name="reservation_time">
                         </div>
                     </div>
                     <div class="col">

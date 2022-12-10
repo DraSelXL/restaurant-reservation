@@ -5,6 +5,7 @@ namespace App\Http\Controllers\index;
 use App\Http\Controllers\Controller;
 use App\Models\Migrasi\userMigrasi;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class IndexController extends Controller
 {
@@ -15,50 +16,56 @@ class IndexController extends Controller
 
     public function checkLogin(Request $request)
     {
-        // LANJUTAN KERJA MARCO
+        // Login validation
         $request->validate([
             'username'=>'required',
             'password'=>'required',
         ]);
-        $username = $request->username;
-        $password = $request->password;
 
-        if($username == "admin" && $password == "admin"){
-            return redirect('admin/dashboard');
+        // AUTHENTICATION
+        $credential = [
+            "username" => $request->username,
+            "password" => $request->password
+        ];
+        if(Auth::attempt($credential)){
+            // Check user role
+            if(activeUser()->role->name == "Admin"){
+                return redirect()->route("admin_dashboard");
+            }else if(activeUser()->role->name == "Customer"){
+                return redirect()->route("customer_home");
+            }else if(activeUser()->role->name == "Restaurant"){
+                return redirect()->route("restaurant_home");
+            }
+        }else{
+            return redirect()->route("index")->with("errorMessage","User not found!");
         }
-        $userData = userMigrasi::all()->where('username','=',$username);
-        $user = $userData[0];
-        if(password_verify($password, $user['password'])){
-            return redirect()->route('customer_home');
-        }
-        else{
-            return redirect()->back()->with('pesan','Password False');
-        }
-
     }
 
     public function checkRegister(Request $request)
     {
-        // LANJUTAN KERJA MARCO
+        // Register validation
         $request->validate([
+            'firstname'=>'required',
+            'lastname'=>'required',
             'username'=>'required',
-            'password'=>'required',
+            'phone'=>'required',
+            'password'=>'required|confirmed',
         ]);
-        $username = $request->username;
-        $password = $request->password;
 
-
+        // Authentication
+        $credential = [
+            "username" => $request->username,
+            "password" => $request->password
+        ];
+        Auth::attempt($credential);
+        return redirect()->route("customer_home");
     }
 
     public function logout(Request $request)
     {
+        if(Auth::guard('web')->check()){
+            Auth::guard('web')->logout();
+        }
         return redirect()->route("index");
     }
-
-    public function masterRestaurant(Request $request)
-    {
-        $currPage = "restaurant";
-        return view('customer.customer_restaurant',compact('currPage'));
-    }
-
 }

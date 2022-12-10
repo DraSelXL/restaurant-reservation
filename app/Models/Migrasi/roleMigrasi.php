@@ -13,6 +13,6 @@ class roleMigrasi extends Model
 
     public function user()
     {
-        return $this->belongsTo(userMigrasi::class);
+        return $this->belongsTo(userMigrasi::class,"role_id","id");
     }
 }

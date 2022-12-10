@@ -38,13 +38,13 @@
                         <li class="dropdown-center">
                             <img class="dropdown-toggle" role="button" data-bs-toggle="dropdown" src="{{asset("storage/images/customer/pp.jpg")}}" alt="" width="45px" height="45px" style="border-radius: 50%">
                             <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="#">Balance : Rp 73.500</a></li>
+                                <li class="dropdown-item">Hello, {{activeUser()->username}}!</li>
+                                <li class="dropdown-item">Balance : {{activeUser()->balance}}</li>
                                 <li><hr class="dropdown-divider"></li>
-                                <li><a class="dropdown-item" href="#">Edit Profile</a></li>
+                                <li><a class="dropdown-item" href="{{route('customer_profile')}}">Edit Profile</a></li>
                                 <li><a class="dropdown-item" href="#">Top up Balance</a></li>
-                                <li><a class="dropdown-item" href="#">Restaurant Account</a></li>
                                 <li><hr class="dropdown-divider"></li>
-                                <li><a class="dropdown-item" href="#">Logout</a></li>
+                                <li><a class="dropdown-item" href="/logout">Logout</a></li>
                             </ul>
                         </li>
                     </div>

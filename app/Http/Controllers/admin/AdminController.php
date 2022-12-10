@@ -87,7 +87,7 @@ class AdminController extends Controller
     public function searchCustomer(Request $request)
     {
         $keyword = $request->keyword;
-        return redirect()->route('homeCustomerAdmin',compact('keyword'));
+        return redirect()->route('admin_customerlist',compact('keyword'));
     }
 
     public function masterRestaurant(Request $request)
@@ -124,7 +124,7 @@ class AdminController extends Controller
     public function searchRestaurant(Request $request)
     {
         $keyword = $request->keyword;
-        return redirect()->route('homeRestaurantAdmin',compact('keyword'));
+        return redirect()->route('admin_restaurantlist',compact('keyword'));
     }
 
     public function masterSettings(Request $request)

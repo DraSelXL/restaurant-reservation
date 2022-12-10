@@ -43,6 +43,9 @@
 @endsection
 
 @section('content')
+    {{-- FLASH MESSAGE --}}
+    @include("partial.flashMessage")
+
     {{-- DESKTOP MODE : WIDTH >= 768px --}}
     <div class="desktop_mode login_bg" id="desktop_mode">
         <div class="d-flex justify-content-center align-items-center" style="height: 100vh;">
@@ -63,18 +66,21 @@
                         <form action="/checkLogin" method="POST">
                             @csrf
                             <div class="group">
-                                <input class="w-100" type="text" name="username"><span class="highlight"></span><span class="bar"></span>
+                                <input class="w-100" type="text" name="username" value="{{old('username')}}"><span class="highlight"></span><span class="bar"></span>
                                 <label>Username</label>
+                                @error('username')
+                                    @include('partial.validationMessage')
+                                @enderror
                             </div>
                             <div class="group">
-                                <input class="w-100" type="password" name="password"><span class="highlight"></span><span class="bar"></span>
+                                <input class="w-100" type="password" name="password" ><span class="highlight"></span><span class="bar"></span>
                                 <label>Password</label>
+                                @error('password')
+                                    @include('partial.validationMessage')
+                                @enderror
                             </div>
                             <input type="submit" class="submit btn p-2 text-light" value="Sign in" style="background-color: #6C4AB6" id="submit">
                         </form>
-                        @if (Session::has('pesan'))
-                            <h5 style="color: red">{{Session::get('pesan')}}</h5>
-                        @endif
                         <p class="my-4" style="">By clicking the sign in button, you are agree to the Privacy and Policy, for more information you can read about our policy <a href="">here</a>.</p>
 
                         {{-- LOGIN REGISTER TOGGLER --}}
@@ -91,38 +97,40 @@
                         <form action="/checkRegister" method="POST">
                             @csrf
                             <div class="row">
-                                <div class="col group">
-                                    <input class="w-100" type="text" name="firstname"><span class="highlight"></span><span class="bar"></span>
+                                <div class="col-6 group">
+                                    <input class="w-100" type="text" name="firstname" value="{{old('firstname')}}" id="firstname"><span class="highlight"></span><span class="bar"></span>
                                     <label>Firstname</label>
                                 </div>
-                                <div class="col group">
-                                    <input class="w-100" type="text" name="lastname"><span class="highlight"></span><span class="bar"></span>
+                                <div class="col-6 group">
+                                    <input class="w-100" type="text" name="lastname" value="{{old('lastname')}}" id="lastname"><span class="highlight"></span><span class="bar"></span>
                                     <label>Lastname</label>
                                 </div>
 
-                                <div class="col-12 group">
-                                    <input class="w-100" type="text" name="username"><span class="highlight"></span><span class="bar"></span>
+                                <div class="col-6 group">
+                                    <input class="w-100" type="text" name="username" value="{{old('username')}}" id="username"><span class="highlight"></span><span class="bar"></span>
                                     <label>Username</label>
                                 </div>
-                                <div class="col-12 group">
-                                    <input class="w-100" type="text" name="phone"><span class="highlight"></span><span class="bar"></span>
+                                <div class="col-6 group">
+                                    <input class="w-100" type="text" name="phone" value="{{old('phone')}}" id="phone"><span class="highlight"></span><span class="bar"></span>
                                     <label>Phone</label>
                                 </div>
 
-                                <div class="col group">
-                                    <input class="w-100" type="password" name="password"><span class="highlight"></span><span class="bar"></span>
+                                <div class="col-6 group">
+                                    <input class="w-100" type="password" name="password" id="password"><span class="highlight"></span><span class="bar"></span>
                                     <label>Password</label>
                                 </div>
-                                <div class="col group">
-                                    <input class="w-100" type="password" name="password_confirmation"><span class="highlight"></span><span class="bar"></span>
+                                <div class="col-6 group">
+                                    <input class="w-100" type="password" name="password_confirmation" id="confirm"><span class="highlight"></span><span class="bar"></span>
                                     <label>Confrim Password</label>
                                 </div>
                             </div>
-                            <input type="submit" class="submit btn p-2 text-light" value="Register" style="background-color: #FEB139" id="submit">
+                            <p class="" style="">* You need to fill all the field above to create a new PorTable account, so please take your time.</p>
+
+                            <input type="submit" class="submit btn p-2 text-light" value="Register" style="background-color: #FEB139" id="register_desktop">
                         </form>
 
                         {{-- LOGIN REGISTER TOGGLER --}}
-                        <div class="d-flex justify-content-end w-100 mt-4">
+                        <div class="d-flex justify-content-end w-100 mt-3">
                             <p class="m-0" id="indexToggleSubtitle">Already Have Account?</p> <span style="width: 10px"></span> <p class="indexToggle" style="cursor: pointer;color:#0d9efe;text-decoration: underline" id="indexToggle">Sign in!</p>
                         </div>
                     </div>
@@ -214,109 +222,133 @@
             $(".submit").css("width",0);
             $(".submit").animate({ width: '+=100%' },"slow");
 
-            // Toggle Login <-> Register
-            let page = "login";
-            $(".indexToggle").on("click", function() {
-                // Submit Button
-                $(".submit").css("width",0);
-                $(".submit").animate({ width: '+=100%' },"slow");
+        });
 
-                let slide_direction;
-                if(page == "login"){
-                    slide_direction = "left";
-                    if(x.matches){
-                        // MOBILE MODE
-                        $("#mobile_mode").removeClass("login_bg");
-                        $("#mobile_mode").addClass("register_bg");
+        // Toggle Login <-> Register
+        let page = "login";
+        $(".indexToggle").on("click", function() {
+            // Submit Button
+            $(".submit").css("width",0);
+            $(".submit").animate({ width: '+=100%' },"slow");
 
-                        $("#login_form_holder_mobile").addClass("d-none");
-                        $("#register_form_holder_mobile").removeClass("d-none");
+            let slide_direction;
+            if(page == "login"){
+                slide_direction = "left";
+                if(x.matches){
+                    // MOBILE MODE
+                    $("#mobile_mode").removeClass("login_bg");
+                    $("#mobile_mode").addClass("register_bg");
 
-                        $("#register_form_holder_mobile").css("display","none");
-                        $("#register_form_holder_mobile").fadeIn(800);
+                    $("#login_form_holder_mobile").addClass("d-none");
+                    $("#register_form_holder_mobile").removeClass("d-none");
 
-                        // CHANGE JUMBOTRON IMAGE
-                        toggleJumbotron("#jumbotron_mobile",slide_direction)
-                    }
-                    else{
-                        // DESKTOP MODE
-                        $("#left_form").animate({backgroundColor : "#FEB139"});
-                        $("#desktop_mode").removeClass("login_bg");
-                        $("#desktop_mode").addClass("register_bg");
+                    $("#register_form_holder_mobile").css("display","none");
+                    $("#register_form_holder_mobile").fadeIn(800);
 
-                        $("#login_form_holder").addClass("d-none");
-                        $("#register_form_holder").removeClass("d-none");
+                    // CHANGE JUMBOTRON IMAGE
+                    toggleJumbotron("#jumbotron_mobile",slide_direction)
+                }else{
+                    // DESKTOP MODE
+                    $("#left_form").animate({backgroundColor : "#FEB139"});
+                    $("#desktop_mode").removeClass("login_bg");
+                    $("#desktop_mode").addClass("register_bg");
 
-                        $("#register_form_holder").css("display","none");
-                        $("#register_form_holder").fadeIn(800);
+                    $("#login_form_holder").addClass("d-none");
+                    $("#register_form_holder").removeClass("d-none");
 
-                        // CHANGE JUMBOTRON IMAGE
-                        toggleJumbotron("#jumbotron",slide_direction)
-                    }
+                    $("#register_form_holder").css("display","none");
+                    $("#register_form_holder").fadeIn(800);
+
+                    // CHANGE JUMBOTRON IMAGE
+                    toggleJumbotron("#jumbotron",slide_direction)
                 }
-                else{
-                    slide_direction = "right";
-                    if(x.matches){
-                        // MOBILE MODE
-                        $("#mobile_mode").removeClass("register_bg");
-                        $("#mobile_mode").addClass("login_bg");
-
-                        $("#login_form_holder_mobile").removeClass("d-none");
-                        $("#register_form_holder_mobile").addClass("d-none");
-
-                        $("#login_form_holder_mobile").css("display","none");
-                        $("#login_form_holder_mobile").fadeIn(800);
-
-                        // CHANGE JUMBOTRON IMAGE
-                        toggleJumbotron("#jumbotron_mobile",slide_direction)
-                    }else{
-                        $("#left_form").animate({backgroundColor : "#6C4AB6"});
-                        $("#desktop_mode").removeClass("register_bg");
-                        $("#desktop_mode").addClass("login_bg");
-
-                        $("#login_form_holder").removeClass("d-none");
-                        $("#register_form_holder").addClass("d-none");
-
-                        $("#login_form_holder").css("display","none");
-                        $("#login_form_holder").fadeIn(800);
-
-                        // CHANGE JUMBOTRON IMAGE
-                        toggleJumbotron("#jumbotron",slide_direction)
-                    }
-                }
-
-            });
-
-            function toggleJumbotron(elementId,slide_direction){
-                $(elementId).toggle("slide",{direction:slide_direction},function(){
-                    if(page == "login"){
-                        page = "register";
-                        $(elementId).attr("src","/storage/images/login/banner2.png");
-                        $(elementId).toggle("slide");
-                    }else {
-                        page = "login";
-                        $(elementId).attr("src","/storage/images/login/banner1.png");
-                        $(elementId).toggle("slide",{direction:slide_direction});
-                    }
-                });
             }
+            else{
+                slide_direction = "right";
+                if(x.matches){
+                    // MOBILE MODE
+                    $("#mobile_mode").removeClass("register_bg");
+                    $("#mobile_mode").addClass("login_bg");
 
+                    $("#login_form_holder_mobile").removeClass("d-none");
+                    $("#register_form_holder_mobile").addClass("d-none");
 
-            // CHANGE MODE
-            var x = window.matchMedia("(max-width: 768px)");
-            responsive(x);
-            x.addListener(responsive);
-            function responsive(x) {
-                if (x.matches) {
-                    $("#desktop_mode").addClass("d-none");
-                    $("#mobile_mode").removeClass("d-none");
-                } else {
-                    $("#desktop_mode").removeClass("d-none");
-                    $("#mobile_mode").addClass("d-none");
+                    $("#login_form_holder_mobile").css("display","none");
+                    $("#login_form_holder_mobile").fadeIn(800);
+
+                    // CHANGE JUMBOTRON IMAGE
+                    toggleJumbotron("#jumbotron_mobile",slide_direction)
+                }else{
+                    $("#left_form").animate({backgroundColor : "#6C4AB6"});
+                    $("#desktop_mode").removeClass("register_bg");
+                    $("#desktop_mode").addClass("login_bg");
+
+                    $("#login_form_holder").removeClass("d-none");
+                    $("#register_form_holder").addClass("d-none");
+
+                    $("#login_form_holder").css("display","none");
+                    $("#login_form_holder").fadeIn(800);
+
+                    // CHANGE JUMBOTRON IMAGE
+                    toggleJumbotron("#jumbotron",slide_direction)
                 }
             }
 
         });
+
+        function toggleJumbotron(elementId,slide_direction){
+            $(elementId).toggle("slide",{direction:slide_direction},function(){
+                if(page == "login"){
+                    page = "register";
+                    $(elementId).attr("src","/storage/images/login/banner2.png");
+                    $(elementId).toggle("slide");
+                }else {
+                    page = "login";
+                    $(elementId).attr("src","/storage/images/login/banner1.png");
+                    $(elementId).toggle("slide",{direction:slide_direction});
+                }
+            });
+        }
+
+        // CHANGE MODE
+        var x = window.matchMedia("(max-width: 768px)");
+        responsive(x);
+        x.addListener(responsive);
+        function responsive(x) {
+            if (x.matches) {
+                $("#desktop_mode").addClass("d-none");
+                $("#mobile_mode").removeClass("d-none");
+            } else {
+                $("#desktop_mode").removeClass("d-none");
+                $("#mobile_mode").addClass("d-none");
+            }
+        }
+
+        // let firstname = $("#firstname").val();
+        // let lastname = $("#lastname").val();
+        // let username = $("#username").val();
+        // let phone = $("#phone").val();
+        // let password = $("#password").val();
+        // let confirm = $("#confirm").val();
+        // document.addEventListener('keydown', (event) => { checkRegister(); }, false);
+        // function checkRegister(){
+        //     if(page == "register"){
+        //         firstname = $("#firstname").val();
+        //         lastname = $("#lastname").val();
+        //         username = $("#username").val();
+        //         phone = $("#phone").val();
+        //         password = $("#password").val();
+        //         confirm = $("#confirm").val();
+
+        //         if(firstname!="" && lastname!=""
+        //         && username != "" && phone!= ""
+        //         && password != "" && confirm!= ""){
+        //             $("#register_desktop").removeClass("disabled");
+        //         }else{
+        //             $("#register_desktop").addClass("disabled");
+        //         }
+        //     }
+        // }
 
     </script>
 @endsection

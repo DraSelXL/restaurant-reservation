@@ -58,7 +58,7 @@
                 <h1 style="font-family: helvetica_bold; position: absolute;top: 5%;left: 5%;z-index:3;">
                     <a href="/customer/explore" style="text-decoration: none;">
                         <span class="btn btn-outline-light p-0">
-                            <img src="{{asset("images/customer/back.png")}}" width="30px" height="30px">
+                            <img src="{{asset("storage/images/customer/back.png")}}" width="30px" height="30px">
                         </span>
                     </a>
                     {{$restaurant->full_name}}
@@ -77,15 +77,15 @@
             {{-- IMAGE --}}
             <div class="carousel-inner h-100">
               <div class="carousel-item active">
-                <img src="{{asset("images/restaurant/$restaurant->full_name/restaurant_1.jpg")}}" class="d-block w-100" alt="...">
+                <img src="{{asset("storage/images/restaurant/$restaurant->full_name/restaurant_1.jpg")}}" class="d-block w-100" alt="...">
               </div>
 
               <div class="carousel-item">
-                <img src="{{asset("images/restaurant/$restaurant->full_name/restaurant_2.jpg")}}" class="d-block w-100" alt="...">
+                <img src="{{asset("storage/images/restaurant/$restaurant->full_name/restaurant_2.jpg")}}" class="d-block w-100" alt="...">
               </div>
 
               <div class="carousel-item">
-                <img src="{{asset("images/restaurant/$restaurant->full_name/restaurant_3.jpg")}}" class="d-block w-100" alt="...">
+                <img src="{{asset("storage/images/restaurant/$restaurant->full_name/restaurant_3.jpg")}}" class="d-block w-100" alt="...">
               </div>
             </div>
 

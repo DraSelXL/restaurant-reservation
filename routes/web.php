@@ -102,23 +102,23 @@ Route::prefix('admin')->group(function () {
         4. settings : developer post/notification -> will be shown at users notification page
     */
 
-    Route::get('dashboard', [AdminController::class,"masterDashboard"]);
+    Route::get('dashboard', [AdminController::class,"masterDashboard"])->name("admin_dashboard");
 
     Route::prefix('customer')->group(function () {
-        Route::get('/', [AdminController::class,"masterCustomer"])->name('homeCustomerAdmin');
+        Route::get('/', [AdminController::class,"masterCustomer"])->name('admin_customerlist');
         Route::get('banUser/{id}', [AdminController::class,"banUser"]);
         Route::post('search',[AdminController::class,"searchCustomer"]);
     });
 
     Route::prefix('restaurant')->group(function () {
-        Route::get('/', [AdminController::class,"masterRestaurant"])->name('homeRestaurantAdmin');
+        Route::get('/', [AdminController::class,"masterRestaurant"])->name('admin_restaurantlist');
         Route::get('banRestaurant/{id}', [AdminController::class,"banRestaurant"]);
         Route::post('search',[AdminController::class,"searchRestaurant"]);
     });
 
     Route::prefix('settings')->group(function () {
         Route::get('/', [AdminController::class,"masterSettings"]);
-        Route::get('/eletePost/{id}', [AdminController::class,"deletePost"]);
+        Route::get('/deletePost/{id}', [AdminController::class,"deletePost"]);
         Route::post('addPost',[AdminController::class,"addPost"]);
     });
 });
@@ -140,11 +140,17 @@ Route::prefix('customer')->group(function () {
     Route::get('profile', [CustomerController::class,"masterProfile"])->name("customer_profile");
     Route::get('notification', [CustomerController::class,"masterNotification"])->name("customer_notification");
 
-    // RESTAURANT DETAIL
-    Route::get('restaurant/{restaurant_name}', [CustomerController::class,"masterRestaurant"])->name("customer_restaurant");
-
-    // RESGITER RESTAURANT
+    // HOME ROUTES
+    // 1. checkAvailability
+    Route::post('checkAvailability', [CustomerController::class,"checkAvailability"]);
+    // 2. register_restaurant
     Route::get('/register_restaurant', [CustomerController::class,"masterRegister"])->name("register_restaurant");
     Route::post('/register_restaurant/do_register', [CustomerController::class,"registerRestaurant"]);
+
+    // RESTAURANT ROUTES
+    // 1. restaurant detail
+    Route::get('restaurant/{restaurant_name}', [CustomerController::class,"masterRestaurant"])->name("customer_restaurant");
+    // 2. searchRestaurant
+    Route::post('searchRestaurant', [CustomerController::class,"searchRestaurant"]);
 
 });
