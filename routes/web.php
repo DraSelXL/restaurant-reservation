@@ -69,5 +69,12 @@ Route::prefix('restaurant')->controller(RestaurantController::class)->group(func
     Route::get('confirm/{id}', 'confirmReservation');
     Route::get('reject/{id}', 'rejectReservation');
 
+    // Interact with available restaurant tables
+    Route::get('getTables', 'getRestaurantTables');
+    Route::post('addTable', 'addTable');
+    Route::post('increaseTable', 'increaseTable');
+    Route::post('decreaseTable', 'decreaseTable');
+
+    // Update the restaurant settings
     Route::post('/updateRestaurant/{id}', 'updateRestaurant');
 });
