@@ -72,4 +72,36 @@ class RestaurantController extends Controller
     {
         // TODO: Handle the new data to update the database.
     }
+
+    /**
+     * Get all available restaurant table from the authenticated user.
+     */
+    public function getRestaurantTables(Request $request)
+    {
+        // TODO: Get all tables that is available and return it as a html list-item elements
+    }
+
+    /**
+     * Add a new type of table to the database assocciated with the current authenticated user.
+     */
+    public function addTable(Request $request)
+    {
+        // TODO: Add a new type table
+    }
+
+    /**
+     * Increase the number of the targeted table size, from the authenticated user restaurant.
+     */
+    public function increaseTable(Request $request)
+    {
+        // TODO: Increase the table with the current authenticated user, and the targeted table size. Return the new size of the available targeted table.
+    }
+
+    /**
+     * Decrease the number of the targeted table size, from the authenticated user restaurant.
+     */
+    public function decreaseTable(Request $request)
+    {
+        // TODO: Decrease the table with the current authenticated user, and the targeted table size. Return the new size of the available targeted table.
+    }
 }
