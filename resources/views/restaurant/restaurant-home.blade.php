@@ -101,20 +101,20 @@
 
         <h1>Settings</h1>
         <hr>
-        <form action="/restaurant/updateRestaurant/123123" method="post">
-            <div class="container">
-                {{-- A save button that will popup when a change has been detected --}}
-                <div id="unsavedPlaceholder" style="display: none">
-                    <div class="d-flex mb-4">
-                        <div class="rounded-3 me-2 p-2 px-3 bg-danger flex-fill">
-                            <span class="text-white">Unsaved Changes</span>
+        <div class="container">
+            <div class="row">
+                <div class="col-8">
+                    <form action="/restaurant/updateRestaurant/123123" method="post">
+                        {{-- A save button that will popup when a change has been detected --}}
+                        <div id="unsavedPlaceholder" style="display: none">
+                            <div class="d-flex mb-4">
+                                <div class="rounded-3 me-2 p-2 px-3 bg-danger flex-fill">
+                                    <span class="text-white">Unsaved Changes</span>
+                                </div>
+                                <input id="saveButton" type="submit" value="save" class="btn btn-primary">
+                            </div>
                         </div>
-                        <input id="saveButton" type="submit" value="save" class="btn btn-primary">
-                    </div>
-                </div>
 
-                <div class="row">
-                    <div class="col-8">
                         <div id="restaurant-name" class="mb-3">
                             <h6 style="margin-bottom: 4px">Restaurant Name:</h6>
                             <input id="restaurantNameInput" type="text" class="form-control" value="{{ 'Portable' }}" placeholder="Restaurant's name" name="restaurantName" aria-label="Restaurant's name" aria-describedby="restaurant's-name" required>
@@ -160,17 +160,78 @@
                                 <input id="closeTimeInput" type="time" class="form-control" name="closeTime" aria-label="closeTime" aria-describedby="Close-time" required>
                             </div>
                         </div>
-                    </div>
-                    <div class="col-4">
-                        {{-- <img src="{{ asset('images/restaurant/banner-612x612.jpg') }}" alt="Banner" style="width: 100%">
-                        <button class="btn btn-primary">Edit</button> --}}
-                    </div>
+                    </form>
+                </div>
+                <div class="col-4">
+                    {{-- The tables that are available to reserve in this establishment --}}
+                    <h6>Available Tables:</h6>
+                    <ul id="table-list" class="list-group mb-3">
+                        {{-- A table that is available to reserve, table with the same number of person should be categorized in a single list-item --}}
+                        <li class="list-group-item">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div id="table-2">
+                                    2-man table x{{ 3 }} - {{ 0 }} reserved
+                                </div>
+                                <div>
+                                    <button table="2" class="btn btn-danger fw-bold decrease-btn">-</button>
+                                    <button table="2" class="btn btn-primary fw-bold increase-btn">+</button>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="list-group-item">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div id="table-4">
+                                    4-man Table x{{ 3 }} - {{ 0 }} reserved
+                                </div>
+                                <div>
+                                    <button table="4" class="btn btn-danger fw-bold decrease-btn">-</button>
+                                    <button table="4" class="btn btn-primary fw-bold increase-btn">+</button>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="list-group-item">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div id="table-5">
+                                    5-man Table x{{ 4 }} - {{ 4 }} reserved
+                                </div>
+                                <div>
+                                    <button table="5" class="btn btn-danger fw-bold decrease-btn">-</button>
+                                    <button table="5" class="btn btn-primary fw-bold increase-btn">+</button>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="list-group-item">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div id="table-6">
+                                    6-man Table x{{ 3 }} - {{ 0 }} reserved
+                                </div>
+                                <div>
+                                    <button table="6" class="btn btn-danger fw-bold decrease-btn">-</button>
+                                    <button table="6" class="btn btn-primary fw-bold increase-btn">+</button>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+
+                    {{-- Add a new table to the available tables --}}
+                    <h6>New table:</h6>
+                    <form action="/restaurant/addTable" method="post">
+                        <div class="input-group mb-3">
+                            <input type="number" class="form-control" min="1" max="100" placeholder="4" aria-label="New Table" aria-describedby="new-table">
+                            <span class="input-group-text">-man Table</span>
+                            <input type="submit" class="btn btn-outline-secondary" type="button" id="add-button" value="Add" />
+                        </div>
+                    </form>
                 </div>
             </div>
-        </form>
+        </div>
     </main>
 
     <script>
+        // Global variable
+        const INCREASE_TABLE = 0;
+        const DECREASE_TABLE = 1;
+
         /**
          * Main function to trigger after the html document has finished loading.
          */
@@ -189,8 +250,10 @@
             const settingStatus = [true, true, true, true, true]
 
             // Register events to the variables
+            // Show the confirmation prompt when entering a new password
             newPasswordInput.on("input", showPrompt(newPasswordInput, changePasswordPrompt, ""));
 
+            // Show the save prompt when a new value is detected
             restaurantNameInput.on("input", checkChanges(restaurantNameInput, unsavedPlaceholder, settingValues, settingStatus, 0));
             newPasswordInput.on("input", checkChanges(newPasswordInput, unsavedPlaceholder, settingValues, settingStatus, 1));
             costInput.on("input", checkChanges(costInput, unsavedPlaceholder, settingValues, settingStatus, 2));
@@ -213,13 +276,13 @@
                 if (inputElement.val() !== compareValue) {
                     // Show prompt to existence
                     if (promptElement[0].style.display === "none") {
-                        promptElement.slideToggle('slow');
+                        promptElement.slideDown('slow');
                     }
                 }
                 else {
                     // Unshow prompt from existence
                     if (!promptElement[0].classList.contains("d-none")) {
-                        promptElement.slideToggle('slow');
+                        promptElement.slideUp('slow');
                     }
                 }
             }
@@ -233,9 +296,9 @@
          * @param {JqueryObject} promptElement The element which is going to be toggled if the condition is met.
          * @param {Array}        settingValues An array of values for checking.
          * @param {Array}        settingStatus An array of booleans to indicate whether the input is the same or not.
-         * @param {Integer}      arrayIndex    The index of the value and status that this input field corresponds to.
+         * @param {Integer}      arrayIndex    The index of the value and status that the input field corresponds to.
          *
-         * @return
+         * @return {function} An event handler function to handle unsaved changes.
          */
         function checkChanges(inputElement, promptElement, settingValues, settingStatus, arrayIndex) {
             return (event) => {
@@ -269,6 +332,56 @@
                         promptElement.slideUp('slow');
                     }
                 }
+            }
+        }
+
+        /**
+         * Get the restaurant user's available tables.
+         * ### Must be logged in in order to use!!!
+         *
+         * @param {JqueryObject} listElement  The element which the result will be printed to.
+         */
+        function getAvailableTables(listElement) {
+            $.ajax({
+                type: "GET",
+                url: "/restaurant/getTables",
+                data: {},
+                success: function (response, status) {
+                    // TODO: For every table, put into a list item in the listElement, add increase & decrease item event handler to the buttons in every item using the `mutateTableEvent()`.
+                }
+            });
+        }
+
+        /**
+         * Increase or decrease the targeted table using the table attribute of the buttonElement.
+         * Updates the list element when the AJAX request is successful, removes a table when none of the table type is available anymore.
+         *
+         * @param {JqueryObject} The button element that is going to fire the event.
+         *
+         * @return {function} The event handler function to handle the event.
+         */
+        function mutateTableEvent(buttonElement, mode) {
+            let url = "";
+            if (mode == INCREASE_TABLE) {
+                url = "/restaurant/increaseTable";
+            }
+            else if (mode == DECREASE_TABLE) {
+                url = "/restaurant/decreaseTable";
+            }
+
+            const table = buttonElement.attr("table");
+
+            return (event) => {
+                $.ajax({
+                    type: "POST",
+                    url: url,
+                    data: {
+                        table: table
+                    },
+                    success: function (response) {
+                        // TODO: Increase or decrease the availability of the table in the database, and update the element displaying the availability.
+                    }
+                });
             }
         }
     </script>
