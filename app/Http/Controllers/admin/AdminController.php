@@ -28,7 +28,10 @@ class AdminController extends Controller
         // }
         $monthNow = date("m");
         $audienceGrowth = userMigrasi::whereMonth('created_at','=',$monthNow)->get();
-        $topSales = DB::select("select r.id, r.full_name, r.address, SUM(t.payment_amount) FROM restaurants r JOIN transactions t ON r.id = t.restaurant_id GROUP BY r.id");
+        $topSales = DB::select("select r.id, r.full_name, r.address, SUM(t.payment_amount)
+        FROM restaurants r
+        JOIN transactions t ON r.id = t.restaurant_id
+        group by r.id, r.id, r.full_name, r.address");
         // dd($topSales);
         return view('admin.admin_dashboard',compact('currPage','totaltransaction','countTotalOrder','audienceGrowth','topSales'));
     }
