@@ -15,18 +15,17 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id("id");
-            $table->string("username",50);
-            $table->string("password",255);
-            $table->string("full_name",50);
-            $table->date("date_of_birth",6);
-            $table->string("address",255);
-            $table->string("email");
-            $table->string("phone",50);
-            $table->integer("gender")->comment("1 laki, 2 perempuan");
-            $table->integer("balance");
-            $table->integer("blocked")->comment("0 ngga ke block, 1 ter block");
-            $table->integer("role_id")->comment("1 customer, 2 restaurant, 3 admin");
-            
+            $table->string("username",50)->default("");
+            $table->string("password",255)->default("");
+            $table->string("full_name",50)->default("");
+            $table->date("date_of_birth",6)->default("2022-12-12");
+            $table->string("address",255)->default("");
+            $table->string("email")->default("");
+            $table->string("phone",50)->default("");
+            $table->integer("gender")->comment("1 laki, 2 perempuan")->default(1);
+            $table->integer("balance")->default(0);
+            $table->integer("blocked")->comment("0 ngga ke block, 1 ter block")->default(1);
+            $table->integer("role_id",0)->nullable()->comment("1 customer, 2 restaurant, 3 admin");
 
             $table->timestamps();
             $table->softDeletes();

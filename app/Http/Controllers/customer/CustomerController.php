@@ -35,6 +35,7 @@ class CustomerController extends Controller
     public function masterHistory(Request $request)
     {
         $currPage = "history";
+        
         return view('customer.customer_history',compact('currPage'));
     }
     public function masterProfile(Request $request)

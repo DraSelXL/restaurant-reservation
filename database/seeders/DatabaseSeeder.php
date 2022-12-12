@@ -24,6 +24,19 @@ class DatabaseSeeder extends Seeder
             ['name'=>"Customer"],
             ['name'=>"Restaurant"]
         ]);
+
+        DB::table('users')->insert([
+            ['role_id'=>3],
+            ['role_id'=>3],
+            ['role_id'=>3],
+            ['role_id'=>2],
+            ['role_id'=>2],
+            ['role_id'=>2],
+            ['role_id'=>2],
+            ['role_id'=>2],
+            ['role_id'=>2],
+            ['role_id'=>1],
+        ]);
         // \App\Models\User::factory(10)->create();
 
         // \App\Models\User::factory()->create([

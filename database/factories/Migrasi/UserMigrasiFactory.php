@@ -21,7 +21,7 @@ class UserMigrasiFactory extends Factory
         $firstname = $this->faker->firstName();
         $lastname = $this->faker->lastName();
         return [
-            'username'=>$this->faker->word(),
+            'username'=>$this->faker->sentence(1,true),
             'password'=>Hash::make('123'),
             'full_name'=>"$firstname $lastname",
             'date_of_birth'=>$this->faker->dateTimeBetween("-30 years","now"),
@@ -31,7 +31,6 @@ class UserMigrasiFactory extends Factory
             'gender'=>$this->faker->numberBetween(1,2),
             'balance'=>$this->faker->numberBetween(1000,100000),
             'blocked'=>$this->faker->numberBetween(0,0),
-            'role_id'=>$this->faker->numberBetween(1,3),
             'created_at'=>now(),
             'updated_at'=>now()
         ];
