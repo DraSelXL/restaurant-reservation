@@ -16,12 +16,19 @@
 
 --}}
 
+{{--
+    MOHON DIBACA YA SOBAT - SOBAT !!!!
+    user = Variabel buat ambil data user yang lagi log in
+--}}
+
 @extends('layouts.layout')
 
 @section('pagename')
     Portable
 @endsection
-
+@php
+    $user = Session::get('userData');
+@endphp
 @section('custom_css')
     <link rel="stylesheet" href="{{asset('build/css/customer_home.css')}}">
     <style>
@@ -46,82 +53,98 @@
             <div class="row m-0">
                 {{-- LEFT CONTENT --}}
                 <div class="col-sm-12 col-md-6">
-                    <div class="mb-3">
-                        <p class="m-0" style="font-size: 2.5em;font-weight: bold;">Profile</p>
-                        <p class="m-0">Update your profile photo and personal details here</p>
-                    </div>
 
-                    {{-- IMAGE --}}
-                    <div class="row mb-3">
-                        <div class="col-4 d-flex align-items-center">
-                            <p class="m-0 ">Profile Picture</p>
+                    <form action="" method="post">
+                        <div class="mb-3">
+                            <p class="m-0" style="font-size: 2.5em;font-weight: bold;">Profile</p>
+                            <p class="m-0">Update your profile photo and personal details here</p>
                         </div>
-                        <div class="col d-flex align-items-center">
-                            <img class="dropdown-toggle" role="button" data-bs-toggle="dropdown" src="{{asset("storage/images/customer/pp.jpg")}}" alt="" width="70px" height="70px" style="border-radius: 50%">
-                        </div>
-                    </div>
-                    {{-- NAME --}}
-                    <div class="row mb-3">
-                        <div class="col-4 d-flex align-items-center">
-                            <p class="m-0">Username</p>
-                        </div>
-                        <div class="col d-flex align-items-center">
-                            <input type="text" class="form-control" id="username" name="username">
-                        </div>
-                    </div>
-                    <div class="row mb-3">
-                        <div class="col-4 d-flex align-items-center">
-                            <p class="m-0">First Name</p>
-                        </div>
-                        <div class="col d-flex align-items-center">
-                            <input type="text" class="form-control" id="firstname" name="firstname">
-                        </div>
-                    </div>
-                    <div class="row mb-3">
-                        <div class="col-4 d-flex align-items-center">
-                            <p class="m-0">Last Name</p>
-                        </div>
-                        <div class="col d-flex align-items-center">
-                            <input type="text" class="form-control" id="lastname" name="lastname">
-                        </div>
-                    </div>
-                    {{-- PHONE ADDRESS --}}
-                    <div class="row mb-3">
-                        <div class="col-4">
-                            <p class="m-0">Phone Number</p>
-                        </div>
-                        <div class="col">
-                            <input type="number" class="form-control" id="phone" name="phone">
-                        </div>
-                    </div>
-                    <div class="row mb-3">
-                        <div class="col-4 d-flex align-items-center">
-                            <p class="m-0">Address</p>
-                        </div>
-                        <div class="col d-flex align-items-center">
-                            <input type="text" class="form-control" id="address" name="address">
-                        </div>
-                    </div>
-                    {{-- BIRTHDATE --}}
-                    <div class="row mb-3">
-                        <div class="col-4">
-                            <p class="m-0">Date of Birth</p>
-                        </div>
-                        <div class="col">
-                            <input type="date" class="form-control" id="date" name="birthdate">
-                        </div>
-                    </div>
-                    {{-- PASSWORD --}}
-                    <div class="row mb-3">
-                        <div class="col-4 d-flex align-items-center">
-                            <p class="m-0">Password</p>
-                        </div>
-                        <div class="col d-flex align-items-center">
-                            <input type="password" class="form-control" id="password" name="password">
-                        </div>
-                    </div>
 
-                    <button type="submit" class="submit btn p-2 text-light w-100" style="background-color: #ed3b27">Update Profile</button>
+                        {{-- IMAGE --}}
+                        <div class="row mb-3">
+                            <div class="col-4 d-flex align-items-center">
+                                <p class="m-0 ">Profile Picture</p>
+                            </div>
+                            <div class="col d-flex align-items-center">
+                                <img class="dropdown-toggle" role="button" data-bs-toggle="dropdown" src="{{asset("images/customer/pp.jpg")}}" alt="" width="70px" height="70px" style="border-radius: 50%">
+                            </div>
+                        </div>
+                        {{-- NAME --}}
+                        <div class="row mb-3">
+                            <div class="col-4 d-flex align-items-center">
+                                <p class="m-0">Username</p>
+                            </div>
+                            <div class="col d-flex align-items-center">
+                                <input type="text" class="form-control" id="username" name="username" value="{{$user['username']}}">
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-4 d-flex align-items-center">
+                                <p class="m-0">First Name</p>
+                            </div>
+                            <div class="col d-flex align-items-center">
+                                <input type="text" class="form-control" id="firstname" name="firstname" value="{{$user['full_name']}}">
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-4 d-flex align-items-center">
+                                <p class="m-0">Last Name</p>
+                            </div>
+                            <div class="col d-flex align-items-center">
+                                <input type="text" class="form-control" id="lastname" name="lastname" value="{{$user['full_name']}}">
+                            </div>
+                        </div>
+                        {{-- PHONE ADDRESS --}}
+                        <div class="row mb-3">
+                            <div class="col-4">
+                                <p class="m-0">Phone Number</p>
+                            </div>
+                            <div class="col">
+                                @php
+                                    $phone = "";
+                                    $number = "1234567890";
+                                    foreach(str_split($user['phone']) as $num){
+                                        if(str_contains($num,$number)){
+                                            $phone += $num;
+                                        }
+                                    }
+                                    dd($phone);
+                                @endphp
+                                <input type="number" class="form-control" id="phone" name="phone" value="{{intval($phone)}}">
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-4 d-flex align-items-center">
+                                <p class="m-0">Address</p>
+                            </div>
+                            <div class="col d-flex align-items-center">
+                                <input type="text" class="form-control" id="address" name="address" value="{{$user['address']}}">
+                            </div>
+                        </div>
+                        {{-- BIRTHDATE --}}
+                        <div class="row mb-3">
+                            <div class="col-4">
+                                <p class="m-0">Date of Birth</p>
+                            </div>
+                            <div class="col">
+                                <input type="date" class="form-control" id="date" name="birthdate" value="{{$user['date_of_birth']}}">
+                            </div>
+                        </div>
+                        {{-- PASSWORD --}}
+                        <div class="row mb-3">
+                            <div class="col-4 d-flex align-items-center">
+                                <p class="m-0">Password</p>
+                            </div>
+                            <div class="col d-flex align-items-center">
+                                <input type="password" class="form-control" id="password" name="password">
+                            </div>
+                        </div>
+
+                        <button type="submit" class="submit btn p-2 text-light w-100" style="background-color: #ed3b27">
+                            Update Profile
+                        </button>
+                    </form>
+
                 </div>
 
                 {{-- RIGHT CONTENT --}}

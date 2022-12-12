@@ -77,8 +77,8 @@ use Illuminate\Support\Facades\Hash;
         - Developer Post/Notification                                           -- DONE
 */
 
-
 Route::get('/', function () { return redirect()->route("index"); });
+
 Route::get('/logout', [IndexController::class,'logout']);
 
 Route::prefix('/')->group(function () {
