@@ -2,13 +2,14 @@
 
 @section('custom-css-extended')
     <style>
+        /** Rservation Card Classes */
         .reservation-holder {
             width: 100%;
             overflow: scroll;
             margin-bottom: 4em;
         }
 
-        .reservation-holder .reservation-scroll {
+        .scrollable {
             width: max-content;
             height: min-content;
             margin-bottom: 8px;
@@ -18,6 +19,15 @@
             display: inline-block;
             max-width: 30em;
         }
+
+        /** Reservation Table Classes */
+        .table-block {
+            width: 4em;
+            height : 4em;
+            border-radius: 4px;
+            margin: 4px;
+            display: inline-block;
+        }
     </style>
 @endsection
 
@@ -26,8 +36,8 @@
         {{-- Holds all reservation curently being made to the restaurant, don't forget to order it from the most closest based on time in an ascending order --}}
         <h1>Pending Reservations</h1>
         <hr>
-        <div class="reservation-holder" id="pending-reservations">
-            <div class="reservation-scroll">
+        <div class="reservation-holder">
+            <div id="pending-reservations" class="scrollable">
                 {{-- An active reservation card, create a card with this template --}}
                 <div class="reservation">
                     <div class="card">
@@ -99,6 +109,50 @@
             </div>
         </div>
 
+        {{-- Restaurant Table Availability GUI --}}
+        <div class="container mb-4 text-center">
+            <h1>Tables</h1>
+            <div class="w-100" style="overflow: scroll">
+                <div id="table-layout" class="scrollable mx-auto">
+                    <div class="d-flex justify-content-center" style="width: fit-content">
+                        <button col="1" row="1" class="btn btn-danger table-block"></button>
+                        <button col="2" row="1" class="btn btn-warning table-block"></button>
+                        <button col="3" row="1" class="btn btn-warning table-block"></button>
+                        <button col="4" row="1" class="btn btn-warning table-block"></button>
+                        <button col="5" row="1" class="btn btn-warning table-block"></button>
+                    </div>
+                    <div class="d-flex justify-content-center" style="width: fit-content">
+                        <button col="1" row="2" class="btn btn-warning table-block"></button>
+                        <button col="2" row="2" class="btn btn-warning table-block"></button>
+                        <button col="3" row="2" class="btn btn-warning table-block"></button>
+                        <button col="4" row="2" class="btn btn-warning table-block"></button>
+                        <button col="5" row="2" class="btn btn-warning table-block"></button>
+                    </div>
+                    <div class="d-flex justify-content-center" style="width: fit-content">
+                        <button col="1" row="3" class="btn btn-warning table-block"></button>
+                        <button col="2" row="3" class="btn btn-warning table-block"></button>
+                        <button col="3" row="3" class="btn btn-warning table-block"></button>
+                        <button col="4" row="3" class="btn btn-warning table-block"></button>
+                        <button col="5" row="3" class="btn btn-warning table-block"></button>
+                    </div>
+                    <div class="d-flex justify-content-center" style="width: fit-content">
+                        <button col="1" row="4" class="btn btn-warning table-block"></button>
+                        <button col="2" row="4" class="btn btn-warning table-block"></button>
+                        <button col="3" row="4" class="btn btn-warning table-block"></button>
+                        <button col="4" row="4" class="btn btn-warning table-block"></button>
+                        <button col="5" row="4" class="btn btn-warning table-block"></button>
+                    </div>
+                    <div class="d-flex justify-content-center" style="width: fit-content">
+                        <button col="1" row="5" class="btn btn-warning table-block"></button>
+                        <button col="2" row="5" class="btn btn-warning table-block"></button>
+                        <button col="3" row="5" class="btn btn-warning table-block"></button>
+                        <button col="4" row="5" class="btn btn-warning table-block"></button>
+                        <button col="5" row="5" class="btn btn-warning table-block"></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <h1>Settings</h1>
         <hr>
         <div class="container">
@@ -111,16 +165,18 @@
                                 <div class="rounded-3 me-2 p-2 px-3 bg-danger flex-fill">
                                     <span class="text-white">Unsaved Changes</span>
                                 </div>
-                                <input id="saveButton" type="submit" value="save" class="btn btn-primary">
+                                <input id="saveButton" type="submit" value="save" class="btn btn-primary" disabled>
                             </div>
                         </div>
 
+                        {{-- The restaurant name setting --}}
                         <div id="restaurant-name" class="mb-3">
                             <h6 style="margin-bottom: 4px">Restaurant Name:</h6>
                             <input id="restaurantNameInput" type="text" class="form-control" value="{{ 'Portable' }}" placeholder="Restaurant's name" name="restaurantName" aria-label="Restaurant's name" aria-describedby="restaurant's-name" required>
                             <small><em>This name is visible to anyone who is looking for this establishment.</em></small>
                         </div>
 
+                        {{-- The restaurant account password setting --}}
                         <div id="new-password" class="mb-3">
                             <h6 style="margin-bottom: 4px">New Password:</h6>
                             <input id="newPasswordInput" type="password" class="form-control" placeholder="New Password" name="newPassword" aria-label="New password" aria-describedby="new-password">
@@ -143,95 +199,53 @@
                             </div>
                         </div>
 
-                        <div id="reservation-cost" class="mb-3">
-                            <h6 style="margin-bottom: 4px">Reservation Cost:</h6>
-                            <div class="input-group">
-                                <span class="input-group-text" id="cost-currency">Rp.</span>
-                                <input id="costInput" type="number" class="form-control" value="20000" placeholder="Reservation Cost" step="100" name="reservationCost" aria-label="Reservation cost" aria-describedby="reservation-cost" required>
-                            </div>
+                        {{-- The restaurant address setting --}}
+                        <div id="restaurant-address" class="mb-3">
+                            <h6 style="margin-bottom: 4px">Restaurant Address:</h6>
+                            <input id="addressInput" type="text" class="form-control" value="{{ "Jl. Dharmahusada" }}" placeholder="Restaurant Address" name="restaurantAddress" aria-label="Restaurant address" aria-describedby="restaurant-address" required>
                         </div>
 
+                        {{-- The restaurant phone number setting --}}
+                        <div id="restaurant-phone" class="mb-3">
+                            <h6 style="margin-bottom: 4px">Restaurant Phone:</h6>
+                            <input id="phoneInput" type="text" class="form-control" value="{{ "08911111111111" }}" placeholder="Restaurant Phone Number" name="restaurantPhone" aria-label="Restaurant phone" aria-describedby="restaurant-phone" required>
+                        </div>
+
+                        {{-- The restaurant description setting --}}
+                        <div id="restaurant-description" class="mb-3">
+                            <h6 style="margin-bottom: 4px">Reservation Description:</h6>
+                            <textarea id="descriptionInput" class="form-control" placeholder="Enter your restaurant description..." style="height: 100px" name="restaurantDescription"></textarea>
+                        </div>
+
+                        {{-- The restaurant opening time and shifts --}}
                         <div id="active-time" class="mb-3">
                             <h6 style="margin-bottom: 4px">Active Time:</h6>
                             <div class="input-group">
                                 <span class="input-group-text" id="open-time">Open:</span>
                                 <input id="openTimeInput" type="time" class="form-control" name="openTime" aria-label="openTime" aria-describedby="Open-time" required>
-                                <span class="input-group-text" id="open-time">Close:</span>
-                                <input id="closeTimeInput" type="time" class="form-control" name="closeTime" aria-label="closeTime" aria-describedby="Close-time" required>
+                                <span class="input-group-text" id="shifts">Shifts:</span>
+                                <input id="shiftsInput" type="number" min="1" max="23" class="form-control" name="shifts" value="{{ "8" }}" aria-label="shifts" aria-describedby="Shifts" required>
+                            </div>
+                        </div>
+
+                        {{-- The restaurant reservation cost setting --}}
+                        <div id="reservation-cost" class="mb-3">
+                            <h6 style="margin-bottom: 4px">Reservation Cost:</h6>
+                            <div class="input-group">
+                                <span class="input-group-text" id="cost-currency">Rp.</span>
+                                <input id="costInput" type="number" class="form-control" value="{{ "20000" }}" placeholder="Reservation Cost" step="100" name="reservationCost" aria-label="Reservation cost" aria-describedby="reservation-cost" required>
                             </div>
                         </div>
                     </form>
                 </div>
                 <div class="col-4">
-                    {{-- The tables that are available to reserve in this establishment --}}
-                    <h6>Available Tables:</h6>
-                    <ul id="table-list" class="list-group mb-3">
-                        {{-- A table that is available to reserve, table with the same number of person should be categorized in a single list-item --}}
-                        <li class="list-group-item">
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div id="table-2">
-                                    2-man table x{{ 3 }} - {{ 0 }} reserved
-                                </div>
-                                <div>
-                                    <button table="2" class="btn btn-danger fw-bold decrease-btn">-</button>
-                                    <button table="2" class="btn btn-primary fw-bold increase-btn">+</button>
-                                </div>
-                            </div>
-                        </li>
-                        <li class="list-group-item">
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div id="table-4">
-                                    4-man Table x{{ 3 }} - {{ 0 }} reserved
-                                </div>
-                                <div>
-                                    <button table="4" class="btn btn-danger fw-bold decrease-btn">-</button>
-                                    <button table="4" class="btn btn-primary fw-bold increase-btn">+</button>
-                                </div>
-                            </div>
-                        </li>
-                        <li class="list-group-item">
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div id="table-5">
-                                    5-man Table x{{ 4 }} - {{ 4 }} reserved
-                                </div>
-                                <div>
-                                    <button table="5" class="btn btn-danger fw-bold decrease-btn">-</button>
-                                    <button table="5" class="btn btn-primary fw-bold increase-btn">+</button>
-                                </div>
-                            </div>
-                        </li>
-                        <li class="list-group-item">
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div id="table-6">
-                                    6-man Table x{{ 3 }} - {{ 0 }} reserved
-                                </div>
-                                <div>
-                                    <button table="6" class="btn btn-danger fw-bold decrease-btn">-</button>
-                                    <button table="6" class="btn btn-primary fw-bold increase-btn">+</button>
-                                </div>
-                            </div>
-                        </li>
-                    </ul>
-
-                    {{-- Add a new table to the available tables --}}
-                    <h6>New table:</h6>
-                    <form action="/restaurant/addTable" method="post">
-                        <div class="input-group mb-3">
-                            <input type="number" class="form-control" min="1" max="100" placeholder="4" aria-label="New Table" aria-describedby="new-table">
-                            <span class="input-group-text">-man Table</span>
-                            <input type="submit" class="btn btn-outline-secondary" type="button" id="add-button" value="Add" />
-                        </div>
-                    </form>
+                    {{-- Todo: Restaurant photos --}}
                 </div>
             </div>
         </div>
     </main>
 
     <script>
-        // Global variable
-        const INCREASE_TABLE = 0;
-        const DECREASE_TABLE = 1;
-
         /**
          * Main function to trigger after the html document has finished loading.
          */
@@ -241,13 +255,25 @@
             const restaurantNameInput = $("#restaurantNameInput");
             const newPasswordInput = $("#newPasswordInput");
             const changePasswordPrompt = $("#changePasswordPrompt");
-            const costInput = $("#costInput");
+            const addressInput = $("#addressInput");
+            const phoneInput = $("#phoneInput");
+            const descriptionInput = $("#descriptionInput");
             const openTimeInput = $("#openTimeInput");
-            const closeTimeInput = $("#closeTimeInput");
+            const shiftsInput = $("#shiftsInput");
+            const costInput = $("#costInput");
 
             // Variables
-            const settingValues = ["Portable", "", "20000", "", ""]
-            const settingStatus = [true, true, true, true, true]
+            const settingValues = [
+                "{{ "Portable" }}",           // Restaurant name
+                "{{ "" }}",                   // Restaurant new password
+                "{{ "Jl. Dharmahusada" }}",   // Restaurant address
+                "{{ "0891111111111" }}",      // Restaurant phone
+                "{{ "" }}",                   // Restaurant description
+                "{{ "" }}",                   // Restaurant opening time
+                "{{ "8" }}",                  // Restaurant shifts
+                "{{ "20000" }}"               // Reservation cost
+            ];
+            const settingStatus = [true, true, true, true, true, true, true, true];
 
             // Register events to the variables
             // Show the confirmation prompt when entering a new password
@@ -256,9 +282,12 @@
             // Show the save prompt when a new value is detected
             restaurantNameInput.on("input", checkChanges(restaurantNameInput, unsavedPlaceholder, settingValues, settingStatus, 0));
             newPasswordInput.on("input", checkChanges(newPasswordInput, unsavedPlaceholder, settingValues, settingStatus, 1));
-            costInput.on("input", checkChanges(costInput, unsavedPlaceholder, settingValues, settingStatus, 2));
-            openTimeInput.on("input", checkChanges(openTimeInput, unsavedPlaceholder, settingValues, settingStatus, 3));
-            closeTimeInput.on("input", checkChanges(closeTimeInput, unsavedPlaceholder, settingValues, settingStatus, 4));
+            addressInput.on("input", checkChanges(addressInput, unsavedPlaceholder, settingValues, settingStatus, 2));
+            phoneInput.on("input", checkChanges(phoneInput, unsavedPlaceholder, settingValues, settingStatus, 3));
+            descriptionInput.on("input", checkChanges(descriptionInput, unsavedPlaceholder, settingValues, settingStatus, 4));
+            openTimeInput.on("input", checkChanges(openTimeInput, unsavedPlaceholder, settingValues, settingStatus, 5));
+            shiftsInput.on("input", checkChanges(shiftsInput, unsavedPlaceholder, settingValues, settingStatus, 6));
+            costInput.on("input", checkChanges(costInput, unsavedPlaceholder, settingValues, settingStatus, 7));
         });
 
         /**
@@ -324,11 +353,14 @@
 
                 if (isDifferent) {
                     if (promptElement[0].style.display === "none") {
-                        promptElement.slideDown('slow');
+                        promptElement.slideDown('slow', function () {
+                            $("#saveButton").prop('disabled', false);
+                        });
                     }
                 }
                 else if (!isDifferent) {
                     if (promptElement[0].style.display !== "none") {
+                        $("#saveButton") .prop('disabled', true);
                         promptElement.slideUp('slow');
                     }
                 }
@@ -350,39 +382,6 @@
                     // TODO: For every table, put into a list item in the listElement, add increase & decrease item event handler to the buttons in every item using the `mutateTableEvent()`.
                 }
             });
-        }
-
-        /**
-         * Increase or decrease the targeted table using the table attribute of the buttonElement.
-         * Updates the list element when the AJAX request is successful, removes a table when none of the table type is available anymore.
-         *
-         * @param {JqueryObject} The button element that is going to fire the event.
-         *
-         * @return {function} The event handler function to handle the event.
-         */
-        function mutateTableEvent(buttonElement, mode) {
-            let url = "";
-            if (mode == INCREASE_TABLE) {
-                url = "/restaurant/increaseTable";
-            }
-            else if (mode == DECREASE_TABLE) {
-                url = "/restaurant/decreaseTable";
-            }
-
-            const table = buttonElement.attr("table");
-
-            return (event) => {
-                $.ajax({
-                    type: "POST",
-                    url: url,
-                    data: {
-                        table: table
-                    },
-                    success: function (response) {
-                        // TODO: Increase or decrease the availability of the table in the database, and update the element displaying the availability.
-                    }
-                });
-            }
         }
     </script>
 @endsection
