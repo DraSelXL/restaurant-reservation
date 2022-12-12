@@ -120,8 +120,8 @@
 
                         <div class="col-12 mt-2">
                             <div class="rounded-3 bg-dark text-light p-4 d-flex align-items-center">
-                                <p class="m-0">Current Filter : <span>anton_io</span></p>
-                                <div class="btn btn-outline-warning ms-auto">Clear Filter</div>
+                                <p class="m-0">Current Filter : <span>{{$keyword}}</span></p>
+                                <div class="btn btn-outline-warning ms-auto"><a style="text-decoration:none; color:white;" href="{{url('/admin/customer')}}">Clear Filter</a></div>
                             </div>
                         </div>
 

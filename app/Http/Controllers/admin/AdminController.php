@@ -38,7 +38,7 @@ class AdminController extends Controller
     public function masterCustomer(Request $request)
     {
         $currPage = "customer";
-        $allUser = userMigrasi::all();
+        $allUser = userMigrasi::withTrashed()->get();
         $keyword = $request->keyword;
 
         if($keyword!=null){
@@ -57,9 +57,9 @@ class AdminController extends Controller
         $userList = userMigrasi::withTrashed()
             ->where(function($q) use ($tempId,$restaurantId)
             {
-                $q
-                ->whereIn('id',$tempId)
-                ->whereNotIn('id',$restaurantId);
+            $q
+            ->whereIn('id',$tempId)
+            ->whereNotIn('id',$restaurantId);
             })
             ->get();
         // dd($userList);
@@ -67,7 +67,7 @@ class AdminController extends Controller
 
         //$countSpending = DB::select("select u.id,sum(t.payment_amount) as sum from transactions t join users u on u.id = t.user_id group by 1");
         // dd($countSpending);
-        return view('admin.admin_customer',compact('currPage','userList','countUser'));
+        return view('admin.admin_customer',compact('currPage','userList','countUser','keyword'));
     }
 
     public function banUser(Request $request)
@@ -104,7 +104,7 @@ class AdminController extends Controller
         };
         //dd($allRestaurant);
         $countRestaurant = restaurantMigrasi::all()->count();
-        return view('admin.admin_restaurant',compact('currPage','allRestaurant','countRestaurant'));
+        return view('admin.admin_restaurant',compact('currPage','allRestaurant','countRestaurant','keyword'));
     }
 
     public function banRestaurant(Request $request)
@@ -161,4 +161,10 @@ class AdminController extends Controller
             return redirect()->back()->with('pesan','Error');
         }
     }
+    // public function clearFilter(Request $request)
+    // {
+    //     $keyword = $request->keyword;
+    //     $keyword = '';
+    //     return redirect()->route('admin_customerlist',compact('keyword'));
+    // }
 }
