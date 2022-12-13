@@ -25,7 +25,6 @@ class RestaurantMigrasiFactory extends Factory
             'full_name'=>"$firstname $lastname",
             'address'=>$this->faker->address(),
             'phone'=>$this->faker->phoneNumber(),
-            'average_rating'=>$this->faker->randomFloat(1,1,5),
             'user_id'=>$this->faker->unique()->numberBetween(1,3),
             'col'=>$this->faker->randomNumber(1,10),
             'row'=>$this->faker->randomNumber(1,10),

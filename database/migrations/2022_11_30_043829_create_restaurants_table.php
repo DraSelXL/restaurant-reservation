@@ -18,7 +18,6 @@ return new class extends Migration
             $table->string("full_name");
             $table->string("address");
             $table->string("phone");
-            $table->integer("average_rating");
             $table->integer("user_id");
             $table->integer("col");
             $table->integer("row");

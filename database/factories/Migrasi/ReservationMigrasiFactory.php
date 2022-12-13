@@ -17,7 +17,7 @@ class ReservationMigrasiFactory extends Factory
     public function definition()
     {
         return [
-            'user_id'=>$this->faker->numberBetween(1,10),
+            'user_id'=>$this->faker->numberBetween(4,9),
             'restaurant_id'=>$this->faker->numberBetween(1,3),
             'table_id'=>$this->faker->numberBetween(1,20),
             'reservation_date_time'=>$this->faker->dateTimeBetween("-1 years","now"),

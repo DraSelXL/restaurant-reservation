@@ -17,8 +17,8 @@ class ReviewMigrasiFactory extends Factory
     public function definition()
     {
         return [
-            'user_id'=>$this->faker->numberBetween(1,10),
-            'restaurant_id'=>$this->faker->numberBetween(1,10),
+            'user_id'=>$this->faker->numberBetween(4,9),
+            'restaurant_id'=>$this->faker->numberBetween(1,3),
             'rating'=>$this->faker->numberBetween(3,5),
             'message'=>$this->faker->sentence(),
         ];
