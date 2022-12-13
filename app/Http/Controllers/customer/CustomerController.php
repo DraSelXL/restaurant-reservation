@@ -4,6 +4,7 @@ namespace App\Http\Controllers\customer;
 
 use App\Http\Controllers\Controller;
 use App\Models\Migrasi\restaurantMigrasi;
+use App\Models\Migrasi\userMigrasi;
 use Illuminate\Http\Request;
 
 class CustomerController extends Controller
@@ -45,6 +46,23 @@ class CustomerController extends Controller
         $currPage = "profile";
         $user = activeUser();
         return view('customer.customer_profile',compact('currPage','user'));
+    }
+    public function editProfile(Request $request)
+    {
+        $user_id = activeUser()->id;
+        $user = userMigrasi::find($user_id);
+        if(password_verify($request->password, $user['password'])) {
+            $user->username = $request->username;
+            $user->full_name = $request->firstname.' '.$request->lastname;
+            $user->phone = $request->phone;
+            $user->address = $request->address;
+            $user->date_of_birth = $request->birthdate;
+            $user->save();
+            return redirect()->back()->with('pesan','Updated Successfully');
+        }
+        else{
+            return redirect()->back()->with('pesan','Updated Unsuccessfully');
+        }
     }
     public function masterNotification(Request $request)
     {

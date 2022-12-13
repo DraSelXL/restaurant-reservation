@@ -140,6 +140,10 @@ Route::prefix('customer')->group(function () {
     Route::get('profile', [CustomerController::class,"masterProfile"])->name("customer_profile");
     Route::get('notification', [CustomerController::class,"masterNotification"])->name("customer_notification");
 
+
+    // PROFILE ROUTES
+    // 1. editProfile
+    Route::post('editProfile', [CustomerController::class,"editProfile"]);
     // HOME ROUTES
     // 1. checkAvailability
     Route::post('checkAvailability', [CustomerController::class,"checkAvailability"]);

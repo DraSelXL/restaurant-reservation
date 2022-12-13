@@ -56,6 +56,7 @@
             // dump(Str::contains($num, $arrNum));
         }
     }
+    $arrName = explode(' ',$user['full_name']);
 @endphp
 @section('content')
     <div class="container">
@@ -67,7 +68,8 @@
                 {{-- LEFT CONTENT --}}
                 <div class="col-sm-12 col-md-6">
 
-                    <form action="" method="post">
+                    <form action="{{url('customer/editProfile')}}" method="post">
+                        @csrf
                         <div class="mb-3">
                             <p class="m-0" style="font-size: 2.5em;font-weight: bold;">Profile</p>
                             <p class="m-0">Update your profile photo and personal details here</p>
@@ -100,7 +102,7 @@
                             </div>
                             <div class="col d-flex align-items-center">
                                 <input type="text" class="form-control" id="firstname" name="firstname"
-                                    value="{{ $user['full_name'] }}">
+                                    value="{{ $arrName[0] }}">
                             </div>
                         </div>
                         <div class="row mb-3">
@@ -109,7 +111,7 @@
                             </div>
                             <div class="col d-flex align-items-center">
                                 <input type="text" class="form-control" id="lastname" name="lastname"
-                                    value="{{ $user['full_name'] }}">
+                                    value="{{ $arrName[1] }}">
                             </div>
                         </div>
                         {{-- PHONE ADDRESS --}}

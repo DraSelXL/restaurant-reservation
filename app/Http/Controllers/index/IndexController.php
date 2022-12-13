@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Migrasi\userMigrasi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class IndexController extends Controller
 {
@@ -29,7 +30,6 @@ class IndexController extends Controller
         ];
         if(Auth::attempt($credential)){
             // Check user role
-
             if(activeUser()->role->name == "Admin"){
                 return redirect()->route("admin_dashboard");
             }else if(activeUser()->role->name == "Customer"){
@@ -63,16 +63,16 @@ class IndexController extends Controller
         // REGISTER USER
         $new_user = new userMigrasi();
         $new_user->username = $request->username;
-        $new_user->password = $request->password;
-        $new_user->full_name = $request->firstname.$request->lastname;
-        $new_user->date_of_birth = "";
+        $new_user->password = Hash::make($request->password);
+        $new_user->full_name = $request->firstname.' '.$request->lastname;
+        $new_user->date_of_birth = date('Y-m-d H:i:s');
         $new_user->address = "";
         $new_user->email = "";
         $new_user->phone = $request->phone;
         $new_user->gender = 0;
         $new_user->balance = 0;
         $new_user->blocked = 0;
-        $new_user->role_id = 1;
+        $new_user->role_id = 2;
         $new_user->save();
         return redirect()->back();
     }
