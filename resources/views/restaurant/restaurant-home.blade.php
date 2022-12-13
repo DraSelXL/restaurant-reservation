@@ -24,9 +24,20 @@
         .table-block {
             width: 4em;
             height : 4em;
-            border-radius: 4px;
+            border-radius: 6px;
+            border: 1px solid rgba(50, 50, 50, 0.25);
             margin: 4px;
             display: inline-block;
+            color: white;
+        }
+        .available {
+            background-color: #06c700;
+        }
+        .occupied {
+            background-color: #ed3b27;
+        }
+        .card-table-desc {
+            border-radius: 6px;
         }
     </style>
 @endsection
@@ -115,40 +126,47 @@
             <div class="w-100" style="overflow: scroll">
                 <div id="table-layout" class="scrollable mx-auto">
                     <div class="d-flex justify-content-center" style="width: fit-content">
-                        <button col="1" row="1" class="btn btn-danger table-block"></button>
-                        <button col="2" row="1" class="btn btn-warning table-block"></button>
-                        <button col="3" row="1" class="btn btn-warning table-block"></button>
-                        <button col="4" row="1" class="btn btn-warning table-block"></button>
-                        <button col="5" row="1" class="btn btn-warning table-block"></button>
+                        <button col="1" row="1" class="table-block occupied" disabled>1</button>
+                        <button col="2" row="1" class="table-block available" disabled>2</button>
+                        <button col="3" row="1" class="table-block available" disabled>3</button>
+                        <button col="4" row="1" class="table-block available" disabled>4</button>
+                        <button col="5" row="1" class="table-block available" disabled>5</button>
                     </div>
                     <div class="d-flex justify-content-center" style="width: fit-content">
-                        <button col="1" row="2" class="btn btn-warning table-block"></button>
-                        <button col="2" row="2" class="btn btn-warning table-block"></button>
-                        <button col="3" row="2" class="btn btn-warning table-block"></button>
-                        <button col="4" row="2" class="btn btn-warning table-block"></button>
-                        <button col="5" row="2" class="btn btn-warning table-block"></button>
+                        <button col="1" row="2" class="table-block occupied" disabled>6</button>
+                        <button col="2" row="2" class="table-block available" disabled>7</button>
+                        <button col="3" row="2" class="table-block available" disabled>8</button>
+                        <button col="4" row="2" class="table-block available" disabled>9</button>
+                        <button col="5" row="2" class="table-block available" disabled>10</button>
                     </div>
                     <div class="d-flex justify-content-center" style="width: fit-content">
-                        <button col="1" row="3" class="btn btn-warning table-block"></button>
-                        <button col="2" row="3" class="btn btn-warning table-block"></button>
-                        <button col="3" row="3" class="btn btn-warning table-block"></button>
-                        <button col="4" row="3" class="btn btn-warning table-block"></button>
-                        <button col="5" row="3" class="btn btn-warning table-block"></button>
+                        <button col="1" row="3" class="table-block occupied" disabled>11</button>
+                        <button col="2" row="3" class="table-block available" disabled>12</button>
+                        <button col="3" row="3" class="table-block available" disabled>13</button>
+                        <button col="4" row="3" class="table-block available" disabled>14</button>
+                        <button col="5" row="3" class="table-block available" disabled>15</button>
                     </div>
                     <div class="d-flex justify-content-center" style="width: fit-content">
-                        <button col="1" row="4" class="btn btn-warning table-block"></button>
-                        <button col="2" row="4" class="btn btn-warning table-block"></button>
-                        <button col="3" row="4" class="btn btn-warning table-block"></button>
-                        <button col="4" row="4" class="btn btn-warning table-block"></button>
-                        <button col="5" row="4" class="btn btn-warning table-block"></button>
+                        <button col="1" row="4" class="table-block occupied" disabled>16</button>
+                        <button col="2" row="4" class="table-block available" disabled>17</button>
+                        <button col="3" row="4" class="table-block available" disabled>18</button>
+                        <button col="4" row="4" class="table-block available" disabled>19</button>
+                        <button col="5" row="4" class="table-block available" disabled>20</button>
                     </div>
                     <div class="d-flex justify-content-center" style="width: fit-content">
-                        <button col="1" row="5" class="btn btn-warning table-block"></button>
-                        <button col="2" row="5" class="btn btn-warning table-block"></button>
-                        <button col="3" row="5" class="btn btn-warning table-block"></button>
-                        <button col="4" row="5" class="btn btn-warning table-block"></button>
-                        <button col="5" row="5" class="btn btn-warning table-block"></button>
+                        <button col="1" row="5" class="table-block occupied" disabled>21</button>
+                        <button col="2" row="5" class="table-block available" disabled>22</button>
+                        <button col="3" row="5" class="table-block available" disabled>23</button>
+                        <button col="4" row="5" class="table-block available" disabled>24</button>
+                        <button col="5" row="5" class="table-block available" disabled>25</button>
                     </div>
+                </div>
+            </div>
+            <div class="d-flex-column align-item-center justify-content-center mx-auto text-center" style="width: fit-content">
+                <div class="h5" style="">Description:</div>
+                <div class="d-flex" style="width: fit-content">
+                    <div class="available card-table-desc text-white p-3 py-2 me-2">Available</div>
+                    <div class="occupied  card-table-desc text-white p-3 py-2 ">Reserved</div>
                 </div>
             </div>
         </div>

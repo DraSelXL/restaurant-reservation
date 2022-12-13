@@ -28,8 +28,8 @@
 
     <ul class="mt-auto list-unstyled">
         <a href="/logout">
-            <li class="danger">
-                <span class="material-symbols-outlined">logout</span>
+            <li class="danger logout">
+                <span class="material-symbols-outlined" style="width: fit-content">logout</span>
                 Logout
             </li>
         </a>

@@ -9,7 +9,7 @@
         }
 
         .sidebar .sidebar-header {
-            background-color: #ffa54c;
+            background-color: #06c700;
             color: white;
         }
 
@@ -31,7 +31,7 @@
         .sidebar .sidebar-menu li {
             padding: 12px;
             margin: 4px 0;
-            border-radius: 8px;
+            /* border-radius: 8px; */
             list-style: none;
         }
 
@@ -40,13 +40,18 @@
         }
 
         .sidebar .sidebar-menu .active {
-            background-color: #ffa54c;
-            color: white;
+            border-bottom: 2px solid black;
+            font-weight: bold;
+            /* color: white; */
         }
 
         .sidebar .sidebar-menu .danger {
             background-color: #ed3a27;
             color: white;
+        }
+
+        .sidebar .sidebar-menu .logout {
+            border-radius: 6px;
         }
     </style>
     @yield('custom-css-extended')
@@ -54,7 +59,7 @@
 
 @section('content')
     <div class="h-100 sidebar position-fixed" id="sidebar">
-        <div class="sidebar-header text-center p-3" id="sidebar-header">
+        <div class="sidebar-header bg-dark text-center p-3" id="sidebar-header">
             @yield('sidebar-header')
         </div>
         <div class="sidebar-menu p-2" id="sidebar-menu">
