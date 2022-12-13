@@ -22,6 +22,7 @@ return new class extends Migration
             $table->integer("col");
             $table->integer("row");
             $table->integer("start_time (am)");
+            $table->integer("price");
             $table->string("description");
 
             $table->timestamps();
