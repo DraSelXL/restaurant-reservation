@@ -12,7 +12,8 @@ class CustomerController extends Controller
     public function masterHome(Request $request)
     {
         $currPage = "home";
-        return view('customer.customer_home',compact('currPage'));
+        $user = activeUser();
+        return view('customer.customer_home',compact('currPage','user'));
     }
     public function masterExplore(Request $request)
     {
@@ -21,8 +22,9 @@ class CustomerController extends Controller
 
         // SEARCH RESTAURANT
         $keyword = $request->keyword;
+        $user = activeUser();
         if($keyword != null){
-            $restaurants = restaurantMigrasi::where("full_name",'like',"%$keyword%")->get();
+            $restaurants = restaurantMigrasi::where("full_name",'like',"%$keyword%",'user')->get();
         }
         return view('customer.customer_search',compact('currPage','restaurants'));
     }
@@ -30,18 +32,19 @@ class CustomerController extends Controller
     {
         $currPage = "favorite";
         $restaurants = restaurantMigrasi::all();
-        return view('customer.customer_favorite',compact('currPage','restaurants'));
+        $user = activeUser();
+        return view('customer.customer_favorite',compact('currPage','restaurants','user'));
     }
     public function masterHistory(Request $request)
     {
         $currPage = "history";
-        
         return view('customer.customer_history',compact('currPage'));
     }
     public function masterProfile(Request $request)
     {
         $currPage = "profile";
-        return view('customer.customer_profile',compact('currPage'));
+        $user = activeUser();
+        return view('customer.customer_profile',compact('currPage','user'));
     }
     public function masterNotification(Request $request)
     {

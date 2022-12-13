@@ -27,12 +27,12 @@
     Portable
 @endsection
 @php
-    $user = Session::get('userData');
+
 @endphp
 @section('custom_css')
-    <link rel="stylesheet" href="{{asset('build/css/customer_home.css')}}">
+    <link rel="stylesheet" href="{{ asset('build/css/customer_home.css') }}">
     <style>
-        .navigation:hover{
+        .navigation:hover {
             transform: scale(1.2);
             font-weight: 600;
             cursor: pointer;
@@ -43,7 +43,20 @@
 @section('dependencies')
     <script src="//code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 @endsection
+{{-- GET NUMBER VALUE --}}
+@php
+    $phone = '';
+    $number = '1234567890';
+    $arrNum = str_split($number);
 
+    foreach (str_split($user['phone']) as $num) {
+        if (Str::contains($num, $arrNum)) {
+            // if(str_contains($num,$arrNum)){
+            $phone .= $num;
+            // dump(Str::contains($num, $arrNum));
+        }
+    }
+@endphp
 @section('content')
     <div class="container">
         {{-- NAVBAR --}}
@@ -66,7 +79,9 @@
                                 <p class="m-0 ">Profile Picture</p>
                             </div>
                             <div class="col d-flex align-items-center">
-                                <img class="dropdown-toggle" role="button" data-bs-toggle="dropdown" src="{{asset("images/customer/pp.jpg")}}" alt="" width="70px" height="70px" style="border-radius: 50%">
+                                <img class="dropdown-toggle" role="button" data-bs-toggle="dropdown"
+                                    src="{{ asset('images/customer/pp.jpg') }}" alt="" width="70px" height="70px"
+                                    style="border-radius: 50%">
                             </div>
                         </div>
                         {{-- NAME --}}
@@ -75,7 +90,8 @@
                                 <p class="m-0">Username</p>
                             </div>
                             <div class="col d-flex align-items-center">
-                                <input type="text" class="form-control" id="username" name="username" value="{{$user['username']}}">
+                                <input type="text" class="form-control" id="username" name="username"
+                                    value="{{ $user['username'] }}">
                             </div>
                         </div>
                         <div class="row mb-3">
@@ -83,7 +99,8 @@
                                 <p class="m-0">First Name</p>
                             </div>
                             <div class="col d-flex align-items-center">
-                                <input type="text" class="form-control" id="firstname" name="firstname" value="{{$user['full_name']}}">
+                                <input type="text" class="form-control" id="firstname" name="firstname"
+                                    value="{{ $user['full_name'] }}">
                             </div>
                         </div>
                         <div class="row mb-3">
@@ -91,7 +108,8 @@
                                 <p class="m-0">Last Name</p>
                             </div>
                             <div class="col d-flex align-items-center">
-                                <input type="text" class="form-control" id="lastname" name="lastname" value="{{$user['full_name']}}">
+                                <input type="text" class="form-control" id="lastname" name="lastname"
+                                    value="{{ $user['full_name'] }}">
                             </div>
                         </div>
                         {{-- PHONE ADDRESS --}}
@@ -100,17 +118,8 @@
                                 <p class="m-0">Phone Number</p>
                             </div>
                             <div class="col">
-                                @php
-                                    $phone = "";
-                                    $number = "1234567890";
-                                    foreach(str_split($user['phone']) as $num){
-                                        if(str_contains($num,$number)){
-                                            $phone += $num;
-                                        }
-                                    }
-                                    dd($phone);
-                                @endphp
-                                <input type="number" class="form-control" id="phone" name="phone" value="{{intval($phone)}}">
+                                <input type="number" class="form-control" id="phone" name="phone"
+                                    value="{{ intval($phone) }}">
                             </div>
                         </div>
                         <div class="row mb-3">
@@ -118,7 +127,8 @@
                                 <p class="m-0">Address</p>
                             </div>
                             <div class="col d-flex align-items-center">
-                                <input type="text" class="form-control" id="address" name="address" value="{{$user['address']}}">
+                                <input type="text" class="form-control" id="address" name="address"
+                                    value="{{ $user['address'] }}">
                             </div>
                         </div>
                         {{-- BIRTHDATE --}}
@@ -127,7 +137,8 @@
                                 <p class="m-0">Date of Birth</p>
                             </div>
                             <div class="col">
-                                <input type="date" class="form-control" id="date" name="birthdate" value="{{$user['date_of_birth']}}">
+                                <input type="date" class="form-control" id="date" name="birthdate"
+                                    value="{{ $user['date_of_birth'] }}">
                             </div>
                         </div>
                         {{-- PASSWORD --}}
@@ -156,32 +167,42 @@
                     <div class="ticket">
                         {{-- TEMPLATE CARD --}}
                         <div class="mb-3" style="position: relative;">
-                            <a class="text-dark p-0"  style="text-decoration: none;" href="/customer/restaurant/{{"Pavillion Restaurant"}}">
+                            <a class="text-dark p-0" style="text-decoration: none;"
+                                href="/customer/restaurant/{{ 'Pavillion Restaurant' }}">
                                 {{-- RESTAURANT EVENT --}}
                                 <div class="event_container w-100" style="position: absolute;top:30px;">
-                                    <div class="event_label text-light w-25 px-2 rounded-end" style="background-color: #ed3b27;">Sale</div>
-                                    <div class="event_label text-light w-50 px-2 rounded-end" style="background-color: #6C4AB6; ">Best Seller</div>
+                                    <div class="event_label text-light w-25 px-2 rounded-end"
+                                        style="background-color: #ed3b27;">Sale</div>
+                                    <div class="event_label text-light w-50 px-2 rounded-end"
+                                        style="background-color: #6C4AB6; ">Best Seller</div>
                                 </div>
                                 <div class="number_container" style="position: absolute;top:30px;right:5%;">
-                                    <div class="event_label text-light p-3 rounded-3" style="background-color: #FEB139; ">35</div>
+                                    <div class="event_label text-light p-3 rounded-3" style="background-color: #FEB139; ">
+                                        35</div>
                                 </div>
                                 {{-- CARD CONTENT --}}
-                                <div class="restaurant_card bg-light p-3" >
+                                <div class="restaurant_card bg-light p-3">
                                     <div class="image_container" style="height: 18rem">
-                                        <img class="navigation" src="{{asset('storage/images/restaurant/Tina Feeney/restaurant_1.jpg')}}" alt="" width="100%" height="100%">
+                                        <img class="navigation"
+                                            src="{{ asset('storage/images/restaurant/Tina Feeney/restaurant_1.jpg') }}"
+                                            alt="" width="100%" height="100%">
                                     </div>
 
                                     {{-- RESTAURANT INFO --}}
                                     <div class="row m-0 mt-2">
                                         <div class="col-6">
-                                            <div class="restaurant_info" >
-                                                <p class="m-0" style="font-family: helvetica_regular;font-size: 1.5em">Pavillion Restaurant</p>
-                                                <p class="m-0" style="font-family: helvetica_regular;font-size: 0.8em;color: rgb(111, 111, 111);">Asian, Indonesian, Steak</p>
+                                            <div class="restaurant_info">
+                                                <p class="m-0" style="font-family: helvetica_regular;font-size: 1.5em">
+                                                    Pavillion Restaurant</p>
+                                                <p class="m-0"
+                                                    style="font-family: helvetica_regular;font-size: 0.8em;color: rgb(111, 111, 111);">
+                                                    Asian, Indonesian, Steak</p>
                                             </div>
                                         </div>
                                         <div class="col-6 d-flex justify-content-end align-items-center">
                                             <p class="m-0">3</p>
-                                            <img  src="{{asset('storage/images/customer/person.png')}}" alt="" width="30px" height="30px">
+                                            <img src="{{ asset('storage/images/customer/person.png') }}" alt=""
+                                                width="30px" height="30px">
                                         </div>
                                     </div>
 
@@ -189,9 +210,12 @@
                                     {{-- TRANSACTION DETAIL --}}
                                     <div class="code d-flex justify-content-end">
                                         <div class="text-end">
-                                            <p class="m-0" style="font-family: helvetica_bold;font-size: 1.1em;">Transaction code : 1PKhfWqLiADhSb7</p>
-                                            <p class="m-0" style="font-family: helvetica_regular;">Order Price : Rp 15.000,00</p>
-                                            <p class="m-0" style="font-family: helvetica_regular;">Saturday, 11/10/2022 13.00 PM</p>
+                                            <p class="m-0" style="font-family: helvetica_bold;font-size: 1.1em;">
+                                                Transaction code : 1PKhfWqLiADhSb7</p>
+                                            <p class="m-0" style="font-family: helvetica_regular;">Order Price : Rp
+                                                15.000,00</p>
+                                            <p class="m-0" style="font-family: helvetica_regular;">Saturday, 11/10/2022
+                                                13.00 PM</p>
                                         </div>
                                     </div>
                                 </div>
@@ -216,9 +240,8 @@
 @endsection
 
 @section('js_script')
-
     <script>
-        $(document).ready(function(){
+        $(document).ready(function() {
             console.log('Welcome Customer!');
 
         });
