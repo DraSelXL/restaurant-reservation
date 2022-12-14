@@ -39,6 +39,28 @@
             font-family: "helvetica_bold";
             src: url("../../font/Helvetica/FreeSansBold.otf");
         }
+
+
+        /* width */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        /* Track */
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+
+        /* Handle */
+        ::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius : 5px;
+        }
+
+        /* Handle on hover */
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
     </style>
 </head>
 <body>
