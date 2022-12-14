@@ -105,7 +105,7 @@ class RestaurantController extends Controller
         $restaurant = $this->getRestaurantFromSession($request);
 
         // Get reservations in ascending order and more than today
-        $reservations = reservationMigrasi::where("restaurant_id", 3)
+        $reservations = reservationMigrasi::where("restaurant_id", $restaurant->id)
             ->where("reservation_date_time", ">=", DB::raw("NOW()"))
             ->orderBy("reservation_date_time", "asc")
             ->get();
