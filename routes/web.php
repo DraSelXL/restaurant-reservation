@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\admin\AdminController;
 use App\Http\Controllers\customer\CustomerController;
 use App\Http\Controllers\index\IndexController;
+use App\Http\Controllers\restaurant\RestaurantController;
 use App\Models\Migrasi\userMigrasi;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Hash;
@@ -159,4 +160,23 @@ Route::prefix('customer')->group(function () {
     // 3. filterRestaurant
     Route::post('filterRestaurant', [CustomerController::class,"filterRestaurant"]);
 
+});
+
+Route::prefix('restaurant')->controller(RestaurantController::class)->group(function() {
+    Route::get('home', 'getHomePage');
+    Route::get('history', 'getHistoryPage');
+    Route::get('statistic', 'getStatisticPage');
+
+    // Interact with reservation orders
+    Route::get('confirm/{id}', 'confirmReservation');
+    Route::get('reject/{id}', 'rejectReservation');
+
+    // Interact with available restaurant tables
+    Route::get('getTables', 'getRestaurantTables');
+    Route::post('addTable', 'addTable');
+    Route::post('increaseTable', 'increaseTable');
+    Route::post('decreaseTable', 'decreaseTable');
+
+    // Update the restaurant settings
+    Route::post('/updateRestaurant/{id}', 'updateRestaurant');
 });
