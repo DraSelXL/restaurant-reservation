@@ -28,7 +28,15 @@ class AdminController extends Controller
         FROM restaurants r
         JOIN transactions t ON r.id = t.restaurant_id
         group by r.id, r.id, r.full_name, r.address");
-        return view('admin.admin_dashboard',compact('currPage','totaltransactions','countTotalOrder','audienceGrowth','topSales'));
+        $lastWeek = DB::select("select sum(payment_amount) as sum
+        from transactions t
+        join restaurants r2 on t.restaurant_id = r2.id
+        join reservations r on r.id = t.reservation_id
+        where r.payment_status = ?
+        and payment_date_at between date_sub(now(), interval 1 year) and now()
+        group by r2.id",[1]);
+        //dd($lastWeek);
+        return view('admin.admin_dashboard',compact('currPage','totaltransactions','countTotalOrder','audienceGrowth','topSales','lastWeek'));
     }
     public function masterCustomer(Request $request)
     {
@@ -59,14 +67,15 @@ class AdminController extends Controller
             })
             ->get();
         $countUser = $userList->count();
-        $spending = DB::select("select ifnull(u.id,u.id) AS id,
-        case when SUM(t.payment_amount) > 0 then SUM(t.payment_amount) ELSE 0 END AS sum
+        $spending = DB::select("select u.id AS id,
+        case when SUM(t.payment_amount) > 0 then SUM(t.payment_amount) ELSE '0' END AS sum
         FROM transactions t
         JOIN users u ON u.id = t.user_id
         JOIN reservations r ON r.id = t.reservation_id
         WHERE r.payment_status = ?
-        GROUP BY t.user_id
+        GROUP BY t.user_id, restaurant_reservation.u.id
         ORDER BY u.id",[1]);
+        $length = count($spending);
         return view('admin.admin_customer',compact('currPage','userList','countUser','keyword','spending'));
     }
 

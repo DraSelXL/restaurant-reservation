@@ -3,6 +3,8 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+
+use App\Models\Migrasi\transactionMigrasi;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -339,10 +341,12 @@ class DatabaseSeeder extends Seeder
         //     'email' => 'test@example.com',
         // ]);
 
-        \App\Models\Migrasi\transactionMigrasi::factory(20)->create();
-        \App\Models\Migrasi\reviewMigrasi::factory(50)->create();
-        \App\Models\Migrasi\reservationMigrasi::factory(20)->create();
-        \App\Models\Migrasi\postMigrasi::factory(5)->create();
         \App\Models\Migrasi\favouriteMigrasi::factory(3)->create();
+        \App\Models\Migrasi\reservationMigrasi::factory(20)->create();
+        \App\Models\Migrasi\reviewMigrasi::factory(50)->create();
+        \App\Models\Migrasi\postMigrasi::factory(5)->create();
+        for ($i=0; $i <20 ; $i++) {
+            \App\Models\Migrasi\transactionMigrasi::factory()->create();
+        }
     }
 }

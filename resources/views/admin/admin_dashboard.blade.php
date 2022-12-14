@@ -128,7 +128,11 @@
                                     <td>{{$key+1}}</td>
                                     <td>{{$topSale->full_name}}</td>
                                     <td>{{$topSale->address}}</td>
-                                    <td>Rp.00</td>
+                                    @if ($lastWeek == [])
+                                        <td>Rp. 0,00</td>
+                                    @else
+                                        <td>Rp. {{$lastWeek[$key]->sum}},00</td>
+                                    @endif
                                     <td>4166 $</td>
                                     <td>88 $</td>
                                 </tr>
