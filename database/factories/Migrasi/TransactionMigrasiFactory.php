@@ -17,7 +17,7 @@ class TransactionMigrasiFactory extends Factory
     public function definition()
     {
         return [
-            'user_id'=>$this->faker->numberBetween(3,9),
+            'user_id'=>$this->faker->numberBetween(4,9),
             'restaurant_id'=>$this->faker->numberBetween(1,3),
             'reservation_id'=>$this->faker->numberBetween(1,10),
             'payment_amount'=>$this->faker->randomFloat(2,10000,60000),
