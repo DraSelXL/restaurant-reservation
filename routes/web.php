@@ -184,5 +184,5 @@ Route::prefix('restaurant')->controller(RestaurantController::class)->group(func
     Route::post('decreaseTable', 'decreaseTable');
 
     // Update the restaurant settings
-    Route::post('/updateRestaurant/{id}', 'updateRestaurant');
+    Route::post('/updateRestaurant', 'updateRestaurant');
 });

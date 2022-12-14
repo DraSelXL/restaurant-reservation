@@ -7,6 +7,7 @@ use App\Models\Migrasi\reservationMigrasi;
 use App\Models\Migrasi\restaurantMigrasi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 class RestaurantController extends Controller
 {
@@ -27,14 +28,7 @@ class RestaurantController extends Controller
     private function getRestaurantFromSession(Request $request)
     {
         // Get restaurant model
-        $restaurant = null;
-        if ($request->session()->has("OPEN_TABLE_RESTAURANT_INFO")) {
-            $restaurant = $request->session()->get("OPEN_TABLE_RESTAURANT_INFO");
-        }
-        else {
-            $restaurant = restaurantMigrasi::where('user_id', activeUser()->id)->get();
-            $request->session()->put("OPEN_TABLE_RESTAURANT_INFO", $restaurant);
-        }
+        $restaurant = restaurantMigrasi::where('user_id', activeUser()->id)->get()[0];
 
         return $restaurant;
     }
@@ -45,7 +39,8 @@ class RestaurantController extends Controller
     public function getHomePage(Request $request)
     {
         return view('restaurant.restaurant-home', [
-            'active' => RestaurantController::$ACTIVE_HOME
+            'active' => RestaurantController::$ACTIVE_HOME,
+            'restaurant' => $this->getRestaurantFromSession($request)
         ]);
     }
 
@@ -90,7 +85,41 @@ class RestaurantController extends Controller
      */
     public function updateRestaurant(Request $request)
     {
-        // TODO: Handle the new data to update the database.
+        $request->validate([
+            'tableRow' => ['required', 'numeric', 'max:20', 'min:1'],
+            'tableColumn' => ['required', 'numeric', 'max:20', 'min:1'],
+            'restaurantAddress' => ['required'],
+            'restaurantPhone' => ['required'],
+            'restaurantDescription' => ['required'],
+            'openTime' => ['required'],
+            'shifts' => ['required', 'numeric'],
+            'reservationCost' => ['required', 'numeric'],
+        ]);
+
+        // Get the restaurant
+        $restaurant = $this->getRestaurantFromSession($request);
+
+        if ($request->newPassword != null) {
+            $request->validate([
+                'newPassword' => ['confirmed'],
+                'restaurantPassword' => ['required'],
+            ]);
+            if (Hash::check($request->currentPassword, $restaurant->user->password)) {
+                return redirect()->intended("/restaurant/home")->with('err', 'Password is not correct!');
+            }
+        }
+
+        $restaurant->row = $request->tableRow;
+        $restaurant->col = $request->tableColumn;
+        $restaurant->address = $request->restaurantAddress;
+        $restaurant->phone = $request->restaurantPhone;
+        $restaurant->description = $request->restaurantDescription;
+        $restaurant->start_time = (int)explode(':', $request->openTime)[0];
+        $restaurant->shifts = $request->shifts;
+        $restaurant->price = $request->reservationCost;
+        $restaurant->save();
+
+        return redirect()->intended("/restaurant/home")->with('success', 'Successfully changed settings!');
     }
 
     /**
@@ -100,10 +129,10 @@ class RestaurantController extends Controller
     {
         $restaurant = $this->getRestaurantFromSession($request);
 
-        $reservations = reservationMigrasi::where("restaurant_id", 3)
-        ->where("reservation_date_time", "==", DB::raw("NOW()"))
-        ->orderBy("reservation_date_time", "asc")
-        ->get();
+        $reservations = reservationMigrasi::where("restaurant_id", $restaurant->id)
+            ->where("reservation_date_time", "==", DB::raw("NOW()"))
+            ->orderBy("reservation_date_time", "asc")
+            ->get();
 
         return view('restaurant.partial.table-reservation', [
             "restaurant" => $restaurant,

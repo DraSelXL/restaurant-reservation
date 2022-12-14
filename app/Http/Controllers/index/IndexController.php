@@ -60,7 +60,7 @@ class IndexController extends Controller
         $new_user->full_name = $request->firstname.' '.$request->lastname;
         $new_user->date_of_birth = date('Y-m-d H:i:s');
         $new_user->address = "";
-        $new_user->email = "";  
+        $new_user->email = "";
         $new_user->phone = $request->phone;
         $new_user->gender = 0;
         $new_user->balance = 0;
@@ -74,6 +74,9 @@ class IndexController extends Controller
     {
         if(Auth::guard('web')->check()){
             Auth::guard('web')->logout();
+
+            // logout from the restaurant session if exists
+            $request->session()->pull("OPEN_TABLE_RESTAURANT_INFO");
         }
         return redirect()->route("index");
     }

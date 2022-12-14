@@ -1,6 +1,6 @@
 @for ($i = 0; $i < $restaurant->row; $i++)
     <div class="d-flex justify-content-center" style="width: fit-content">
-        @for($j = 0; $j < $restaurant->column; $j++)
+        @for($j = 0; $j < $restaurant->col; $j++)
             @php
                 $seatCounter = ($i+1)*($j+1)-1;
 
