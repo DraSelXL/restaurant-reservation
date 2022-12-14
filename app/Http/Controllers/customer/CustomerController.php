@@ -44,6 +44,7 @@ class CustomerController extends Controller
     public function masterFavorite(Request $request)
     {
         $currPage = "favorite";
+        dd(activeUser());
         $restaurants = restaurantMigrasi::all();
         $user = activeUser();
         return view('customer.customer_favorite',compact('currPage','restaurants','user'));
