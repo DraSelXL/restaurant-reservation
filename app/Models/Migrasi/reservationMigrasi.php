@@ -23,4 +23,8 @@ class reservationMigrasi extends Model
     {
         return $this->belongsTo(tableMigrasi::class);
     }
+    public function user()
+    {
+        return $this->belongsTo(userMigrasi::class);
+    }
 }

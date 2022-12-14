@@ -17,7 +17,7 @@
 
         .reservation {
             display: inline-block;
-            max-width: 30em;
+            width: 20em;
         }
 
         /** Reservation Table Classes */
@@ -49,74 +49,7 @@
         <hr>
         <div class="reservation-holder">
             <div id="pending-reservations" class="scrollable">
-                {{-- An active reservation card, create a card with this template --}}
-                <div class="reservation">
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title">{{ date("F j, Y, g:i a") }}</h5>
-                            <div class="card-text mb-3">
-                                <p class="m-0">Reserver: John Doe</p>
-                                <p class="m-0">Seats: 5</p>
-                            </div>
-                            {{-- The responds button to mark a reservation as filled or not --}}
-                            <div class="text-end">
-                                <a href="{{ url('/restaurant/reject/123123') }}" class="btn btn-danger">Reject</a>
-                                <a href="{{ url('/restaurant/confirm/123123') }}" class="btn btn-primary">Attended</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                {{-- An active reservation card, create a card with this template --}}
-                <div class="reservation">
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title">{{ date("F j, Y, g:i a") }}</h5>
-                            <div class="card-text mb-3">
-                                <p class="m-0">Reserver: John Doe</p>
-                                <p class="m-0">Seats: 5</p>
-                            </div>
-                            {{-- The responds button to mark a reservation as filled or not --}}
-                            <div class="text-end">
-                                <a href="{{ url('/restaurant/reject/123123') }}" class="btn btn-danger">Reject</a>
-                                <a href="{{ url('/restaurant/confirm/123123') }}" class="btn btn-primary">Attended</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                {{-- An active reservation card, create a card with this template --}}
-                <div class="reservation">
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title">{{ date("F j, Y, g:i a") }}</h5>
-                            <div class="card-text mb-3">
-                                <p class="m-0">Reserver: John Doe</p>
-                                <p class="m-0">Seats: 5</p>
-                            </div>
-                            {{-- The responds button to mark a reservation as filled or not --}}
-                            <div class="text-end">
-                                <a href="{{ url('/restaurant/reject/123123') }}" class="btn btn-danger">Reject</a>
-                                <a href="{{ url('/restaurant/confirm/123123') }}" class="btn btn-primary">Attended</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                {{-- An active reservation card, create a card with this template --}}
-                <div class="reservation">
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title">{{ date("F j, Y, g:i a") }}</h5>
-                            <div class="card-text mb-3">
-                                <p class="m-0">Reserver: John Doe</p>
-                                <p class="m-0">Seats: 5</p>
-                            </div>
-                            {{-- The responds button to mark a reservation as filled or not --}}
-                            <div class="text-end">
-                                <a href="{{ url('/restaurant/reject/123123') }}" class="btn btn-danger">Reject</a>
-                                <a href="{{ url('/restaurant/confirm/123123') }}" class="btn btn-primary">Attended</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                {{-- All reservations will be put in this container --}}
             </div>
         </div>
 
@@ -279,6 +212,7 @@
             const openTimeInput = $("#openTimeInput");
             const shiftsInput = $("#shiftsInput");
             const costInput = $("#costInput");
+            const reservationContainer = $("#pending-reservations");
 
             // Variables
             const settingValues = [
@@ -294,6 +228,8 @@
             const settingStatus = [true, true, true, true, true, true, true, true];
 
             // Register events to the variables
+            getReservations(reservationContainer);
+
             // Show the confirmation prompt when entering a new password
             newPasswordInput.on("input", showPrompt(newPasswordInput, changePasswordPrompt, ""));
 
@@ -398,6 +334,25 @@
                 data: {},
                 success: function (response, status) {
                     // TODO: For every table, put into a list item in the listElement, add increase & decrease item event handler to the buttons in every item using the `mutateTableEvent()`.
+                }
+            });
+        }
+
+        /**
+         * Get the reservations for the current logged in restaurant.
+         *
+         * @param {JqueryObject} containerElement The element to which the response it going to be appended to.
+         */
+        function getReservations(containerElement) {
+            $.ajax({
+                type: "GET",
+                url: "/restaurant/getReservations",
+                data: {},
+                success: function (response, status) {
+                    if (response !== "") {
+                        containerElement.html(response);
+                    }
+                    else containerElement.html("<h2>No reservations has been made!</h2>");
                 }
             });
         }

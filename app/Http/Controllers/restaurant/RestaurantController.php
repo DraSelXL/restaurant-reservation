@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Migrasi\reservationMigrasi;
 use App\Models\Migrasi\restaurantMigrasi;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class RestaurantController extends Controller
 {
@@ -19,9 +20,11 @@ class RestaurantController extends Controller
     private static $ACTIVE_STATISTIC = "statistic";
 
     /**
-     * Get the home page view of the restaurant and return it as a response.
+     * Retrieve the current logged restaurant account and return it to the caller of the function.
+     *
+     * @return restaurantMigrasi|null The restaurant eloquent model if found, else return null.
      */
-    public function getHomePage(Request $request)
+    private function getRestaurantFromSession(Request $request)
     {
         // Get restaurant model
         $restaurant = null;
@@ -32,8 +35,14 @@ class RestaurantController extends Controller
             $restaurant = restaurantMigrasi::where('user_id', activeUser()->id)->get();
         }
 
-        // TODO: Get reservations in ascending order and more than today
+        return $restaurant;
+    }
 
+    /**
+     * Get the home page view of the restaurant and return it as a response.
+     */
+    public function getHomePage(Request $request)
+    {
         return view('restaurant.restaurant-home', [
             'active' => RestaurantController::$ACTIVE_HOME
         ]);
@@ -91,27 +100,16 @@ class RestaurantController extends Controller
         // TODO: Get all tables that is available and return it as a html list-item elements
     }
 
-    /**
-     * Add a new type of table to the database assocciated with the current authenticated user.
-     */
-    public function addTable(Request $request)
+    public function getReservations(Request $request)
     {
-        // TODO: Add a new type table
-    }
+        $restaurant = $this->getRestaurantFromSession($request);
 
-    /**
-     * Increase the number of the targeted table size, from the authenticated user restaurant.
-     */
-    public function increaseTable(Request $request)
-    {
-        // TODO: Increase the table with the current authenticated user, and the targeted table size. Return the new size of the available targeted table.
-    }
+        // Get reservations in ascending order and more than today
+        $reservations = reservationMigrasi::where("restaurant_id", 3)
+            ->where("reservation_date_time", ">=", DB::raw("NOW()"))
+            ->orderBy("reservation_date_time", "asc")
+            ->get();
 
-    /**
-     * Decrease the number of the targeted table size, from the authenticated user restaurant.
-     */
-    public function decreaseTable(Request $request)
-    {
-        // TODO: Decrease the table with the current authenticated user, and the targeted table size. Return the new size of the available targeted table.
+        return view('restaurant.partial.reservation-card', ["reservations" => $reservations]);
     }
 }

@@ -173,6 +173,7 @@ Route::prefix('restaurant')->controller(RestaurantController::class)->group(func
     Route::get('statistic', 'getStatisticPage');
 
     // Interact with reservation orders
+    Route::get('getReservations', 'getReservations');
     Route::get('confirm/{id}', 'confirmReservation');
     Route::get('reject/{id}', 'rejectReservation');
 
