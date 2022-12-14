@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\customer;
 
 use App\Http\Controllers\Controller;
+use App\Models\Migrasi\favouriteMigrasi;
 use App\Models\Migrasi\restaurantMigrasi;
 use App\Models\Migrasi\userMigrasi;
 use App\Rules\ImageCount;
@@ -44,8 +45,11 @@ class CustomerController extends Controller
     public function masterFavorite(Request $request)
     {
         $currPage = "favorite";
-        $restaurants = restaurantMigrasi::all();
-        $user = activeUser();
+        $user_id = activeUser()->id;
+        $restaurants = restaurantMigrasi::join('favourites','favourites.restaurant_id','=','restaurants.id')
+                        ->where('favourites.user_id','=',$user_id)
+                        ->get();
+        $user = userMigrasi::find($user_id);
         return view('customer.customer_favorite',compact('currPage','restaurants','user'));
     }
     public function masterHistory(Request $request)

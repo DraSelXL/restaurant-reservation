@@ -34,4 +34,8 @@ class userMigrasi extends Authenticatable
     {
         return $this->hasOne(restaurantMigrasi::class);
     }
+    public function favourite()
+    {
+        return $this->hasMany(favouriteMigrasi::class,'user_id','id');
+    }
 }

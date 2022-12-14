@@ -145,6 +145,7 @@ Route::prefix('customer')->group(function () {
     // PROFILE ROUTES
     // 1. editProfile
     Route::post('editProfile', [CustomerController::class,"editProfile"]);
+
     // HOME ROUTES
     // 1. checkAvailability
     Route::post('checkAvailability', [CustomerController::class,"checkAvailability"]);

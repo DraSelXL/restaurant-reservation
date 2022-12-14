@@ -25,4 +25,8 @@ class restaurantMigrasi extends Model
     {
         return $this->hasMany(reviewMigrasi::class);
     }
+    public function favourite()
+    {
+        return $this->hasMany(favouriteMigrasi::class,'restaurant_id','id');
+    }
 }
