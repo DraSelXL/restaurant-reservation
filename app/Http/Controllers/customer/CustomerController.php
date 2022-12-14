@@ -133,6 +133,8 @@ class CustomerController extends Controller
         $new_restaurant->user_id = activeUser()->id;
         $new_restaurant->col = 0;
         $new_restaurant->row = 0;
+        $new_restaurant->shifts = $request->shift;
+        $new_restaurant->price = 20000;
         $new_restaurant->start_time = $request->open_at."";
         $new_restaurant->description = $request->description;
         $new_restaurant->save();
