@@ -20,7 +20,7 @@ return new class extends Migration
             $table->bigInteger("reservation_id");
             $table->integer("payment_amount");
             $table->tinyInteger("payment_status");
-            $table->date("payment_date_at");
+            $table->dateTime("payment_date_at");
             $table->timestamps();
             $table->softDeletes();
         });
