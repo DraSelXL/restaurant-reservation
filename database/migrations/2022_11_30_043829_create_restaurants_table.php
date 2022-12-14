@@ -23,6 +23,7 @@ return new class extends Migration
             $table->integer("row");
             $table->float("average_rating");
             $table->integer("start_time");
+            $table->integer("shifts");
             $table->integer("price");
             $table->string("description");
 
