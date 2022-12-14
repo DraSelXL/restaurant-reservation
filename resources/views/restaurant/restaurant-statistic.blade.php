@@ -6,10 +6,17 @@
 
 @section("custom-css-extended")
     <style>
+        .toggle-container {
+            border-radius: 6px;
+            border: 1px solid black;
+        }
         .toggle-card {
             background-color: inherit;
             border: 0 solid black;
 
+        }
+        .toggle-card.active {
+            background-color: rgb(240, 240, 240);
         }
     </style>
 @endsection
@@ -29,13 +36,13 @@
                             </div>
                         </div>
                         <div class="d-flex justify-content-end w-100">
-                            <h1 class="font-weight-bold">Rp. {{ 123123 }},00</h1>
+                            <h1 id="revenue-placeholder" class="font-weight-bold">Rp. {{ 123123 }},00</h1>
                         </div>
                         {{-- Toggle Total Revenue Time Limit --}}
                         <div class="d-flex justify-content-end w-100">
-                            <div id="revenue-toggle" style="border-radius: 6px; border: 1px solid black">
-                                <button id="revenue-toggle-monthly" class="toggle-card p-1 px-2" style="border-right: 1px solid black">Monthly</button>
-                                <button id="revenue-toggle-yearly" class="toggle-card p-1 px-2">Yearly</button>
+                            <div id="revenue-toggle" class="toggle-container">
+                                <button id="revenue-toggle-monthly" class="toggle-card active py-1 px-2" style="border-right: 1px solid black">Monthly</button>
+                                <button id="revenue-toggle-yearly" class="toggle-card py-1 px-2">Yearly</button>
                             </div>
                         </div>
                     </div>
@@ -51,13 +58,13 @@
                             </div>
                         </div>
                         <div class="d-flex justify-content-end w-100">
-                            <h1 class="font-weight-bold">{{ 123 }}</h1>
+                            <h1 id="order-placeholder" class="font-weight-bold">{{ 123 }}</h1>
                         </div>
                         {{-- Toggle Total Order Time Limit --}}
-                        <div id="order-toggle" class="d-flex justify-content-end w-100">
-                            <div style="border-radius: 6px; border: 1px solid black">
-                                <button id="order-toggle-monthly" class="toggle-card p-1 px-2" style="border-right: 1px solid black">Monthly</button>
-                                <button id="order-toggle-yearly" class="toggle-card p-1 px-2">Yearly</button>
+                        <div class="d-flex justify-content-end w-100">
+                            <div id="order-toggle" class="toggle-container">
+                                <button id="order-toggle-monthly" class="toggle-card active py-1 px-2" style="border-right: 1px solid black">Monthly</button>
+                                <button id="order-toggle-yearly" class="toggle-card py-1 px-2">Yearly</button>
                             </div>
                         </div>
                     </div>
@@ -73,13 +80,13 @@
                             </div>
                         </div>
                         <div class="d-flex justify-content-end w-100">
-                            <h1 class="font-weight-bold">{{ 345 }}</h1>
+                            <h1 id="growth-placeholder" class="font-weight-bold">{{ 345 }}</h1>
                         </div>
                         {{-- Toggle Total Growth Time Limit --}}
-                        <div id="growth-toggle" class="d-flex justify-content-end w-100">
-                            <div style="border-radius: 6px; border: 1px solid black">
-                                <button id="growth-toggle-monthly" class="toggle-card p-1 px-2" style="border-right: 1px solid black">Monthly</button>
-                                <button id="growth-toggle-yearly" class="toggle-card p-1 px-2">Yearly</button>
+                        <div class="d-flex justify-content-end w-100">
+                            <div id="growth-toggle" class="toggle-container">
+                                <button id="growth-toggle-monthly" class="toggle-card active py-1 px-2" style="border-right: 1px solid black">Monthly</button>
+                                <button id="growth-toggle-yearly" class="toggle-card py-1 px-2">Yearly</button>
                             </div>
                         </div>
                     </div>
@@ -92,6 +99,10 @@
     </main>
 
     <script>
+        // Global Variable
+        const MONTHLY_FILTER = 1;
+        const YEARLY_FILTER = 2;
+
         /**
          * Start the script as soon as the HTML DOM loads. Acts as the main function.
          */
@@ -107,9 +118,9 @@
 
             // Register Events
             loadGraph(xValues, yValues); // Load the graph as soon as the page loads
-            revenueToggle.on("click", toggleContainer(revenueToggle));
-            orderToggle.on("click", toggleContainer(orderToggle));
-            growthToggle.on("click", toggleContainer(growthToggle));
+            toggleContainer(revenueToggle);
+            toggleContainer(orderToggle);
+            toggleContainer(growthToggle);
         });
 
         /**
@@ -151,9 +162,27 @@
          * @return {function} The handler function that will handle the click event.
          */
         function toggleContainer(toggleContainer) {
+            const toggleButtons = toggleContainer.find(".toggle-card");
+
+            toggleButtons.each(function () {
+                $(this).on("click", setActiveFilter($(this), toggleButtons));
+            });
+        }
+
+        /**
+         * Toggle the button and issue an ajax request to acquire the proper response according to the button type.
+         *
+         * @param {JqueryObject} clickedElement The element which fires the click event.
+         * @param {JqueryCollection} filterElements A collection of elements which is to be toggled between.
+         */
+        function setActiveFilter(clickedElement, filterElements) {
             return (event) => {
-                console.log("Clicked");
-                // TODO: Handle toggle event
+                const activeElement = filterElements.find(".toggle-card.active");
+
+                // TODO: AJAX and get the total requested item
+
+                activeElement.prevObject.removeClass("active");
+                clickedElement.addClass("active");
             }
         }
     </script>
