@@ -18,7 +18,7 @@ class favouriteMigrasiFactory extends Factory
     {
         return [
             'restaurant_id'=>$this->faker->numberBetween(1,3),
-            'user_id'=>$this->faker->numberBetween(1,3),
+            'user_id'=>$this->faker->unique()->numberBetween(4,9),
         ];
     }
 }

@@ -28,27 +28,10 @@
                         <p class="m-0" style="font-family: helvetica_bold;font-size: 2em">Select Table</p>
                     </div>
                     {{-- RESTAURANT MAP --}}
-                    @php
-                        $row_lenght = 5;
-                        $col_length = 7;
-                    @endphp
-                    @for ($i = 0; $i<$row_lenght;$i++)
-                        <div class="d-flex">
-                            @for ($j = 0; $j<$col_length;$j++)
-                                <div class="p-1" style="width: 70px;">
-                                    @if ($j==$i)
-                                        <div class="btn w-100 d-flex justify-content-center align-items-center" style="height: 60px;background-color: #ed3b27;color:white;">
-                                            {{($i*$col_length)+($j+1)}}
-                                        </div>
-                                    @else
-                                        <div class="btn w-100 d-flex justify-content-center align-items-center" style="height: 60px;background-color: #6C4AB6;color:white;">
-                                            {{($i*$col_length)+($j+1)}}
-                                        </div>
-                                    @endif
-                                </div>
-                            @endfor
-                        </div>
-                    @endfor
+                    <div class="map_container" id="map_container">
+                        {{--  ini merupakan container untuk map dari suatu restoran yang diisi menggunakan AJAX --}}
+
+                    </div>
                     {{-- DESCRIPTION --}}
                     <div class="w-100 mt-3">
                         <p class="m-0" style="font-family: helvetica_bold;font-size: 1.5em">Description</p>
@@ -62,34 +45,9 @@
             </div>
             {{-- FORM DETAIL --}}
             <div class="col-sm-12 col-md-6 p-3 d-flex justify-content-center align-items-center">
-                <div class="detail_container">
-                    <p class="m-0" style="font-family: helvetica_bold;font-size: 2em">Imari Japanese Restaurant</p>
-                    <div class="time_available mt-3">
-                        @php
-                            $total_shift = 8;
-                            $start_hour = 11;
-                            $start_minute = 30;
-                        @endphp
-                        @for ($i = 0; $i<$total_shift;$i++)
-                            <div class="btn btn-outline-dark">
-                                {{$start_hour+$i.":".$start_minute}}
-                            </div>
-                        @endfor
-                    </div>
-                    {{-- RESTAURANT INFO --}}
-                    <div class="restaurant_info">
-                        <p class="m-0 mt-3" style="font-family: helvetica_bold;font-size: 1.5em">Description</p>
-                        <p style="color: rgb(110, 110, 110)">Lorem ipsum dolor sit amet consectetur adipisicing elit. Saepe omnis dolor numquam, voluptatibus, quis unde nisi est placeat consequatur fugit ab ex molestias nesciunt, sint natus vero sequi laboriosam soluta!</p>
-                    </div>
-                    {{-- RESERVATION DETAIL --}}
-                    <div class="reservation_detail">
-                        <p class="m-0 mt-3" style="font-family: helvetica_bold;font-size: 1.5em">Reservation Detail</p>
-                        <form action="" method="POST">
-                            <input type="text" class="form-control mt-3 p-3" placeholder="Selected Table...">
-                            <input type="date" class="form-control mt-3 p-3">
-                            <div class="btn w-100 mt-3 p-3" style="background-color: #ed3b27;color:white;">Book Table!</div>
-                        </form>
-                    </div>
+                <div class="form_container" id="form_container">
+                    {{-- ini merupakan container untuk form detail restoran yang diisi menggunakan AJAX --}}
+
                 </div>
             </div>
         </div>

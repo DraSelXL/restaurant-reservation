@@ -62,52 +62,62 @@
             {{-- CATALOG --}}
             <div class="catalog">
                 <div class="row m-0">
+
                     @foreach ($restaurants as $restaurant)
-                        {{-- TEMPLATE CARD --}}
-                        <div class="col-sm-6 col-lg-3 mb-3" style="position: relative;">
-                            <a class="text-dark p-0"  style="text-decoration: none;" href="/customer/restaurant/{{$restaurant->full_name}}">
-                                {{-- RESTAURANT EVENT --}}
-                                <div class="event_container w-100" style="position: absolute;top:30px;">
-                                    <div class="event_label text-light w-25 px-2 rounded-end" style="background-color: #ed3b27;">Sale</div>
-                                    <div class="event_label text-light w-50 px-2 rounded-end" style="background-color: #6C4AB6; ">Best Seller</div>
+                    {{-- TEMPLATE CARD --}}
+                    <div class="col-sm-6 col-lg-3 mb-3" style="position: relative;">
+                        <a class="text-dark p-0"  style="text-decoration: none;" href="/customer/restaurant/{{$restaurant->full_name}}">
+                            {{-- RESTAURANT EVENT --}}
+                            <div class="event_container w-100" style="position: absolute;top:30px;">
+                                <div class="event_label text-light w-25 px-2 rounded-end" style="background-color: #06c700;">New</div>
+                                <div class="event_label text-light w-50 px-2 rounded-end" style="background-color: #6C4AB6; ">Best Seller</div>
+                            </div>
+                            {{-- CARD CONTENT --}}
+                            <div class="restaurant_card bg-light p-3" >
+                                <div class="image_container" style="height: 11rem">
+                                    <img class="navigation" src="{{asset("storage/images/restaurant/$restaurant->full_name/restaurant_1.jpg")}}" alt="" width="100%" height="100%">
                                 </div>
-                                {{-- CARD CONTENT --}}
-                                <div class="restaurant_card bg-light p-3" >
-                                    <div class="image_container" style="height: 10rem">
-                                        <img class="navigation" src="{{asset("storage/images/restaurant/$restaurant->full_name/restaurant_1.jpg")}}" alt="" width="100%" height="100%">
+
+                                {{-- RATING AND FAVORITE --}}
+                                <div class="row m-0 mt-2">
+                                    <div class="col p-0">
+                                        @for ($i=0;$i<3;$i++)
+                                            <img src="{{asset('storage/images/customer/search/star.png')}}" alt="" width="15%">
+                                        @endfor
                                     </div>
-
-                                    {{-- RATING AND FAVORITE --}}
-                                    <div class="row m-0 mt-2">
-                                        <div class="col p-0">
-                                            @for ($i=0;$i<3;$i++)
-                                                <img src="{{asset('storage/images/customer/search/star.png')}}" alt="" width="15%">
-                                            @endfor
-                                        </div>
-                                        <div class="col p-0 text-end">
-                                            <img class="navigation" src="{{asset('storage/images/customer/search/fav.png')}}" alt="" width="15%">
-                                        </div>
+                                    <div class="col p-0 text-end">
+                                        <img class="navigation" src="{{asset('storage/images/customer/search/fav.png')}}" alt="" width="15%">
                                     </div>
-                                    {{-- RESTAURANT INFO --}}
-                                    <div class="restaurant_info overflow-auto" style="height: 4rem">
-                                        <p class="m-0 mt-2" style="font-family: helvetica_regular">{{$restaurant->full_name}}</p>
-                                        <p class="m-0" style="font-family: helvetica_regular;font-size: 0.8em;color: rgb(111, 111, 111);">{{$restaurant->address}}</p>
-                                    </div>
-
-
-                                    {{-- PRICE AND RESERVE BUTTON --}}
-                                    <div class="d-flex w-100">
-                                        <h3 class="p-0" style="font-family: helvetica_bold">$$</h3>
-
-                                        <a class="text-dark d-flex ms-auto" style="text-decoration: none">
-                                            <button class="btn btn-warning text-light" onclick="open_popup()">Reserve</button>
-                                        </a>
-                                    </div>
-
                                 </div>
-                            </a>
-                        </div>
-                    @endforeach
+                                {{-- RESTAURANT INFO --}}
+                                <div class="restaurant_info overflow-auto mb-1" style="height: 4.5rem">
+                                    <p class="m-0 mt-2" style="font-family: helvetica_regular">{{$restaurant->full_name}}</p>
+                                    <p class="m-0" style="font-family: helvetica_regular;font-size: 0.8em;color: rgb(111, 111, 111);">{{$restaurant->address}}</p>
+                                    <p class="m-0" style="font-family: helvetica_regular;font-size: 0.8em;color: rgb(111, 111, 111);">Description : {{$restaurant->description}}</p>
+                                </div>
+
+
+                                {{-- PRICE AND RESERVE BUTTON --}}
+                                <div class="d-flex w-100">
+                                    <div class="d-flex align-items-center h-100 px-3 rounded-pill bg-dark" >
+                                        <p class="m-0 text-light" style="font-family: helvetica_regular;font-size: 0.8em" >Open at {{$restaurant->start_time}}
+                                            @if ($restaurant->start_time < 12)
+                                                am
+                                            @else
+                                                pm
+                                            @endif
+                                        </p>
+                                    </div>
+
+                                    <a class="text-dark d-flex ms-auto" style="text-decoration: none">
+                                        <button class="btn btn-outline-warning"  onclick="open_popup()">Reserve</button>
+                                    </a>
+                                </div>
+
+                            </div>
+                        </a>
+                    </div>
+                @endforeach
                 </div>
             </div>
         </div>
