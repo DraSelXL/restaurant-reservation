@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\admin\AdminController;
 use App\Http\Controllers\customer\CustomerController;
 use App\Http\Controllers\index\IndexController;
+use App\Http\Controllers\IpaymuController;
 use App\Http\Controllers\restaurant\RestaurantController;
 use App\Models\Migrasi\userMigrasi;
 use Illuminate\Support\Facades\Crypt;
@@ -164,7 +165,7 @@ Route::prefix('customer')->group(function () {
     Route::get('generateMap', [CustomerController::class,"generateMap"]);
     Route::get('generateForm', [CustomerController::class,"generateForm"]);
     // 5. bookTable
-    Route::post('bookTable/{restaurant_id}', [CustomerController::class,"bookTable"]);
+    Route::post('bookTable/{restaurant_id}', [IpaymuController::class,"serveTable"]);
 
 });
 
