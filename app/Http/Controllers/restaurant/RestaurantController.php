@@ -33,6 +33,7 @@ class RestaurantController extends Controller
         }
         else {
             $restaurant = restaurantMigrasi::where('user_id', activeUser()->id)->get();
+            $request->session()->put("OPEN_TABLE_RESTAURANT_INFO", $restaurant);
         }
 
         return $restaurant;
@@ -97,7 +98,17 @@ class RestaurantController extends Controller
      */
     public function getRestaurantTables(Request $request)
     {
-        // TODO: Get all tables that is available and return it as a html list-item elements
+        $restaurant = $this->getRestaurantFromSession($request);
+
+        $reservations = reservationMigrasi::where("restaurant_id", 3)
+        ->where("reservation_date_time", "==", DB::raw("NOW()"))
+        ->orderBy("reservation_date_time", "asc")
+        ->get();
+
+        return view('restaurant.partial.table-reservation', [
+            "restaurant" => $restaurant,
+            "reservations" => $reservations,
+        ]);
     }
 
     public function getReservations(Request $request)

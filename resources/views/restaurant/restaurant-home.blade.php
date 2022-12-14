@@ -58,41 +58,7 @@
             <h1>Tables</h1>
             <div class="w-100" style="overflow: scroll">
                 <div id="table-layout" class="scrollable mx-auto">
-                    <div class="d-flex justify-content-center" style="width: fit-content">
-                        <button col="1" row="1" class="table-block occupied" disabled>1</button>
-                        <button col="2" row="1" class="table-block available" disabled>2</button>
-                        <button col="3" row="1" class="table-block available" disabled>3</button>
-                        <button col="4" row="1" class="table-block available" disabled>4</button>
-                        <button col="5" row="1" class="table-block available" disabled>5</button>
-                    </div>
-                    <div class="d-flex justify-content-center" style="width: fit-content">
-                        <button col="1" row="2" class="table-block occupied" disabled>6</button>
-                        <button col="2" row="2" class="table-block available" disabled>7</button>
-                        <button col="3" row="2" class="table-block available" disabled>8</button>
-                        <button col="4" row="2" class="table-block available" disabled>9</button>
-                        <button col="5" row="2" class="table-block available" disabled>10</button>
-                    </div>
-                    <div class="d-flex justify-content-center" style="width: fit-content">
-                        <button col="1" row="3" class="table-block occupied" disabled>11</button>
-                        <button col="2" row="3" class="table-block available" disabled>12</button>
-                        <button col="3" row="3" class="table-block available" disabled>13</button>
-                        <button col="4" row="3" class="table-block available" disabled>14</button>
-                        <button col="5" row="3" class="table-block available" disabled>15</button>
-                    </div>
-                    <div class="d-flex justify-content-center" style="width: fit-content">
-                        <button col="1" row="4" class="table-block occupied" disabled>16</button>
-                        <button col="2" row="4" class="table-block available" disabled>17</button>
-                        <button col="3" row="4" class="table-block available" disabled>18</button>
-                        <button col="4" row="4" class="table-block available" disabled>19</button>
-                        <button col="5" row="4" class="table-block available" disabled>20</button>
-                    </div>
-                    <div class="d-flex justify-content-center" style="width: fit-content">
-                        <button col="1" row="5" class="table-block occupied" disabled>21</button>
-                        <button col="2" row="5" class="table-block available" disabled>22</button>
-                        <button col="3" row="5" class="table-block available" disabled>23</button>
-                        <button col="4" row="5" class="table-block available" disabled>24</button>
-                        <button col="5" row="5" class="table-block available" disabled>25</button>
-                    </div>
+                    {{-- Table GUI layout will be contained in this container --}}
                 </div>
             </div>
             <div class="d-flex-column align-item-center justify-content-center mx-auto text-center" style="width: fit-content">
@@ -156,6 +122,17 @@
                             <input id="addressInput" type="text" class="form-control" value="{{ "Jl. Dharmahusada" }}" placeholder="Restaurant Address" name="restaurantAddress" aria-label="Restaurant address" aria-describedby="restaurant-address" required>
                         </div>
 
+                        {{-- The restaurant address setting --}}
+                        <div id="table-setting" class="mb-3">
+                            <h6 style="margin-bottom: 4px">Table Setting:</h6>
+                            <div class="input-group">
+                                <span class="input-group-text" id="open-time">Row:</span>
+                                <input id="tableRowInput" type="number" min="1" max="10" class="form-control" name="tableRow" placeholder="3" value="" aria-label="tableRow" aria-describedby="Table-Row" required>
+                                <span class="input-group-text" id="shifts">Column:</span>
+                                <input id="tableColumnInput" type="number" min="1" max="10" class="form-control" name="tableColumn" placeholder="3" value="" aria-label="tableColumn" aria-describedby="Table-Column" required>
+                            </div>
+                        </div>
+
                         {{-- The restaurant phone number setting --}}
                         <div id="restaurant-phone" class="mb-3">
                             <h6 style="margin-bottom: 4px">Restaurant Phone:</h6>
@@ -212,12 +189,17 @@
             const openTimeInput = $("#openTimeInput");
             const shiftsInput = $("#shiftsInput");
             const costInput = $("#costInput");
+            const tableRowInput = $("#tableRowInput");
+            const tableColumnInput = $("#tableColumnInput");
             const reservationContainer = $("#pending-reservations");
+            const tableContainer = $("#table-layout");
 
             // Variables
             const settingValues = [
                 "{{ "Portable" }}",           // Restaurant name
                 "{{ "" }}",                   // Restaurant new password
+                "{{ "0" }}",                  // Restaurant Row
+                "{{ "0" }}",                  // Restaurant Column
                 "{{ "Jl. Dharmahusada" }}",   // Restaurant address
                 "{{ "0891111111111" }}",      // Restaurant phone
                 "{{ "" }}",                   // Restaurant description
@@ -229,6 +211,7 @@
 
             // Register events to the variables
             getReservations(reservationContainer);
+            getAvailableTables(tableContainer);
 
             // Show the confirmation prompt when entering a new password
             newPasswordInput.on("input", showPrompt(newPasswordInput, changePasswordPrompt, ""));
@@ -236,12 +219,14 @@
             // Show the save prompt when a new value is detected
             restaurantNameInput.on("input", checkChanges(restaurantNameInput, unsavedPlaceholder, settingValues, settingStatus, 0));
             newPasswordInput.on("input", checkChanges(newPasswordInput, unsavedPlaceholder, settingValues, settingStatus, 1));
-            addressInput.on("input", checkChanges(addressInput, unsavedPlaceholder, settingValues, settingStatus, 2));
-            phoneInput.on("input", checkChanges(phoneInput, unsavedPlaceholder, settingValues, settingStatus, 3));
-            descriptionInput.on("input", checkChanges(descriptionInput, unsavedPlaceholder, settingValues, settingStatus, 4));
-            openTimeInput.on("input", checkChanges(openTimeInput, unsavedPlaceholder, settingValues, settingStatus, 5));
-            shiftsInput.on("input", checkChanges(shiftsInput, unsavedPlaceholder, settingValues, settingStatus, 6));
-            costInput.on("input", checkChanges(costInput, unsavedPlaceholder, settingValues, settingStatus, 7));
+            tableRowInput.on("input", checkChanges(tableRowInput, unsavedPlaceholder, settingValues, settingStatus, 2));
+            tableColumnInput.on("input", checkChanges(tableColumnInput, unsavedPlaceholder, settingValues, settingStatus, 3));
+            addressInput.on("input", checkChanges(addressInput, unsavedPlaceholder, settingValues, settingStatus, 4));
+            phoneInput.on("input", checkChanges(phoneInput, unsavedPlaceholder, settingValues, settingStatus, 5));
+            descriptionInput.on("input", checkChanges(descriptionInput, unsavedPlaceholder, settingValues, settingStatus, 6));
+            openTimeInput.on("input", checkChanges(openTimeInput, unsavedPlaceholder, settingValues, settingStatus, 7));
+            shiftsInput.on("input", checkChanges(shiftsInput, unsavedPlaceholder, settingValues, settingStatus, 8));
+            costInput.on("input", checkChanges(costInput, unsavedPlaceholder, settingValues, settingStatus, 9));
         });
 
         /**
@@ -325,7 +310,7 @@
          * Get the restaurant user's available tables.
          * ### Must be logged in in order to use!!!
          *
-         * @param {JqueryObject} listElement  The element which the result will be printed to.
+         * @param {JqueryObject} listElement The element which the response will be put into.
          */
         function getAvailableTables(listElement) {
             $.ajax({
@@ -333,7 +318,7 @@
                 url: "/restaurant/getTables",
                 data: {},
                 success: function (response, status) {
-                    // TODO: For every table, put into a list item in the listElement, add increase & decrease item event handler to the buttons in every item using the `mutateTableEvent()`.
+                    listElement.html(response);
                 }
             });
         }
