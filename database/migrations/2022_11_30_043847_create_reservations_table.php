@@ -19,7 +19,7 @@ return new class extends Migration
             $table->integer("restaurant_id");
             $table->bigInteger("table_id");
             $table->dateTime("reservation_date_time");
-            $table->tinyInteger("reservation_status");
+            $table->tinyInteger("payment_status");
             $table->timestamps();
             $table->softDeletes();
         });
