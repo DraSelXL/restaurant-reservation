@@ -161,7 +161,7 @@
                         <div class="col ps-0">
                             <div class="mb-3">
                                 <label class="form-label">Open at</label>
-                                <input type="time" class="form-control" placeholder="Time your restaurant open..." name="open_at" value="{{old('open_at')}}">
+                                <input type="number" class="form-control" max="23" min="0" placeholder="Time your restaurant open..." name="open_at" value="{{old('open_at')}}">
 
                                 @error('open_at')
                                     @include('partial.validationMessage')

@@ -159,6 +159,9 @@ Route::prefix('customer')->group(function () {
     Route::post('searchRestaurant', [CustomerController::class,"searchRestaurant"]);
     // 3. filterRestaurant
     Route::post('filterRestaurant', [CustomerController::class,"filterRestaurant"]);
+    // 4. ajaxRoute
+    Route::get('generateMap', [CustomerController::class,"generateMap"]);
+    Route::get('generateForm', [CustomerController::class,"generateForm"]);
 
 });
 

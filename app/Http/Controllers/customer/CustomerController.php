@@ -29,16 +29,22 @@ class CustomerController extends Controller
         $description = $request->description;
         $location = $request->location;
 
+        // NO PRICE FILTER
+        if($start_price == null){ $start_price = 0; }
+        if($end_price == null){ $end_price = 2147483647; }
+
         $restaurants = restaurantMigrasi::where(
-            function ($q) use ($keyword,$description,$location)
+            function ($q) use ($keyword,$description,$location,$start_price,$end_price)
             {
                 $q
                 ->where('full_name', 'like', "%$keyword%")
                 ->where('address', 'like', "%$location%")
+                ->where('price', '>', "$start_price")
+                ->where('price', '<', "$end_price")
                 ->where('description', 'like', "%$description%");
             }
         )->get();
-
+        // dd($restaurants);
         return view('customer.customer_search',compact('currPage','restaurants','keyword'));
     }
     public function masterFavorite(Request $request)
@@ -160,4 +166,22 @@ class CustomerController extends Controller
         return redirect()->route("customer_search",compact("keyword","start_price","end_price","description","location"));
     }
 
+    public function generateMap(Request $request)
+    {
+        // GENERATE MAP AJAX
+        $id = $request->restaurant_id;
+        $restaurant = restaurantMigrasi::find($id);
+        $col_length = $restaurant->col;
+        $row_length = $restaurant->row;
+
+        return view("customer.partial.restaurat_map",compact("col_length","row_length"));
+    }
+    public function generateForm(Request $request)
+    {
+        // GENERATE MAP AJAX
+        $id = $request->restaurant_id;
+        $restaurant = restaurantMigrasi::find($id);
+
+        return view("customer.partial.restaurant_detail",compact("restaurant"));
+    }
 }

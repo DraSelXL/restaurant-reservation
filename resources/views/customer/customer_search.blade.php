@@ -135,11 +135,17 @@
                                             {{-- PRICE AND RESERVE BUTTON --}}
                                             <div class="d-flex w-100">
                                                 <div class="d-flex align-items-center h-100 px-3 rounded-pill bg-dark" >
-                                                    <p class="m-0 text-light" style="font-family: helvetica_regular;font-size: 0.8em" >Open at {{$restaurant->start_time}}</p>
+                                                    <p class="m-0 text-light" style="font-family: helvetica_regular;font-size: 0.8em" >Open at {{$restaurant->start_time}}
+                                                        @if ($restaurant->start_time < 12)
+                                                            am
+                                                        @else
+                                                            pm
+                                                        @endif
+                                                    </p>
                                                 </div>
 
                                                 <a class="text-dark d-flex ms-auto" style="text-decoration: none">
-                                                    <button class="btn btn-outline-warning"  onclick="open_popup()">Reserve</button>
+                                                    <button class="btn btn-outline-warning" onclick="open_popup({{$restaurant->id}})">Reserve</button>
                                                 </a>
                                             </div>
 
@@ -196,15 +202,70 @@
         $(document).ready(function(){
             console.log('Welcome Customer!');
         });
-        function open_popup(){
+        function open_popup(id){
             $(".popup_container").removeClass("d-none",function(){
-                $(".popup").css("height","90vh");
-                $(".blank").animate({height : '0vh'},"slow");
+                let restaurant_id = id;
+                generatePopUpDetail(restaurant_id);
             });
         }
         function close_popup(){
+            // CLOSE POP UP
             $(".popup_container").addClass("d-none");
             $(".blank").animate({height : '90vh'});
+        }
+        function generatePopUpDetail(restaurant_id){
+            let map_generated = false;
+            let form_generated = false;
+
+            // MAP AJAX
+            $.ajax({
+                type: "get",
+                url: "/customer/generateMap",
+                data: {
+                    'restaurant_id': restaurant_id
+                },
+                success: function(response) {
+                    // GENERATE MAP
+                    $("#map_container").html(response);
+                    map_generated = true;
+                },
+            });
+            // FORM AJAX
+            $.ajax({
+                type: "get",
+                url: "/customer/generateForm",
+                data: {
+                    'restaurant_id': restaurant_id
+                },
+                success: function(response) {
+                    // GENERATE TIME
+                    $("#form_container").html(response);
+                    form_generated = true;
+                },
+            });
+            // REQUEST TIMEOUT
+            let ctr = 0;
+            let timer = setInterval(() => {
+                if(map_generated && form_generated){
+                    // OPEN POP UP
+                    $(".popup").css("height","90vh");
+                    $(".blank").animate({height : '0vh'},"slow");
+                    clearInterval(timer);
+                }else if(ctr == 5){
+                    alert("Server error!");
+                    clearInterval(timer);
+                }
+                ctr++;
+            }, 1000);
+        }
+        
+        // SELECT AVAIABLE TABLE
+        let last_selected = -1;
+        function tableClicked(tableId){
+            if(last_selected > -1){ $("#table_"+last_selected).css("backgroundColor","#6C4AB6"); }
+            $("#table_"+tableId).css("backgroundColor","#FEB139");
+            $("#selected_table").val(tableId);
+            last_selected = tableId;
         }
     </script>
 @endsection
