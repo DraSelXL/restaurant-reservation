@@ -82,7 +82,7 @@
                             </div>
                             <div class="col d-flex align-items-center">
                                 <img class="dropdown-toggle" role="button" data-bs-toggle="dropdown"
-                                    src="{{ asset('images/customer/pp.jpg') }}" alt="" width="70px" height="70px"
+                                    src="{{ asset('storage/images/customer/pp.jpg') }}" alt="" width="70px" height="70px"
                                     style="border-radius: 50%">
                             </div>
                         </div>
@@ -186,7 +186,7 @@
                                 <div class="restaurant_card bg-light p-3">
                                     <div class="image_container" style="height: 18rem">
                                         <img class="navigation"
-                                            src="{{ asset('storage/images/restaurant/Tina Feeney/restaurant_1.jpg') }}"
+                                            src="{{ asset('storage/images/restaurant/Kaya Stokes/restaurant_1.jpg') }}"
                                             alt="" width="100%" height="100%">
                                     </div>
 

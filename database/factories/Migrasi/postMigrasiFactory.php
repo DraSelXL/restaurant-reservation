@@ -19,6 +19,8 @@ class postMigrasiFactory extends Factory
         return [
             'title'=>$this->faker->sentence(4),
             'caption'=>$this->faker->sentence(10),
+            'user_id'=>$this->faker->numberBetween(4,9),
+            'status'=>$this->faker->numberBetween(0,1),
             'created_at'=>now(),
             'updated_at'=>now()
         ];

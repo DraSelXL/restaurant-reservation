@@ -16,24 +16,19 @@ class AdminController extends Controller
     public function masterDashboard(Request $request)
     {
         $currPage = "dashboard";
-        $transactions= transactionMigrasi::where('payment_status',1)->get();
-        $totaltransaction = 0;
-        foreach ($transactions as $transaction) {
-            $totaltransaction += $transaction->payment_amount;
-        }
+        $totaltransactions= DB::select("select SUM(t.payment_amount) as sum
+        FROM transactions t
+        JOIN reservations r ON r.id = t.reservation_id
+        WHERE r.payment_status = ?",[1]);
         $totalOrder = transactionMigrasi::all();
         $countTotalOrder = $totalOrder->count();
-        // foreach ($transactions as $transaction) {
-        //     $getMonth = substr($transaction->created_at,5,2);
-        // }
         $monthNow = date("m");
         $audienceGrowth = userMigrasi::whereMonth('created_at','=',$monthNow)->get();
         $topSales = DB::select("select r.id, r.full_name, r.address, SUM(t.payment_amount)
         FROM restaurants r
         JOIN transactions t ON r.id = t.restaurant_id
         group by r.id, r.id, r.full_name, r.address");
-        // dd($topSales);
-        return view('admin.admin_dashboard',compact('currPage','totaltransaction','countTotalOrder','audienceGrowth','topSales'));
+        return view('admin.admin_dashboard',compact('currPage','totaltransactions','countTotalOrder','audienceGrowth','topSales'));
     }
     public function masterCustomer(Request $request)
     {
@@ -59,15 +54,20 @@ class AdminController extends Controller
             {
             $q
             ->whereIn('id',$tempId)
-            ->whereNotIn('id',$restaurantId);
+            ->whereNotIn('id',$restaurantId)
+            ->where('username','<>','admin');
             })
             ->get();
-        // dd($userList);
         $countUser = $userList->count();
-
-        //$countSpending = DB::select("select u.id,sum(t.payment_amount) as sum from transactions t join users u on u.id = t.user_id group by 1");
-        // dd($countSpending);
-        return view('admin.admin_customer',compact('currPage','userList','countUser','keyword'));
+        $spending = DB::select("select ifnull(u.id,u.id) AS id,
+        case when SUM(t.payment_amount) > 0 then SUM(t.payment_amount) ELSE 0 END AS sum
+        FROM transactions t
+        JOIN users u ON u.id = t.user_id
+        JOIN reservations r ON r.id = t.reservation_id
+        WHERE r.payment_status = ?
+        GROUP BY t.user_id
+        ORDER BY u.id",[1]);
+        return view('admin.admin_customer',compact('currPage','userList','countUser','keyword','spending'));
     }
 
     public function banUser(Request $request)

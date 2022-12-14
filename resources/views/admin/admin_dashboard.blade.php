@@ -75,7 +75,7 @@
                                 </div>
                             </div>
                             <div class="d-flex justify-content-end w-100">
-                                <h1 class="font-weight-bold">Rp. {{$totaltransaction}},00</h1>
+                                <h1 class="font-weight-bold">Rp. {{$totaltransactions[0]->sum}},00</h1>
                             </div>
                         </div>
                 </div>

@@ -18,8 +18,8 @@ return new class extends Migration
             $table->integer("user_id");
             $table->integer("restaurant_id");
             $table->bigInteger("table_id");
-            $table->date("reservation_date_time");
-            $table->tinyInteger("reservation_status");
+            $table->dateTime("reservation_date_time");
+            $table->tinyInteger("payment_status");
             $table->timestamps();
             $table->softDeletes();
         });

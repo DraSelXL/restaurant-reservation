@@ -169,7 +169,7 @@ Route::prefix('customer')->group(function () {
 });
 
 Route::prefix('restaurant')->controller(RestaurantController::class)->group(function() {
-    Route::get('home', 'getHomePage');
+    Route::get('home', 'getHomePage')->name("restaurant_home");
     Route::get('history', 'getHistoryPage');
     Route::get('statistic', 'getStatisticPage');
 
