@@ -38,7 +38,8 @@
 @endsection
 
 @section('content')
-    <div class="container">
+@include("partial.flashMessage")
+<div class="container">
         {{-- NAVBAR --}}
         @include('customer.partial.navbar')
         {{-- FORM --}}
@@ -101,7 +102,7 @@
                     <label class="form-check-label" for="exampleCheck1">I have read and agree with PorTable's Terms and Agreements</label>
                 </div>
             </div>
-            <div class="col-sm-12 col-lg-4 px-4 py-3">
+            <div class="col-sm-12 col-lg-4 px-4 py-3 overflow-auto" style="height: calc(100vh - 80px)">
                 <div class="text-center">
                     <h3 style="font-family: helvetica_bold;">Restaurant Details</h3>
                 </div>
@@ -132,7 +133,7 @@
                         <div class="col pe-0">
                             <div class="mb-3">
                                 <label class="form-label">Phone</label>
-                                <input type="number" class="form-control" placeholder="Phone number..." name="phone" value="{{old('phone')}}">
+                                <input type="text" class="form-control" placeholder="Phone number..." name="phone" value="{{old('phone')}}">
 
                                 @error('phone')
                                     @include('partial.validationMessage')
@@ -144,7 +145,7 @@
                     <div class="mb-2">
                         <label class="form-label">Upload restaurant photo(3 files of jpg/png/jpeg): </label>
                         <input type="file" name="foto[]" id="" class="form-control" multiple>
-                        @error('foto[]')
+                        @error('foto')
                             @include('partial.validationMessage')
                         @enderror
                     </div>

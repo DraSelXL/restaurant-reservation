@@ -5,6 +5,7 @@ namespace App\Http\Controllers\customer;
 use App\Http\Controllers\Controller;
 use App\Models\Migrasi\restaurantMigrasi;
 use App\Models\Migrasi\userMigrasi;
+use App\Rules\ImageCount;
 use Illuminate\Http\Request;
 
 class CustomerController extends Controller
@@ -23,11 +24,22 @@ class CustomerController extends Controller
 
         // SEARCH RESTAURANT
         $keyword = $request->keyword;
-        $user = activeUser();
-        if($keyword != null){
-            $restaurants = restaurantMigrasi::where("full_name",'like',"%$keyword%",'user')->get();
-        }
-        return view('customer.customer_search',compact('currPage','restaurants'));
+        $start_price = $request->start_price;
+        $end_price = $request->end_price;
+        $description = $request->description;
+        $location = $request->location;
+
+        $restaurants = restaurantMigrasi::where(
+            function ($q) use ($keyword,$description,$location)
+            {
+                $q
+                ->where('full_name', 'like', "%$keyword%")
+                ->where('address', 'like', "%$location%")
+                ->where('description', 'like', "%$description%");
+            }
+        )->get();
+
+        return view('customer.customer_search',compact('currPage','restaurants','keyword'));
     }
     public function masterFavorite(Request $request)
     {
@@ -86,6 +98,16 @@ class CustomerController extends Controller
     }
     public function registerRestaurant(Request $request)
     {
+        // Register validation
+        $request->validate([
+            'full_name'=>'required',
+            'address'=>'required',
+            'phone'=>'required|numeric|min:11',
+            'open_at'=>'required',
+            'shift'=>'required',
+            'foto' => ['required',new ImageCount(count($request->file("foto")))]
+        ]);
+
         // INPUT IMAGE BATCH
         $img_ctr = 1;
         foreach ($request->file("foto") as $file) {
@@ -101,13 +123,12 @@ class CustomerController extends Controller
         $new_restaurant->address = $request->address;
         $new_restaurant->phone = $request->phone;
         $new_restaurant->average_rating = 0;
-        $new_restaurant->user_id = 1;
+        $new_restaurant->user_id = activeUser()->id;
         $new_restaurant->col = 0;
         $new_restaurant->row = 0;
         $new_restaurant->start_time = $request->open_at."";
         $new_restaurant->description = $request->description;
         $new_restaurant->save();
-
         // RETURN REDIRECT TO RESTAURANT HOME
         return redirect()->route("customer_home")->with("successMessage","Restaurant account has been registered!");
     }
@@ -126,6 +147,17 @@ class CustomerController extends Controller
         $keyword = $request->keyword;
         // RETURN REDIRECT TO EXPLORE WITH KEYWORD
         return redirect()->route("customer_search",compact("keyword"));
+    }
+
+    public function filterRestaurant(Request $request)
+    {
+        $keyword = $request->keyword;
+        $start_price = $request->start_price;
+        $end_price = $request->end_price;
+        $description = $request->description;
+        $location = $request->location;
+        // RETURN REDIRECT TO EXPLORE WITH KEYWORD
+        return redirect()->route("customer_search",compact("keyword","start_price","end_price","description","location"));
     }
 
 }

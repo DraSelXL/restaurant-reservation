@@ -48,33 +48,33 @@
         {{-- CONTENT --}}
         <div class="content pb-3 overflow-auto" style="height: calc(100vh - 98px)">
             {{-- SEARCH BAR --}}
-            <div class="d-flex justify-content-center">
-                <div class="p-3 w-50">
-                    <form action="/customer/searchRestaurant" class="d-flex" role="search" method="POST">
-                        @csrf
-                        <input class="form-control" type="text" placeholder="Search" aria-label="Search" name="keyword">
-                        <button class="btn border-0 navigation" type="submit"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
-                            <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
-                          </svg>
-                        </button>
-                    </form>
-                </div>
+            <div class="p-3 w-100">
+                <form action="/customer/searchRestaurant" class="d-flex justify-content-center" role="search" method="POST">
+                    @csrf
+                    <input class="form-control w-50" type="text" placeholder="Search" aria-label="Search" name="keyword">
+                    <button class="btn border-0 navigation" type="submit"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                        <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+                      </svg>
+                    </button>
+                </form>
             </div>
             {{-- CATALOG --}}
             <div class="catalog">
                 <div class="row m-0">
                     {{-- FILTER --}}
-                    <div class="col-sm-12 col-lg-3 border-end">
+                    <div class="col-sm-12 d-none d-sm-block col-lg-3 border-end">
                         <h3 style="font-family: helvetica_bold">Filter</h3>
-                        <form action="" style="font-family: helvetica_regular">
+                        <form action="/customer/filterRestaurant" style="font-family: helvetica_regular" method="POST">
+                            @csrf
+                            <input type="hidden" value="{{$keyword}}" name="keyword">
                             <div class="price mt-3">
                                 <p class="m-0" style="font-family: helvetica_regular;color: rgb(111, 111, 111);">Price Range</p>
                                 <div class="input-group">
-                                    <input type="text" aria-label="First name" class="form-control" placeholder="From">
-                                    <input type="text" aria-label="Last name" class="form-control" placeholder="To">
+                                    <input type="text" aria-label="First name" class="form-control" placeholder="From" name="start_price">
+                                    <input type="text" aria-label="Last name" class="form-control" placeholder="To" name="end_price">
                                 </div>
                             </div>
-                            <div class="establishment mt-3">
+                            {{-- <div class="establishment mt-3">
                                 <p class="m-0" style="font-family: helvetica_regular;color: rgb(111, 111, 111);">Establishment Type</p>
                                 <select class="form-select" aria-label="Default select example">
                                     <option value="0">Any</option>
@@ -82,10 +82,15 @@
                                     <option value="2">Bar/Pub</option>
                                     <option value="3">Cafee</option>
                                   </select>
+                            </div> --}}
+
+                            <div class="description mt-3">
+                                <p class="m-0" style="font-family: helvetica_regular;color: rgb(111, 111, 111);">Description</p>
+                                <input type="text" class="form-control" placeholder="Asian, Indonesian, Steak, Etc..." name="description">
                             </div>
                             <div class="location mt-3">
                                 <p class="m-0" style="font-family: helvetica_regular;color: rgb(111, 111, 111);">Location</p>
-                                <input type="text" class="form-control" placeholder="...">
+                                <input type="text" class="form-control" placeholder="..." name="location">
                             </div>
                             <button type="submit" class="btn text-light w-100 mt-3" style="background-color: #ed3b27" >Filter!</button>
                         </form>
@@ -99,12 +104,12 @@
                                     <a class="text-dark p-0"  style="text-decoration: none;" href="/customer/restaurant/{{$restaurant->full_name}}">
                                         {{-- RESTAURANT EVENT --}}
                                         <div class="event_container w-100" style="position: absolute;top:30px;">
-                                            <div class="event_label text-light w-25 px-2 rounded-end" style="background-color: #ed3b27;">Sale</div>
+                                            <div class="event_label text-light w-25 px-2 rounded-end" style="background-color: #06c700;">New</div>
                                             <div class="event_label text-light w-50 px-2 rounded-end" style="background-color: #6C4AB6; ">Best Seller</div>
                                         </div>
                                         {{-- CARD CONTENT --}}
                                         <div class="restaurant_card bg-light p-3" >
-                                            <div class="image_container" style="height: 10rem">
+                                            <div class="image_container" style="height: 11rem">
                                                 <img class="navigation" src="{{asset("storage/images/restaurant/$restaurant->full_name/restaurant_1.jpg")}}" alt="" width="100%" height="100%">
                                             </div>
 
@@ -120,18 +125,21 @@
                                                 </div>
                                             </div>
                                             {{-- RESTAURANT INFO --}}
-                                            <div class="restaurant_info overflow-auto" style="height: 4rem">
+                                            <div class="restaurant_info overflow-auto mb-1" style="height: 4.5rem">
                                                 <p class="m-0 mt-2" style="font-family: helvetica_regular">{{$restaurant->full_name}}</p>
                                                 <p class="m-0" style="font-family: helvetica_regular;font-size: 0.8em;color: rgb(111, 111, 111);">{{$restaurant->address}}</p>
+                                                <p class="m-0" style="font-family: helvetica_regular;font-size: 0.8em;color: rgb(111, 111, 111);">Description : {{$restaurant->description}}</p>
                                             </div>
 
 
                                             {{-- PRICE AND RESERVE BUTTON --}}
                                             <div class="d-flex w-100">
-                                                <h3 class="p-0" style="font-family: helvetica_bold">$$</h3>
+                                                <div class="d-flex align-items-center h-100 px-3 rounded-pill bg-dark" >
+                                                    <p class="m-0 text-light" style="font-family: helvetica_regular;font-size: 0.8em" >Open at {{$restaurant->start_time}}</p>
+                                                </div>
 
                                                 <a class="text-dark d-flex ms-auto" style="text-decoration: none">
-                                                    <button class="btn btn-warning text-light" onclick="open_popup()">Reserve</button>
+                                                    <button class="btn btn-outline-warning"  onclick="open_popup()">Reserve</button>
                                                 </a>
                                             </div>
 

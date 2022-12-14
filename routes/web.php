@@ -151,10 +151,12 @@ Route::prefix('customer')->group(function () {
     Route::get('/register_restaurant', [CustomerController::class,"masterRegister"])->name("register_restaurant");
     Route::post('/register_restaurant/do_register', [CustomerController::class,"registerRestaurant"]);
 
-    // RESTAURANT ROUTES
+    // EXPLORE ROUTES
     // 1. restaurant detail
     Route::get('restaurant/{restaurant_name}', [CustomerController::class,"masterRestaurant"])->name("customer_restaurant");
     // 2. searchRestaurant
     Route::post('searchRestaurant', [CustomerController::class,"searchRestaurant"]);
+    // 3. filterRestaurant
+    Route::post('filterRestaurant', [CustomerController::class,"filterRestaurant"]);
 
 });

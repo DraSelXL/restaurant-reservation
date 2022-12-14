@@ -50,7 +50,7 @@
                 <div class="bg-light rounded-4 p-4 my-4">
                     <div class="row h-100">
                         <div class="col-2 d-none d-lg-flex justify-content-center align-items-center">
-                            <img class="" src="{{asset('images/admin/notification.png')}}" alt="" width="100px" height="100px">
+                            <img class="" src="{{asset('storage/images/admin/notification.png')}}" alt="" width="100px" height="100px">
                         </div>
                         <div class="col-sm-12 col-lg-10">
                             <div class="row m-0">
