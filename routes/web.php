@@ -162,6 +162,8 @@ Route::prefix('customer')->group(function () {
     // 4. ajaxRoute
     Route::get('generateMap', [CustomerController::class,"generateMap"]);
     Route::get('generateForm', [CustomerController::class,"generateForm"]);
+    // 5. bookTable
+    Route::post('bookTable/{restaurant_id}', [CustomerController::class,"bookTable"]);
 
 });
 

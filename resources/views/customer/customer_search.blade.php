@@ -258,14 +258,27 @@
                 ctr++;
             }, 1000);
         }
-        
-        // SELECT AVAIABLE TABLE
-        let last_selected = -1;
+
+        // SELECT AVAILABLE TABLE and AVAILABLE TIME
+        let last_selected_table = -1;
+        let last_selected_time = -1;
         function tableClicked(tableId){
-            if(last_selected > -1){ $("#table_"+last_selected).css("backgroundColor","#6C4AB6"); }
+            if(last_selected_table > -1){ $("#table_"+last_selected_table).css("backgroundColor","#6C4AB6"); }
             $("#table_"+tableId).css("backgroundColor","#FEB139");
             $("#selected_table").val(tableId);
-            last_selected = tableId;
+            last_selected_table = tableId;
+        }
+        function timeClicked(time){
+            if(last_selected_time > -1){
+                // BG
+                $("#time_"+last_selected_time).removeClass("btn-dark");
+                $("#time_"+last_selected_time).addClass("btn-outline-dark");
+            }
+            $("#time_"+time).removeClass("btn-outline-dark");
+            $("#time_"+time).addClass("btn-dark");
+
+            $("#selected_time").val(time);
+            last_selected_time = time;
         }
     </script>
 @endsection

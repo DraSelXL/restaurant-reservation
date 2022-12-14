@@ -112,7 +112,7 @@ class CustomerController extends Controller
             'phone'=>'required|numeric|min:11',
             'open_at'=>'required',
             'shift'=>'required',
-            'foto' => ['required',new ImageCount(count($request->file("foto")))]
+            'foto' => ['required', new ImageCount(count(($request->file("foto") != null) ? $request->file("foto") : []))]
         ]);
 
         // INPUT IMAGE BATCH
@@ -184,5 +184,16 @@ class CustomerController extends Controller
         $restaurant = restaurantMigrasi::find($id);
 
         return view("customer.partial.restaurant_detail",compact("restaurant"));
+    }
+    public function bookTable(Request $request)
+    {
+        // BOOK TABLE
+        $id = $request->restaurant_id;
+        $restaurant = restaurantMigrasi::find($id);
+        $table_number = $request->table_number;
+        $reservation_date = $request->reservation_date;
+        $reservation_time = $request->reservation_time;
+
+        // return view("customer.partial.restaurant_detail",compact("restaurant"));
     }
 }
