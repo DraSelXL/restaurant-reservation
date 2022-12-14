@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\restaurant;
 
 use App\Http\Controllers\Controller;
+use App\Models\Migrasi\reservationMigrasi;
+use App\Models\Migrasi\restaurantMigrasi;
 use Illuminate\Http\Request;
 
 class RestaurantController extends Controller
@@ -21,7 +23,15 @@ class RestaurantController extends Controller
      */
     public function getHomePage(Request $request)
     {
-        // TODO: Get restaurant model
+        // Get restaurant model
+        $restaurant = null;
+        if ($request->session()->has("OPEN_TABLE_RESTAURANT_INFO")) {
+            $restaurant = $request->session()->get("OPEN_TABLE_RESTAURANT_INFO");
+        }
+        else {
+            $restaurant = restaurantMigrasi::where('user_id', activeUser()->id)->get();
+        }
+
         // TODO: Get reservations in ascending order and more than today
 
         return view('restaurant.restaurant-home', [
