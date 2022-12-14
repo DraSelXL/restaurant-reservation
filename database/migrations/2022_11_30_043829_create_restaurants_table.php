@@ -21,7 +21,8 @@ return new class extends Migration
             $table->integer("user_id");
             $table->integer("col");
             $table->integer("row");
-            $table->integer("start_time (am)");
+            $table->float("average_rating");
+            $table->integer("start_time");
             $table->integer("price");
             $table->string("description");
 

@@ -63,8 +63,8 @@ use Illuminate\Support\Facades\Hash;
         <> Proposal :                                                           STATUS
         - CRUD akun restoran                                                    --
         - CRUD akun pelanggan                                                   -- DONE
-        - Ban akun restoran                                                     --
-        - Ban akun pelanggan                                                    --
+        - Ban akun restoran                                                     -- DONE
+        - Ban akun pelanggan                                                    -- DONE
         - Melihat semua transaksi                                               --
         - Melihat semua review di restoran                                      --
         - Mereview review spam restoran                                         --
