@@ -19,7 +19,7 @@ class TransactionMigrasiFactory extends Factory
         return [
             'user_id'=>$this->faker->numberBetween(4,9),
             'restaurant_id'=>$this->faker->numberBetween(1,3),
-            'reservation_id'=>$this->faker->numberBetween(1,10),
+            'reservation_id'=>$this->faker->unique()->randomElement([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]),
             'payment_amount'=>$this->faker->randomFloat(2,10000,60000),
             'payment_date_at'=>$this->faker->dateTimeBetween("-1 years","now"),
             'created_at'=>now(),

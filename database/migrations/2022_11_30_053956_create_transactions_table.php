@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id("id");
             $table->integer("user_id");
             $table->integer("restaurant_id");
-            $table->bigInteger("reservation_id");
+            $table->integer("reservation_id");
             $table->integer("payment_amount");
             $table->dateTime("payment_date_at");
             $table->timestamps();
