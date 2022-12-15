@@ -20,12 +20,15 @@ class RestaurantController extends Controller
     /** Tells the view that the current active view is a statistic page */
     private static $ACTIVE_STATISTIC = "statistic";
 
+    /** Tells any type of pagination that the limit of pagination is 50 */
+    public static $PAGINATION_LIMIT = 50;
+
     /**
      * Retrieve the current logged restaurant account and return it to the caller of the function.
      *
      * @return restaurantMigrasi|null The restaurant eloquent model if found, else return null.
      */
-    private function getRestaurantFromSession(Request $request)
+    private function getAuthRestaurant(Request $request)
     {
         // Get restaurant model
         $restaurant = restaurantMigrasi::where('user_id', activeUser()->id)->get()[0];
@@ -40,7 +43,7 @@ class RestaurantController extends Controller
     {
         return view('restaurant.restaurant-home', [
             'active' => RestaurantController::$ACTIVE_HOME,
-            'restaurant' => $this->getRestaurantFromSession($request)
+            'restaurant' => $this->getAuthRestaurant($request)
         ]);
     }
 
@@ -97,7 +100,7 @@ class RestaurantController extends Controller
         ]);
 
         // Get the restaurant
-        $restaurant = $this->getRestaurantFromSession($request);
+        $restaurant = $this->getAuthRestaurant($request);
 
         if ($request->newPassword != null) {
             $request->validate([
@@ -127,7 +130,7 @@ class RestaurantController extends Controller
      */
     public function getRestaurantTables(Request $request)
     {
-        $restaurant = $this->getRestaurantFromSession($request);
+        $restaurant = $this->getAuthRestaurant($request);
 
         $reservations = reservationMigrasi::where("restaurant_id", $restaurant->id)
             ->where("reservation_date_time", "==", DB::raw("NOW()"))
@@ -140,9 +143,12 @@ class RestaurantController extends Controller
         ]);
     }
 
+    /**
+     * Get the reservations for the authenticated restaurant with the date more than the current date.
+     */
     public function getReservations(Request $request)
     {
-        $restaurant = $this->getRestaurantFromSession($request);
+        $restaurant = $this->getAuthRestaurant($request);
 
         // Get reservations in ascending order and more than today
         $reservations = reservationMigrasi::where("restaurant_id", $restaurant->id)
@@ -151,5 +157,62 @@ class RestaurantController extends Controller
             ->get();
 
         return view('restaurant.partial.reservation-card', ["reservations" => $reservations]);
+    }
+
+    /**
+     * Handle an AJAX request and return a response of table rows containing the reservation history of the authenticated restaurant.
+     */
+    public function getReservationHistory(Request $request)
+    {
+        $restaurant = $this->getAuthRestaurant($request);
+
+
+        $reservations = reservationMigrasi::withTrashed()
+            ->select(DB::raw('count(*) as reservation_count'))
+            ->where("restaurant_id", $restaurant->id)
+            ->first();
+
+        // Get the pagination limit
+        $paginationSize = ceil($reservations->reservation_count / RestaurantController::$PAGINATION_LIMIT);
+
+        // constraint the target page to not exceed the limit
+        $page = (int)($request->page);
+        $page = max(1, $page);
+        $page = min($paginationSize, $page);
+
+        $reservationHistory = reservationMigrasi::withTrashed()
+            ->where("restaurant_id", $restaurant->id)
+            ->orderBy("reservation_date_time", "desc")
+            ->offset(RestaurantController::$PAGINATION_LIMIT * ($page - 1))
+            ->limit(RestaurantController::$PAGINATION_LIMIT)
+            ->get();
+
+        return view("restaurant.partial.history-row", ['reservations' => $reservationHistory]);
+    }
+
+    /**
+     * Handle an AJAX request and return a response of a series of pagination buttons.
+     */
+    public function getReservationPagination(Request $request)
+    {
+        $restaurant = $this->getAuthRestaurant($request);
+
+        $reservations = reservationMigrasi::withTrashed()
+            ->select(DB::raw('count(*) as reservation_count'))
+            ->where("restaurant_id", $restaurant->id)
+            ->first();
+
+        // Get the pagination limit
+        $paginationSize = ceil($reservations->reservation_count / RestaurantController::$PAGINATION_LIMIT);
+
+        // constraint the target page to not exceed limit
+        $page = (int)($request->page);
+        $page = max(1, $page);
+        $page = min($paginationSize, $page);
+
+        return view("restaurant.partial.history-pagination", [
+            'paginationSize' => $paginationSize,
+            'page' => $page,
+        ]);
     }
 }

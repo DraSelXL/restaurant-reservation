@@ -179,9 +179,10 @@ Route::prefix('restaurant')->controller(RestaurantController::class)->group(func
 
     // Interact with available restaurant tables
     Route::get('getTables', 'getRestaurantTables');
-    Route::post('addTable', 'addTable');
-    Route::post('increaseTable', 'increaseTable');
-    Route::post('decreaseTable', 'decreaseTable');
+
+    // Interact with reservation histories
+    Route::get('getReservationHistory', 'getReservationHistory');
+    Route::get('getReservationPagination', 'getReservationPagination');
 
     // Update the restaurant settings
     Route::post('/updateRestaurant', 'updateRestaurant');
