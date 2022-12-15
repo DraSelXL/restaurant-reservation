@@ -24,26 +24,34 @@ class AdminController extends Controller
         $countTotalOrder = $totalOrder->count();
         $monthNow = date("m");
         $audienceGrowth = userMigrasi::whereMonth('created_at','=',$monthNow)->get();
+
         $topSales = DB::select("select r.id, r.full_name, r.address, SUM(t.payment_amount)
         FROM restaurants r
         JOIN transactions t ON r.id = t.restaurant_id
         group by r.id, r.id, r.full_name, r.address");
-        $lastWeek = DB::select("select sum(payment_amount) as sum
+
+        $totalIncome = DB::select("select sum(payment_amount) as sum
         from transactions t
         join restaurants r2 on t.restaurant_id = r2.id
         join reservations r on r.id = t.reservation_id
         where r.payment_status = ?
-        and payment_date_at between date_sub(now(), interval 1 year) and now()
         group by r2.id",[1]);
-        //dd($lastWeek);
-        return view('admin.admin_dashboard',compact('currPage','totaltransactions','countTotalOrder','audienceGrowth','topSales','lastWeek'));
+
+        $totalOrder = DB::select("select COUNT(r.id) AS totalorder, r.id
+        FROM transactions t
+        JOIN reservations r2 ON r2.id = t.reservation_id
+        JOIN restaurants r ON r.id = r2.restaurant_id
+        WHERE r2.payment_status = ?
+        GROUP BY r.id
+        ORDER BY totalorder desc",[1]);
+        return view('admin.admin_dashboard',compact('currPage','totaltransactions',
+        'countTotalOrder','audienceGrowth','topSales','totalIncome','totalOrder'));
     }
     public function masterCustomer(Request $request)
     {
         $currPage = "customer";
         $allUser = userMigrasi::withTrashed()->get();
         $keyword = $request->keyword;
-
         if($keyword!=null){
             $allUser = userMigrasi::where('username','like',"%$keyword%")->get();
         };
@@ -52,7 +60,6 @@ class AdminController extends Controller
         foreach ($allUser as $user) {
             $tempId[] = $user->id;
         }
-
         $restaurants = restaurantMigrasi::withTrashed()->get();
         foreach ($restaurants as $restaurant) {
             $restaurantId[] = $restaurant->user_id;
