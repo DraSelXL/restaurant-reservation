@@ -98,35 +98,60 @@
                     {{-- RESTAURANT LIST --}}
                     <div class="col">
                         <div class="row m-0">
-                            @foreach ($restaurants as $restaurant)
+                            @forelse ($restaurants as $restaurant)
                                 {{-- TEMPLATE CARD --}}
                                 <div class="col-sm-6 col-lg-4 mb-3" style="position: relative;">
-                                    <a class="text-dark p-0"  style="text-decoration: none;" href="/customer/restaurant/{{$restaurant->full_name}}">
+
                                         {{-- RESTAURANT EVENT --}}
                                         <div class="event_container w-100" style="position: absolute;top:30px;">
-                                            <div class="event_label text-light w-25 px-2 rounded-end" style="background-color: #06c700;">New</div>
-                                            <div class="event_label text-light w-50 px-2 rounded-end" style="background-color: #6C4AB6; ">Best Seller</div>
+                                            @php
+                                                // CHECK NEW STATUS
+                                                $created_at = substr($restaurant->created_at,8,2);
+                                                $date_now = date("d");
+                                                $diffrence = $date_now - $created_at;
+                                            @endphp
+
+                                            @if ($diffrence < 7)
+                                                <div class="event_label text-light w-25 px-2 rounded-end" style="background-color: #06c700;">New</div>
+                                            @endif
+                                            @if(in_array($restaurant->id, $bestSellerRestaurantId))
+                                                <div class="event_label text-light w-50 px-2 rounded-end" style="background-color: #6C4AB6; ">Best Seller</div>
+                                            @endif
+
                                         </div>
                                         {{-- CARD CONTENT --}}
                                         <div class="restaurant_card bg-light p-3" >
                                             <div class="image_container" style="height: 11rem">
-                                                <img class="navigation" src="{{asset("storage/images/restaurant/$restaurant->full_name/restaurant_1.jpg")}}" alt="" width="100%" height="100%">
+                                                <a class="text-dark p-0"  style="text-decoration: none;" href="/customer/restaurant/{{$restaurant->full_name}}">
+                                                    <img class="navigation" src="{{asset("storage/images/restaurant/$restaurant->full_name/restaurant_1.jpg")}}" alt="" width="100%" height="100%">
+                                                </a>
                                             </div>
 
                                             {{-- RATING AND FAVORITE --}}
-                                            <div class="row m-0 mt-2">
-                                                <div class="col p-0">
-                                                    @for ($i=0;$i<3;$i++)
+                                            <div class="row m-0">
+                                                <div class="col-6 p-0 d-flex align-items-center">
+                                                    @for ($i=0;$i<floor($restaurant->average_rating);$i++)
                                                         <img src="{{asset('storage/images/customer/search/star.png')}}" alt="" width="15%">
                                                     @endfor
+                                                    <span class="ms-2">{{$restaurant->average_rating}}</span>
                                                 </div>
-                                                <div class="col p-0 text-end">
-                                                    <img class="navigation" src="{{asset('storage/images/customer/search/fav.png')}}" alt="" width="15%">
+                                                <div class="col-6 p-0 text-end">
+                                                    @if(in_array($restaurant->id, $likelistId))
+                                                        <a onclick="like_dislike({{$restaurant->id}},{{activeUser()->id}})">
+                                                            <img id="dislike_{{$restaurant->id}}" class="navigation" src="{{asset('storage/images/customer/search/fav_filled.png')}}" alt="" width="15%">
+                                                        </a>
+                                                    @else
+                                                        <a onclick="like_dislike({{$restaurant->id}},{{activeUser()->id}})">
+                                                            <img id="like_{{$restaurant->id}}" class="navigation" src="{{asset('storage/images/customer/search/fav.png')}}" alt="" width="15%">
+                                                        </a>
+                                                    @endif
                                                 </div>
                                             </div>
                                             {{-- RESTAURANT INFO --}}
                                             <div class="restaurant_info overflow-auto mb-1" style="height: 4.5rem">
-                                                <p class="m-0 mt-2" style="font-family: helvetica_regular">{{$restaurant->full_name}}</p>
+                                                <a class="text-dark p-0"  style="text-decoration: none;" href="/customer/restaurant/{{$restaurant->full_name}}">
+                                                    <p class="m-0 mt-2" style="font-family: helvetica_regular">{{$restaurant->full_name}}</p>
+                                                </a>
                                                 <p class="m-0" style="font-family: helvetica_regular;font-size: 0.8em;color: rgb(111, 111, 111);">{{$restaurant->address}}</p>
                                                 <p class="m-0" style="font-family: helvetica_regular;font-size: 0.8em;color: rgb(111, 111, 111);">Description : {{$restaurant->description}}</p>
                                             </div>
@@ -134,8 +159,8 @@
 
                                             {{-- PRICE AND RESERVE BUTTON --}}
                                             <div class="d-flex w-100">
-                                                <div class="d-flex align-items-center h-100 px-3 rounded-pill bg-dark" >
-                                                    <p class="m-0 text-light" style="font-family: helvetica_regular;font-size: 0.8em" >Open at {{$restaurant->start_time}}
+                                                <div class="px-3 rounded-pill bg-dark" >
+                                                    <p class="m-0 text-light h-100 d-flex align-items-center" style="font-family: helvetica_regular;font-size: 0.8em" >Open at {{$restaurant->start_time}}
                                                         @if ($restaurant->start_time < 12)
                                                             am
                                                         @else
@@ -150,11 +175,12 @@
                                             </div>
 
                                         </div>
-                                    </a>
                                 </div>
-                            @endforeach
-
-
+                            @empty
+                                <div class="d-flex w-100 justify-content-center">
+                                    <p class="m-0">There is no restaurant registered!</p>
+                                </div>
+                            @endforelse
                         </div>
 
                         {{-- PAGINATION --}}
@@ -279,6 +305,26 @@
 
             $("#selected_time").val(time);
             last_selected_time = time;
+        }
+        function like_dislike(restaurant_id,user_id){
+            $.ajax({
+                type: "get",
+                url: "/customer/like_dislike",
+                data: {
+                    'user_id': user_id,
+                    'restaurant_id': restaurant_id
+                },
+                success: function(response) {
+                    // TOGGLE FAV BUTTON
+                    if(response == "1"){
+                        $("#like_"+restaurant_id).prop("src","{{asset('storage/images/customer/search/fav_filled.png')}}");
+                        $("#like_"+restaurant_id).prop("id","dislike_"+restaurant_id);
+                    }else{
+                        $("#dislike_"+restaurant_id).prop("src","{{asset('storage/images/customer/search/fav.png')}}");
+                        $("#dislike_"+restaurant_id).prop("id","like_"+restaurant_id);
+                    }
+                },
+            });
         }
     </script>
 @endsection

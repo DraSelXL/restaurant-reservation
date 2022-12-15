@@ -10,7 +10,6 @@ class favouriteMigrasi extends Model
     use HasFactory;
 
     protected $table = "favourites";
-
     public $timestamps = false;
 
     public function restaurant()

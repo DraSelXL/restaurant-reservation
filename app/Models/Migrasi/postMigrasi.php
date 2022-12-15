@@ -13,4 +13,10 @@ class postMigrasi extends Model
     use SoftDeletes;
 
     protected $table = "posts";
+
+
+    public function user()
+    {
+        return $this->belongsTo(userMigrasi::class,"id","user_id");
+    }
 }

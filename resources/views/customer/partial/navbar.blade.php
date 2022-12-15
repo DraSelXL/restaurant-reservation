@@ -29,11 +29,20 @@
                 </div>
                 {{-- PROFILE --}}
                 <div class="col d-flex justify-content-end align-items-center">
-                    <div class="notification me-4" style="cursor: pointer">
+                    {{-- NOTIFICATION --}}
+                    <div class="navigation notification me-4" style="cursor: pointer; position: relative;">
+                        <div class="floating text-light rounded-pill d-flex justify-content-center align-items-center" style="position: absolute;top:-10px;right:-10px; background-color: #ed3b27; width: 20px;height: 20px;">
+                            @php
+                                // GET TOTAL UNREAD MESSAGE
+                                $unread_message = count(activeUser()->posts()->where("status","=","0")->get());
+                            @endphp
+                            {{$unread_message}}
+                        </div>
                         <a href="{{route("customer_notification")}}">
-                            <img class="navigation" src="{{asset("storage/images/admin/notification.png")}}" alt="" width="30px">
+                            <img src="{{asset("storage/images/admin/notification.png")}}" alt="" width="30px">
                         </a>
                     </div>
+
                     <div class="profile">
                         <li class="dropdown-center">
                             <img class="dropdown-toggle" role="button" data-bs-toggle="dropdown" src="{{asset("storage/images/customer/pp.jpg")}}" alt="" width="45px" height="45px" style="border-radius: 50%">

@@ -96,15 +96,10 @@
                 <div class="col-sm-12 col-lg-6">
                     <h3 class="text-light">Available time</h3>
                     <div class="time_available mt-3">
-                        @php
-                            $total_shift = 8;
-                            $start_hour = 11;
-                            $start_minute = 30;
-                        @endphp
-                        @for ($i = 0; $i<$total_shift;$i++)
-                            <div class="btn btn-outline-light">
-                                {{$start_hour+$i.":".$start_minute}}
-                            </div>
+                        @for ($i = 0; $i<$restaurant->shifts;$i++)
+                            <button class="btn btn-outline-light mb-1" >
+                                {{$restaurant->start_time+$i.": 00"}}
+                            </button>
                         @endfor
                     </div>
                 </div>
@@ -114,7 +109,7 @@
                     <p class="m-0" style="font-family: helvetica_regular;color: rgb(111, 111, 111);">{{$restaurant->phone}}</p>
                 </div>
                 <div class="col-sm-12 col-lg-3">
-                    <button class="btn btn-light h-100 w-100" onclick="open_popup()">Book table!</button>
+                    <button class="btn btn-light h-100 w-100" onclick="open_popup({{$restaurant->id}})">Book table!</button>
                 </div>
             </div>
         </div>
@@ -138,15 +133,103 @@
             console.log('Welcome Customer!');
         });
 
-        function open_popup(){
+        function open_popup(id){
             $(".popup_container").removeClass("d-none",function(){
-                $(".popup").css("height","90vh");
-                $(".blank").animate({height : '0vh'},"slow");
+                let restaurant_id = id;
+                generatePopUpDetail(restaurant_id);
             });
         }
         function close_popup(){
+            // CLOSE POP UP
             $(".popup_container").addClass("d-none");
             $(".blank").animate({height : '90vh'});
+        }
+        function generatePopUpDetail(restaurant_id){
+            let map_generated = false;
+            let form_generated = false;
+
+            // MAP AJAX
+            $.ajax({
+                type: "get",
+                url: "/customer/generateMap",
+                data: {
+                    'restaurant_id': restaurant_id
+                },
+                success: function(response) {
+                    // GENERATE MAP
+                    $("#map_container").html(response);
+                    map_generated = true;
+                },
+            });
+            // FORM AJAX
+            $.ajax({
+                type: "get",
+                url: "/customer/generateForm",
+                data: {
+                    'restaurant_id': restaurant_id
+                },
+                success: function(response) {
+                    // GENERATE TIME
+                    $("#form_container").html(response);
+                    form_generated = true;
+                },
+            });
+            // REQUEST TIMEOUT
+            let ctr = 0;
+            let timer = setInterval(() => {
+                if(map_generated && form_generated){
+                    // OPEN POP UP
+                    $(".popup").css("height","90vh");
+                    $(".blank").animate({height : '0vh'},"slow");
+                    clearInterval(timer);
+                }else if(ctr == 5){
+                    alert("Server error!");
+                    clearInterval(timer);
+                }
+                ctr++;
+            }, 1000);
+        }
+
+        // SELECT AVAILABLE TABLE and AVAILABLE TIME
+        let last_selected_table = -1;
+        let last_selected_time = -1;
+        function tableClicked(tableId){
+            if(last_selected_table > -1){ $("#table_"+last_selected_table).css("backgroundColor","#6C4AB6"); }
+            $("#table_"+tableId).css("backgroundColor","#FEB139");
+            $("#selected_table").val(tableId);
+            last_selected_table = tableId;
+        }
+        function timeClicked(time){
+            if(last_selected_time > -1){
+                // BG
+                $("#time_"+last_selected_time).removeClass("btn-dark");
+                $("#time_"+last_selected_time).addClass("btn-outline-dark");
+            }
+            $("#time_"+time).removeClass("btn-outline-dark");
+            $("#time_"+time).addClass("btn-dark");
+
+            $("#selected_time").val(time);
+            last_selected_time = time;
+        }
+        function like_dislike(restaurant_id,user_id){
+            $.ajax({
+                type: "get",
+                url: "/customer/like_dislike",
+                data: {
+                    'user_id': user_id,
+                    'restaurant_id': restaurant_id
+                },
+                success: function(response) {
+                    // TOGGLE FAV BUTTON
+                    if(response == "1"){
+                        $("#like_"+restaurant_id).prop("src","{{asset('storage/images/customer/search/fav_filled.png')}}");
+                        $("#like_"+restaurant_id).prop("id","dislike_"+restaurant_id);
+                    }else{
+                        $("#dislike_"+restaurant_id).prop("src","{{asset('storage/images/customer/search/fav.png')}}");
+                        $("#dislike_"+restaurant_id).prop("id","like_"+restaurant_id);
+                    }
+                },
+            });
         }
     </script>
 @endsection

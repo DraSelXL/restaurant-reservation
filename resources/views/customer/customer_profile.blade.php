@@ -64,9 +64,9 @@
         @include('customer.partial.navbar')
         {{-- CONTENT --}}
         <div class="content py-4" style="height: calc(100vh - 80px)">
-            <div class="row m-0">
+            <div class="row m-0 h-100">
                 {{-- LEFT CONTENT --}}
-                <div class="col-sm-12 col-md-6">
+                <div class="col-sm-12 col-md-8 h-100">
 
                     <form action="{{url('customer/editProfile')}}" method="post">
                         @csrf
@@ -161,69 +161,79 @@
                 </div>
 
                 {{-- RIGHT CONTENT --}}
-                <div class="col-sm-12 col-md-6">
+                <div class="col-sm-12 col-md-4 h-100 overflow-auto d-flex flex-column" >
                     <div class="mb-3">
-                        <p class="m-0" style="font-size: 2.5em;font-weight: bold;">Active Transaction</p>
-                        <p class="m-0">This is the transcipt/ ticket of your last table reservation</p>
+                        <p class="m-0" style="font-size: 2em;font-weight: bold;">Upcoming Reservation</p>
+                        <p class="m-0">This is the ticket of your closest date table reservation</p>
                     </div>
-                    <div class="ticket">
-                        {{-- TEMPLATE CARD --}}
-                        <div class="mb-3" style="position: relative;">
-                            <a class="text-dark p-0" style="text-decoration: none;"
-                                href="/customer/restaurant/{{ 'Pavillion Restaurant' }}">
-                                {{-- RESTAURANT EVENT --}}
-                                <div class="event_container w-100" style="position: absolute;top:30px;">
-                                    <div class="event_label text-light w-25 px-2 rounded-end"
-                                        style="background-color: #ed3b27;">Sale</div>
-                                    <div class="event_label text-light w-50 px-2 rounded-end"
-                                        style="background-color: #6C4AB6; ">Best Seller</div>
-                                </div>
-                                <div class="number_container" style="position: absolute;top:30px;right:5%;">
-                                    <div class="event_label text-light p-3 rounded-3" style="background-color: #FEB139; ">
-                                        35</div>
-                                </div>
-                                {{-- CARD CONTENT --}}
-                                <div class="restaurant_card bg-light p-3">
-                                    <div class="image_container" style="height: 18rem">
-                                        <img class="navigation"
-                                            src="{{ asset('storage/images/restaurant/Kaya Stokes/restaurant_1.jpg') }}"
-                                            alt="" width="100%" height="100%">
-                                    </div>
-
-                                    {{-- RESTAURANT INFO --}}
-                                    <div class="row m-0 mt-2">
-                                        <div class="col-6">
-                                            <div class="restaurant_info">
-                                                <p class="m-0" style="font-family: helvetica_regular;font-size: 1.5em">
-                                                    Pavillion Restaurant</p>
-                                                <p class="m-0"
-                                                    style="font-family: helvetica_regular;font-size: 0.8em;color: rgb(111, 111, 111);">
-                                                    Asian, Indonesian, Steak</p>
+                    <div id="reservation_container" class="reservation_container d-flex">
+                        @if ($activeReservation != null)
+                            <div class="ticket">
+                                {{-- TEMPLATE CARD --}}
+                                <div class="mb-3 me-2 w-100" style="position: relative;">
+                                    <a class="text-dark p-0"  style="text-decoration: none;" href="/customer/restaurant/{{$activeReservation->restaurant->full_name}}">
+                                        {{-- RESTAURANT EVENT --}}
+                                        <div class="number_container" style="position: absolute;top:30px;right:5%;">
+                                            <div class="event_label text-light p-3 rounded-3 text-center navigation" style="background-color: #6C4AB6; ">{{$activeReservation->table->seats}}</div>
+                                            <div class="cancel_container">
+                                                {{-- CANCEL BTN --}}
+                                                <a id="opencancel_{{$activeReservation->id}}" onclick="opencancel({{$activeReservation->id}})" >
+                                                    <button class="btn event_label text-light p-1 rounded-3 text-center navigation" style="background-color: #ed3b27; ">Cancel</button>
+                                                </a>
+                                                {{-- CONFIRMATION --}}
+                                                <div id="cancelconfirmation_{{$activeReservation->id}}" class="cancel_confirmation bg-light p-2 rounded-3 d-none">
+                                                    <p class="m-0">Cancel?</p>
+                                                    <a onclick="cancel_reservation({{$activeReservation->id}})" >
+                                                        <button class="btn event_label text-light p-1 rounded-3 text-center navigation" style="background-color: #06c700; ">Yes</button>
+                                                    </a>
+                                                    <a onclick="closecancel({{$activeReservation->id}})" >
+                                                        <button class="btn btn-dark m-0 event_label text-light p-1 rounded-3 text-center navigation">No</button>
+                                                    </a>
+                                                </div>
                                             </div>
                                         </div>
-                                        <div class="col-6 d-flex justify-content-end align-items-center">
-                                            <p class="m-0">3</p>
-                                            <img src="{{ asset('storage/images/customer/person.png') }}" alt=""
-                                                width="30px" height="30px">
-                                        </div>
-                                    </div>
+                                        {{-- CARD CONTENT --}}
+                                        <div class="restaurant_card bg-light p-3" >
+                                            <div class="image_container" style="height: 15rem">
+                                                @php
+                                                    $activeReservation_restaurant = $activeReservation->restaurant->full_name;
+                                                @endphp
+                                                <img class="" src="{{asset("storage/images/restaurant/$activeReservation_restaurant/restaurant_1.jpg")}}" alt="" width="100%" height="100%">
+                                            </div>
 
-                                    <hr>
-                                    {{-- TRANSACTION DETAIL --}}
-                                    <div class="code d-flex justify-content-end">
-                                        <div class="text-end">
-                                            <p class="m-0" style="font-family: helvetica_bold;font-size: 1.1em;">
-                                                Transaction code : 1PKhfWqLiADhSb7</p>
-                                            <p class="m-0" style="font-family: helvetica_regular;">Order Price : Rp
-                                                15.000,00</p>
-                                            <p class="m-0" style="font-family: helvetica_regular;">Saturday, 11/10/2022
-                                                13.00 PM</p>
+                                            {{-- RESTAURANT INFO --}}
+                                            <div class="row m-0 mt-2 overflow-auto" style="height: 6rem">
+                                                <div class="col-10">
+                                                    <div class="restaurant_info" >
+                                                        <p class="m-0" style="font-family: helvetica_bold;font-size: 1.5em">{{$activeReservation->restaurant->full_name}}</p>
+                                                        <p class="m-0" style="font-family: helvetica_regular;font-size: 0.8em;color: rgb(111, 111, 111);">{{$activeReservation->restaurant->description}}</p>
+                                                    </div>
+                                                </div>
+                                                <div class="col-2 d-flex justify-content-end align-items-center">
+                                                    <p class="m-0">1</p>
+                                                    <img  src="{{asset('storage/images/customer/person.png')}}" alt="" width="30px" height="30px">
+                                                </div>
+                                            </div>
+
+                                            <hr>
+                                            {{-- TRANSACTION DETAIL --}}
+                                            <div class="code d-flex justify-content-end">
+                                                <div class="text-end">
+                                                    {{-- <p class="m-0" style="font-family: helvetica_bold;font-size: 1.1em;">Transaction code : 1PKhfWqLiADhSb7</p> --}}
+                                                    <p class="m-0" style="font-family: helvetica_regular;">Order Price : Rp {{$activeReservation->restaurant->price}}</p>
+                                                    <p class="m-0" style="font-family: helvetica_regular;">Reservation date : {{$activeReservation->reservation_date_time}}</p>
+                                                </div>
+                                            </div>
                                         </div>
-                                    </div>
+                                    </a>
                                 </div>
-                            </a>
-                        </div>
 
+                            </div>
+                        @else
+                            <div class="d-flex w-100 justify-content-start">
+                                <p class="m-0">You don't have any transaction right now</p>
+                            </div>
+                        @endif
                     </div>
                 </div>
             </div>
@@ -247,5 +257,28 @@
             console.log('Welcome Customer!');
 
         });
+
+        function opencancel(reservation_id){
+            $("#opencancel_"+reservation_id).addClass("d-none");
+            $("#cancelconfirmation_"+reservation_id).removeClass("d-none");
+        }
+        function closecancel(reservation_id){
+            $("#cancelconfirmation_"+reservation_id).addClass("d-none");
+            $("#opencancel_"+reservation_id).removeClass("d-none");
+        }
+        function cancel_reservation(reservation_id){
+            // ACTIVE TRANSACTION AJAX
+            $.ajax({
+                type: "get",
+                url: "/customer/cancelClosestUpcomingTransaction",
+                data: {
+                    'reservation_id': reservation_id
+                },
+                success: function(response) {
+                    // GENERATE MAP
+                    $("#reservation_container").html(response);
+                },
+            });
+        }
     </script>
 @endsection

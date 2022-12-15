@@ -142,7 +142,6 @@ Route::prefix('customer')->group(function () {
     Route::get('profile', [CustomerController::class,"masterProfile"])->name("customer_profile");
     Route::get('notification', [CustomerController::class,"masterNotification"])->name("customer_notification");
 
-
     // PROFILE ROUTES
     // 1. editProfile
     Route::post('editProfile', [CustomerController::class,"editProfile"]);
@@ -161,11 +160,21 @@ Route::prefix('customer')->group(function () {
     Route::post('searchRestaurant', [CustomerController::class,"searchRestaurant"]);
     // 3. filterRestaurant
     Route::post('filterRestaurant', [CustomerController::class,"filterRestaurant"]);
-    // 4. ajaxRoute
+    // AJAX IN EXPLORE ROUTES
+    // 4. generatePopUp
     Route::get('generateMap', [CustomerController::class,"generateMap"]);
     Route::get('generateForm', [CustomerController::class,"generateForm"]);
     // 5. bookTable
-    Route::post('bookTable/{restaurant_id}', [IpaymuController::class,"serveTable"]);
+    Route::post('bookTable/{restaurant_id}', [CustomerController::class,"bookTable"]);
+    // 6. like_dislike
+    Route::get('like_dislike', [CustomerController::class,"like_dislike"]);
+
+    // FAVORITE ROUTES
+    Route::post('favorite/searchRestaurant', [CustomerController::class,"favoriteSearch"]);
+
+    // AJAX IN history
+    Route::get('cancelTransaction', [CustomerController::class,"cancelTransaction"]);
+    Route::get('cancelClosestUpcomingTransaction', [CustomerController::class,"cancelClosestUpcomingTransaction"]);
 
 });
 

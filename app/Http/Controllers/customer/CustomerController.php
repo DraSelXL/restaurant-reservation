@@ -4,10 +4,14 @@ namespace App\Http\Controllers\customer;
 
 use App\Http\Controllers\Controller;
 use App\Models\Migrasi\favouriteMigrasi;
+use App\Models\Migrasi\postMigrasi;
+use App\Models\Migrasi\reservationMigrasi;
 use App\Models\Migrasi\restaurantMigrasi;
+use App\Models\Migrasi\transactionMigrasi;
 use App\Models\Migrasi\userMigrasi;
 use App\Rules\ImageCount;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class CustomerController extends Controller
 {
@@ -45,29 +49,115 @@ class CustomerController extends Controller
                 ->where('description', 'like', "%$description%");
             }
         )->get();
-        // dd($restaurants);
-        return view('customer.customer_search',compact('currPage','restaurants','keyword'));
+
+
+        $reservations = reservationMigrasi::select("restaurant_id")
+            ->selectRaw("count(restaurant_id) as total_reservation")
+            ->groupBy("restaurant_id")
+            ->orderBy("total_reservation","desc")
+            ->limit(10)
+            ->get();
+
+        $bestSellerRestaurantId = [];
+        foreach ($reservations as $key => $reservation) {
+            $bestSellerRestaurantId[] = $reservation->restaurant_id;
+        }
+
+        $likelist = favouriteMigrasi::where("user_id",activeUser()->id)->get();
+        $likelistId = [];
+        foreach ($likelist as $key => $like) {
+            $likelistId[] = $like->restaurant_id;
+        }
+
+        return view('customer.customer_search',compact('currPage','restaurants','keyword','bestSellerRestaurantId','likelistId'));
     }
     public function masterFavorite(Request $request)
     {
         $currPage = "favorite";
-        $user_id = activeUser()->id;
-        $restaurants = restaurantMigrasi::join('favourites','favourites.restaurant_id','=','restaurants.id')
-                        ->where('favourites.user_id','=',$user_id)
-                        ->get();
-        $user = userMigrasi::find($user_id);
-        return view('customer.customer_favorite',compact('currPage','restaurants','user'));
+
+        $likelist = favouriteMigrasi::where("user_id",activeUser()->id)->get();
+        $likelistId = [];
+        foreach ($likelist as $key => $like) {
+            $likelistId[] = $like->restaurant_id;
+        }
+        $keyword = $request->keyword;
+        if($keyword != null){
+            $restaurants = restaurantMigrasi::where(
+                function ($q) use($keyword,$likelistId)
+                {
+                    $q
+                    ->where('full_name','like',"%$keyword%")
+                    ->whereIn("id",$likelistId);
+                }
+            )->get();
+        }else{
+            $restaurants = restaurantMigrasi::whereIn("id",$likelistId)->get();
+        }
+
+        $reservations = reservationMigrasi::select("restaurant_id")
+            ->selectRaw("count(restaurant_id) as total_reservation")
+            ->groupBy("restaurant_id")
+            ->orderBy("total_reservation","desc")
+            ->limit(10)
+            ->get();
+
+        $bestSellerRestaurantId = [];
+        foreach ($reservations as $key => $reservation) {
+            $bestSellerRestaurantId[] = $reservation->restaurant_id;
+        }
+
+
+        return view('customer.customer_favorite',compact('currPage','restaurants','bestSellerRestaurantId','likelistId'));
     }
     public function masterHistory(Request $request)
     {
         $currPage = "history";
-        return view('customer.customer_history',compact('currPage'));
+        // GET ALL TRANSACTION
+        $history = transactionMigrasi::where("user_id",activeUser()->id)->get();
+
+        // GET RESERVATION THAT ALREADY PAID AND HASNT BEEN CONFIRMED BY RESTAURANT
+        $activeReservations = reservationMigrasi::where(
+            function($q)
+            {
+                $q
+                ->where("user_id",activeUser()->id)
+                ->where("payment_status","1");
+            }
+        )
+        ->orderBy("reservation_date_time")
+        ->get();
+        // $reservation_id = [];
+        // foreach ($reservations as $reservation) {
+        //     $reservation_id[] = $reservation->id;
+        // }
+        // // GET FINISHED TRANSACTION
+        // $doneTransaction = transactionMigrasi::select("reservation_id")->where(
+        //     function($q) use($reservation_id)
+        //     {
+        //         $q
+        //         ->where("user_id",activeUser()->id)
+        //         ->whereIn("reservation_id",$reservation_id);
+        //     }
+        // )->get();
+        // dd($doneTransaction);
+        return view('customer.customer_history',compact('currPage','history','activeReservations'));
     }
     public function masterProfile(Request $request)
     {
         $currPage = "profile";
         $user = activeUser();
-        return view('customer.customer_profile',compact('currPage','user'));
+        // GET CLOSEST UPCOMING RESERVATION
+        $activeReservation = reservationMigrasi::where(
+            function($q)
+            {
+                $q
+                ->where("user_id",activeUser()->id)
+                ->where("payment_status","1");
+            }
+        )
+        ->orderBy("reservation_date_time")
+        ->first();
+        return view('customer.customer_profile',compact('currPage','user','activeReservation'));
     }
     public function editProfile(Request $request)
     {
@@ -89,7 +179,15 @@ class CustomerController extends Controller
     public function masterNotification(Request $request)
     {
         $currPage = "notification";
-        return view('customer.customer_notification',compact('currPage'));
+        $user_notifications = postMigrasi::where("user_id",activeUser()->id)->get();
+        $developer_notifications = postMigrasi::where("user_id","0")->get();
+        foreach ($user_notifications as $user_notif) {
+            $notif = postMigrasi::find($user_notif->id);
+            $notif->status = 1;
+            $notif->save();
+        }
+
+        return view('customer.customer_notification',compact('currPage','user_notifications','developer_notifications'));
     }
 
 
@@ -200,5 +298,77 @@ class CustomerController extends Controller
         $reservation_time = $request->reservation_time;
 
         // return view("customer.partial.restaurant_detail",compact("restaurant"));
+    }
+
+    public function like_dislike(Request $request)
+    {
+        // BOOK TABLE
+        $restaurant_id = $request->restaurant_id;
+        $user_id = $request->user_id;
+
+        $favorite = favouriteMigrasi::where(
+            function ($q) use($restaurant_id,$user_id)
+            {
+                $q
+                ->where("user_id","=",$user_id)
+                ->where("restaurant_id","=",$restaurant_id);
+            }
+        )
+        ->first();
+
+        if($favorite == null){
+            $new_fav = new favouriteMigrasi;
+            $new_fav->user_id = $user_id;
+            $new_fav->restaurant_id = $restaurant_id;
+            $new_fav->save();
+            return "1";
+        }else{
+            $favorite->delete();
+            return "2";
+        }
+    }
+
+    public function favoriteSearch(Request $request)
+    {
+        $keyword = $request->keyword;
+        return redirect()->route("customer_favorite",compact("keyword"));
+    }
+
+    public function cancelTransaction(Request $request)
+    {
+        $reservation_id = $request->reservation_id;
+        $reservation = reservationMigrasi::find($reservation_id);
+        $reservation->delete();
+        $activeReservations = reservationMigrasi::where(
+            function($q)
+            {
+                $q
+                ->where("user_id",activeUser()->id)
+                ->where("payment_status","1");
+            }
+        )
+        ->orderBy("reservation_date_time")
+        ->get();
+        return view("customer.partial.active_reservation",compact("activeReservations"));
+    }
+
+    public function cancelClosestUpcomingTransaction(Request $request)
+    {
+        $reservation_id = $request->reservation_id;
+        $reservation = reservationMigrasi::find($reservation_id);
+        $reservation->delete();
+
+        // GET CLOSEST UPCOMING RESERVATION
+        $activeReservation = reservationMigrasi::where(
+            function($q)
+            {
+                $q
+                ->where("user_id",activeUser()->id)
+                ->where("payment_status","1");
+            }
+        )
+        ->orderBy("reservation_date_time")
+        ->first();
+        return view("customer.partial.closestActive_reservation",compact("activeReservation"));
     }
 }
