@@ -118,9 +118,8 @@
                             <th>No.</th>
                             <th>Name</th>
                             <th>Location</th>
-                            <th>7D</th>
-                            <th>30D</th>
-                            <th>Today</th>
+                            <th>Total Income</th>
+                            <th>Total Order</th>
                         </thead>
                         <tbody>
                             @foreach ($topSales as $key=>$topSale)
@@ -128,13 +127,8 @@
                                     <td>{{$key+1}}</td>
                                     <td>{{$topSale->full_name}}</td>
                                     <td>{{$topSale->address}}</td>
-                                    @if ($lastWeek == [])
-                                        <td>Rp. 0,00</td>
-                                    @else
-                                        <td>Rp. {{$lastWeek[$key]->sum}},00</td>
-                                    @endif
-                                    <td>4166 $</td>
-                                    <td>88 $</td>
+                                    <td>Rp. {{$totalIncome[$key]->sum}},00</td>
+                                    <td>{{$totalOrder[$key]->totalorder}} Orders</td>
                                 </tr>
                             @endforeach
                         </tbody>
