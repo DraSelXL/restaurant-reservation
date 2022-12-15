@@ -184,15 +184,22 @@ Route::prefix('restaurant')->controller(RestaurantController::class)->group(func
     Route::get('statistic', 'getStatisticPage');
 
     // Interact with reservation orders
+    Route::get('getReservations', 'getReservations');
     Route::get('confirm/{id}', 'confirmReservation');
     Route::get('reject/{id}', 'rejectReservation');
 
     // Interact with available restaurant tables
     Route::get('getTables', 'getRestaurantTables');
-    Route::post('addTable', 'addTable');
-    Route::post('increaseTable', 'increaseTable');
-    Route::post('decreaseTable', 'decreaseTable');
+
+    // Interact with reservation histories
+    Route::get('getReservationHistory', 'getReservationHistory');
+    Route::get('getReservationPagination', 'getReservationPagination');
+
+    // Interact with restaurant statistics
+    Route::get('revenue', 'getRestaurantRevenue');
+    Route::get('totalRevenue', 'getTotalRevenue');
+    Route::get('totalOrder', 'getTotalOrder');
 
     // Update the restaurant settings
-    Route::post('/updateRestaurant/{id}', 'updateRestaurant');
+    Route::post('/updateRestaurant', 'updateRestaurant');
 });

@@ -20,8 +20,20 @@ class reservationMigrasi extends Model
     {
         return $this->hasOne(transactionMigrasi::class);
     }
+
+    /**
+     * Get the table related to this reservation.
+     */
     public function table()
     {
-        return $this->belongsTo(tableMigrasi::class);
+        return $this->belongsTo(tableMigrasi::class, 'table_id', 'id');
+    }
+
+    /**
+     * Get the user that created the reservation.
+     */
+    public function user()
+    {
+        return $this->belongsTo(userMigrasi::class, 'user_id', 'id');
     }
 }
