@@ -20,6 +20,7 @@ return new class extends Migration
             $table->bigInteger("table_id");
             $table->dateTime("reservation_date_time");
             $table->tinyInteger("payment_status");
+            $table->string("session_id",50)->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
