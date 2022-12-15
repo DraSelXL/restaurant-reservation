@@ -25,6 +25,16 @@ class restaurantMigrasi extends Model
     {
         return $this->hasMany(reviewMigrasi::class);
     }
+
+    /**
+     * Get the current owner of the restaurant.
+     *
+     * @return userMigrasi The model of a user owning this establishment.
+     */
+    public function user()
+    {
+        return $this->hasOne(userMigrasi::class, 'id', 'user_id');
+    }
     public function favourite()
     {
         return $this->hasMany(favouriteMigrasi::class,'restaurant_id','id');

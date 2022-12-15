@@ -74,6 +74,9 @@ class IndexController extends Controller
     {
         if(Auth::guard('web')->check()){
             Auth::guard('web')->logout();
+
+            // logout from the restaurant session if exists
+            $request->session()->pull("OPEN_TABLE_RESTAURANT_INFO");
         }
         return redirect()->route("index");
     }

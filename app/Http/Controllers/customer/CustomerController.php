@@ -35,17 +35,12 @@ class CustomerController extends Controller
         $location = $request->location;
 
         // NO PRICE FILTER
-        if($start_price == null){ $start_price = 0; }
-        if($end_price == null){ $end_price = 2147483647; }
-
-        $restaurants = restaurantMigrasi::where(
-            function ($q) use ($keyword,$description,$location,$start_price,$end_price)
+            $restaurants = restaurantMigrasi::where(
+            function ($q) use ($keyword,$description,$location)
             {
                 $q
                 ->where('full_name', 'like', "%$keyword%")
                 ->where('address', 'like', "%$location%")
-                ->where('price', '>', "$start_price")
-                ->where('price', '<', "$end_price")
                 ->where('description', 'like', "%$description%");
             }
         )->get();
@@ -234,13 +229,17 @@ class CustomerController extends Controller
         $new_restaurant->user_id = activeUser()->id;
         $new_restaurant->col = 0;
         $new_restaurant->row = 0;
-        $new_restaurant->shifts = $request->shift;
         $new_restaurant->price = 20000;
+        $new_restaurant->shifts = $request->shift;
         $new_restaurant->start_time = $request->open_at."";
         $new_restaurant->description = $request->description;
         $new_restaurant->save();
+
+        // Store the restaurant information in the session
+        $request->session()->put("OPEN_TABLE_RESTAURANT_INFO", $new_restaurant);
+
         // RETURN REDIRECT TO RESTAURANT HOME
-        return redirect()->route("customer_home")->with("successMessage","Restaurant account has been registered!");
+        return redirect()->route("restaurant_home")->with("successMessage","Restaurant account has been registered!");
     }
 
     // SEARCH/EXPLORE FUNCTIONS

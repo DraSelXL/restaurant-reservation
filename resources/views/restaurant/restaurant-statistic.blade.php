@@ -18,6 +18,11 @@
         .toggle-card.active {
             background-color: rgb(240, 240, 240);
         }
+
+        .year-input {
+            width: 7em;
+            max-width: 7em;
+        }
     </style>
 @endsection
 
@@ -29,21 +34,14 @@
                 <div class="col">
                     <div class="card p-4 m-3 mb-lg-0">
                         <div class="d-flex align-items-center">
-                            <img class="bg-light rounded-3 p-2 me-3" src="{{asset("images/admin/sale.png")}}" alt="" width="60px">
+                            <img class="bg-light rounded-3 p-2 me-3" src="{{asset("/storage/images/admin/sale.png")}}" alt="" width="60px">
                             <div class="">
                                 <p class="m-0"><b>Total Sales</b></p>
                                 <p class="m-0 overview_sub">{{date("F")}} {{date("jS")}}</p>
                             </div>
                         </div>
                         <div class="d-flex justify-content-end w-100">
-                            <h1 id="revenue-placeholder" class="font-weight-bold">Rp. {{ 123123 }},00</h1>
-                        </div>
-                        {{-- Toggle Total Revenue Time Limit --}}
-                        <div class="d-flex justify-content-end w-100">
-                            <div id="revenue-toggle" class="toggle-container">
-                                <button id="revenue-toggle-monthly" class="toggle-card active py-1 px-2" style="border-right: 1px solid black">Monthly</button>
-                                <button id="revenue-toggle-yearly" class="toggle-card py-1 px-2">Yearly</button>
-                            </div>
+                            <h1 id="revenue-placeholder" class="font-weight-bold">Fetching...</h1>
                         </div>
                     </div>
                 </div>
@@ -51,21 +49,14 @@
                 <div class="col">
                     <div class="card p-4 m-3 mb-lg-0">
                         <div class="d-flex align-items-center">
-                            <img class="bg-light rounded-3 p-2 me-3" src="{{asset("images/admin/order.png")}}" alt="" width="60px">
+                            <img class="bg-light rounded-3 p-2 me-3" src="{{asset("/storage/images/admin/order.png")}}" alt="" width="60px">
                             <div class="">
                                 <p class="m-0"><b>Total Orders</b></p>
                                 <p class="m-0 overview_sub">{{date("F")}} {{date("jS")}}</p>
                             </div>
                         </div>
                         <div class="d-flex justify-content-end w-100">
-                            <h1 id="order-placeholder" class="font-weight-bold">{{ 123 }}</h1>
-                        </div>
-                        {{-- Toggle Total Order Time Limit --}}
-                        <div class="d-flex justify-content-end w-100">
-                            <div id="order-toggle" class="toggle-container">
-                                <button id="order-toggle-monthly" class="toggle-card active py-1 px-2" style="border-right: 1px solid black">Monthly</button>
-                                <button id="order-toggle-yearly" class="toggle-card py-1 px-2">Yearly</button>
-                            </div>
+                            <h1 id="order-placeholder" class="font-weight-bold">Fetching...</h1>
                         </div>
                     </div>
                 </div>
@@ -73,28 +64,30 @@
                 <div class="col">
                     <div class="card p-4 m-3 mb-lg-0">
                         <div class="d-flex align-items-center">
-                            <img class="bg-light rounded-3 p-2 me-3" src="{{asset("images/admin/growth.png")}}" alt="" width="60px">
+                            <img class="bg-light rounded-3 p-2 me-3" src="{{asset("/storage/images/admin/growth.png")}}" alt="" width="60px">
                             <div class="">
                                 <p class="m-0"><b>Audience Growth</b></p>
                                 <p class="m-0 overview_sub">{{date("F")}} {{date("jS")}}</p>
                             </div>
                         </div>
                         <div class="d-flex justify-content-end w-100">
-                            <h1 id="growth-placeholder" class="font-weight-bold">{{ 345 }}</h1>
-                        </div>
-                        {{-- Toggle Total Growth Time Limit --}}
-                        <div class="d-flex justify-content-end w-100">
-                            <div id="growth-toggle" class="toggle-container">
-                                <button id="growth-toggle-monthly" class="toggle-card active py-1 px-2" style="border-right: 1px solid black">Monthly</button>
-                                <button id="growth-toggle-yearly" class="toggle-card py-1 px-2">Yearly</button>
-                            </div>
+                            <h1 id="growth-placeholder" class="font-weight-bold">Fetching...</h1>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <h2>Total revenue graph</h2>
-            <canvas id="revenue-graph" class="w-100"></canvas>
+            <div class="card p-3">
+                <div class="d-flex">
+                    <h2 class="flex-fill">Total revenue graph</h2>
+                    <div class="input-group" style="width: fit-content">
+                        <span class="input-group-text">Year:</span>
+                        <input type="number" class="form-control year-input" min="2000" max="9999" name="yearInput" id="year-input" placeholder="2020">
+                    </div>
+                </div>
+                <hr class="my-2">
+                <canvas id="revenue-graph" class="w-100"></canvas>
+            </div>
         </div>
     </main>
 
@@ -108,19 +101,27 @@
          */
         document.addEventListener("DOMContentLoaded", function () {
             // Initialize Document Element
-            const revenueToggle = $("#revenue-toggle");
-            const orderToggle = $("#order-toggle");
-            const growthToggle = $("#growth-toggle");
+            const revenuePlaceholder = $("#revenue-placeholder");
+            const orderPlaceholder = $("#order-placeholder");
+            const growthPlaceholder = $("#growth-placeholder");
+            const yearInput = $("#year-input");
 
             // Initialize Variables
             let xValues = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-            let yValues = [1000000, 400000, 921000, 1200000, 300000, 704000, 1002000, 421000, 511000, 4000100, 2000000, 3170000];
+            let yValues = [];
+
+            yearInput.val(new Date().getFullYear());
 
             // Register Events
+            // Assign event handler
+            yearInput.on("change", changeGraphYear(yearInput, xValues));
+
+            // Fire events
             loadGraph(xValues, yValues); // Load the graph as soon as the page loads
-            toggleContainer(revenueToggle);
-            toggleContainer(orderToggle);
-            toggleContainer(growthToggle);
+            getYearRevenueData(new Date().getFullYear(), xValues);
+            getTotalRevenue(revenuePlaceholder);
+            getTotalOrder(orderPlaceholder);
+            getAudienceGrowth(growthPlaceholder);
         });
 
         /**
@@ -130,7 +131,6 @@
          * @param {Array} yValues An array containing the labels of the rows.
          */
         function loadGraph(xValues, yValues) {
-
             let myChart = new Chart("revenue-graph", {
                 type: "bar",
                 data: {
@@ -155,34 +155,84 @@
         }
 
         /**
-         * Toggles the current active button and do an action corresponding to the type of the button being pressed.
+         * Retrieve the data of revenue from the targeted year, and show it into the graph.
          *
-         * @param {JqueryObject} toggleContainer The container of the buttons to toggle.
-         *
-         * @return {function} The handler function that will handle the click event.
+         * @param {Integer} year    The year which the data is going to be retrieved.
+         * @param {Arrayy}  xValues The label for each column that represents the months.
          */
-        function toggleContainer(toggleContainer) {
-            const toggleButtons = toggleContainer.find(".toggle-card");
-
-            toggleButtons.each(function () {
-                $(this).on("click", setActiveFilter($(this), toggleButtons));
+        function getYearRevenueData(year, xValues) {
+            $.ajax({
+                type: "get",
+                url: "/restaurant/revenue",
+                data: {
+                    year: year
+                },
+                success: function (response) {
+                    loadGraph(xValues, response);
+                }
             });
         }
 
         /**
-         * Toggle the button and issue an ajax request to acquire the proper response according to the button type.
+         * Fetch the total revenue of the current authenticated restaurat.
          *
-         * @param {JqueryObject} clickedElement The element which fires the click event.
-         * @param {JqueryCollection} filterElements A collection of elements which is to be toggled between.
+         * @param (JqueryObject) placeholder The element to put the response into.
          */
-        function setActiveFilter(clickedElement, filterElements) {
+        function getTotalRevenue(placeholder) {
+            $.ajax({
+                type: "get",
+                url: "/restaurant/totalRevenue",
+                data: {},
+                success: function (response) {
+                    placeholder.html(`Rp. ${new Intl.NumberFormat('id-ID').format(response)}`)
+                }
+            });
+        }
+
+        /**
+         * Fetch the total order that has been made to the restaurant.
+         *
+         * @param (JqueryObject) placeholder The element to put the response into.
+         */
+        function getTotalOrder(placeholder) {
+            $.ajax({
+                type: "get",
+                url: "/restaurant/totalOrder",
+                data: {},
+                success: function (response) {
+                    placeholder.html(response)
+                }
+            });
+        }
+
+        /**
+         * Fetch the total order that has been made to the restaurant.
+         *
+         * @param (JqueryObject) placeholder The element to put the response into.
+         */
+        function getAudienceGrowth(placeholder) {
+            $.ajax({
+                type: "get",
+                url: "/restaurant/audienceGrowth",
+                data: {},
+                success: function (response) {
+                    placeholder.html(response)
+                }
+            });
+        }
+
+        /**
+         * Change the graph's data based on the element's year value.
+         *
+         * @param {JqueryObject} changedElement The element which fires the event.
+         * @param {Array}        xValues        The array which has the labels for the graphs.
+         */
+        function changeGraphYear(changedElement, xValues) {
             return (event) => {
-                const activeElement = filterElements.find(".toggle-card.active");
-
-                // TODO: AJAX and get the total requested item
-
-                activeElement.prevObject.removeClass("active");
-                clickedElement.addClass("active");
+                const year = Number(changedElement.val());
+                if (year > 1999 && year < 10000) {
+                    getYearRevenueData(year, xValues);
+                }
             }
         }
     </script>
