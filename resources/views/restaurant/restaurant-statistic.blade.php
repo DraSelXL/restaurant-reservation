@@ -18,6 +18,11 @@
         .toggle-card.active {
             background-color: rgb(240, 240, 240);
         }
+
+        .year-input {
+            width: 7em;
+            max-width: 7em;
+        }
     </style>
 @endsection
 
@@ -73,7 +78,13 @@
             </div>
 
             <div class="card p-3">
-                <h2>Total revenue graph</h2>
+                <div class="d-flex">
+                    <h2 class="flex-fill">Total revenue graph</h2>
+                    <div class="input-group" style="width: fit-content">
+                        <span class="input-group-text">Year:</span>
+                        <input type="number" class="form-control year-input" min="2000" max="9999" name="yearInput" id="year-input" placeholder="2020">
+                    </div>
+                </div>
                 <hr class="my-2">
                 <canvas id="revenue-graph" class="w-100"></canvas>
             </div>
@@ -93,16 +104,24 @@
             const revenuePlaceholder = $("#revenue-placeholder");
             const orderPlaceholder = $("#order-placeholder");
             const growthPlaceholder = $("#growth-placeholder");
+            const yearInput = $("#year-input");
 
             // Initialize Variables
             let xValues = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
             let yValues = [];
 
+            yearInput.val(new Date().getFullYear());
+
             // Register Events
+            // Assign event handler
+            yearInput.on("change", changeGraphYear(yearInput, xValues));
+
+            // Fire events
             loadGraph(xValues, yValues); // Load the graph as soon as the page loads
-            getYearRevenueData(2022, xValues);
-            getTotalRevenue(revenuePlaceholder)
-            getTotalOrder(orderPlaceholder)
+            getYearRevenueData(new Date().getFullYear(), xValues);
+            getTotalRevenue(revenuePlaceholder);
+            getTotalOrder(orderPlaceholder);
+            getAudienceGrowth(growthPlaceholder);
         });
 
         /**
@@ -184,6 +203,37 @@
                     placeholder.html(response)
                 }
             });
+        }
+
+        /**
+         * Fetch the total order that has been made to the restaurant.
+         *
+         * @param (JqueryObject) placeholder The element to put the response into.
+         */
+        function getAudienceGrowth(placeholder) {
+            $.ajax({
+                type: "get",
+                url: "/restaurant/audienceGrowth",
+                data: {},
+                success: function (response) {
+                    placeholder.html(response)
+                }
+            });
+        }
+
+        /**
+         * Change the graph's data based on the element's year value.
+         *
+         * @param {JqueryObject} changedElement The element which fires the event.
+         * @param {Array}        xValues        The array which has the labels for the graphs.
+         */
+        function changeGraphYear(changedElement, xValues) {
+            return (event) => {
+                const year = Number(changedElement.val());
+                if (year > 1999 && year < 10000) {
+                    getYearRevenueData(year, xValues);
+                }
+            }
         }
     </script>
 @endsection

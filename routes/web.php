@@ -199,6 +199,7 @@ Route::prefix('restaurant')->controller(RestaurantController::class)->group(func
     Route::get('revenue', 'getRestaurantRevenue');
     Route::get('totalRevenue', 'getTotalRevenue');
     Route::get('totalOrder', 'getTotalOrder');
+    Route::get('audienceGrowth', 'getAudienceGrowth');
 
     // Update the restaurant settings
     Route::post('/updateRestaurant', 'updateRestaurant');

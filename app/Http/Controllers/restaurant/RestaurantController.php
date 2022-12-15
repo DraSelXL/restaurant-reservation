@@ -279,4 +279,17 @@ class RestaurantController extends Controller
 
         return $totalOrder->orders;
     }
+
+    public function getAudienceGrowth(Request $request)
+    {
+        $restaurant = $this->getAuthRestaurant($request);
+
+        // Fetch the total reservation from the last 1 month
+        $reservations = transactionMigrasi::select(DB::raw("COUNT(*) as growth"))
+            ->where("payment_date_at", ">", DB::raw("DATE_SUB(CURRENT_DATE(), INTERVAL 30 DAY)"))
+            ->where("restaurant_id", $restaurant->id)
+            ->first();
+
+        return $reservations->growth;
+    }
 }
