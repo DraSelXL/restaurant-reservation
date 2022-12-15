@@ -184,6 +184,11 @@ Route::prefix('restaurant')->controller(RestaurantController::class)->group(func
     Route::get('getReservationHistory', 'getReservationHistory');
     Route::get('getReservationPagination', 'getReservationPagination');
 
+    // Interact with restaurant statistics
+    Route::get('revenue', 'getRestaurantRevenue');
+    Route::get('totalRevenue', 'getTotalRevenue');
+    Route::get('totalOrder', 'getTotalOrder');
+
     // Update the restaurant settings
     Route::post('/updateRestaurant', 'updateRestaurant');
 });

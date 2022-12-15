@@ -13,6 +13,6 @@ class transactionMigrasi extends Model
     protected $table = "transactions";
     public function reservation()
     {
-        return $this->hasOne(transactionMigrasi::class);
+        return $this->hasOne(transactionMigrasi::class, 'id', 'reservation_id');
     }
 }

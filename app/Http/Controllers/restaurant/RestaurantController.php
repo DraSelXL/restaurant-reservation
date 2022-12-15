@@ -5,6 +5,7 @@ namespace App\Http\Controllers\restaurant;
 use App\Http\Controllers\Controller;
 use App\Models\Migrasi\reservationMigrasi;
 use App\Models\Migrasi\restaurantMigrasi;
+use App\Models\Migrasi\transactionMigrasi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -214,5 +215,68 @@ class RestaurantController extends Controller
             'paginationSize' => $paginationSize,
             'page' => $page,
         ]);
+    }
+
+    /**
+     * Retrieve all revenues that the current authenticated restaurant receive from the targeted year.
+     */
+    public function getRestaurantRevenue(Request $request)
+    {
+        $restaurant = $this->getAuthRestaurant($request);
+
+        // Fetch the transactions in the targeted year
+        $transactions = transactionMigrasi::where(DB::raw('YEAR(payment_date_at)') , "=", "$request->year")
+            ->where("restaurant_id", $restaurant->id)
+            ->get();
+
+        $revenues = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+        foreach($transactions as $transaction) {
+            $reservation = $transaction->reservation->withTrashed()->first();
+
+            // Check whether the reservation has been cancelled or not.
+            if (!$reservation->trashed()) {
+                // Get the transaction month and add to the array of revenue according what month is it.
+                $month = date_format(date_create($transaction->payment_date_at), "m");
+
+                $month = (int)$month - 1;
+
+                // Apply the additional revenue to the correspoding index (month)
+                $revenues[$month] += $transaction->payment_amount;
+            }
+        }
+
+        return $revenues;
+    }
+
+    /**
+     * Retrieve the total amount of revenue in the current authenticated restaurant.
+     */
+    public function getTotalRevenue(Request $request)
+    {
+        $restaurant = $this->getAuthRestaurant($request);
+
+        // Fetch the transactions in the targeted year
+        $revenueSum = transactionMigrasi::select(DB::raw("SUM(payment_amount) as revenue"))
+            ->where("restaurant_id", $restaurant->id)
+            ->first();
+
+        return $revenueSum->revenue;
+    }
+
+    /**
+     * Retrieve the total order that has been made to the current authenticated restaurant.
+     */
+    public function getTotalOrder(Request $request)
+    {
+        $restaurant = $this->getAuthRestaurant($request);
+
+        // Fetch the transactions in the targeted year
+        $totalOrder = transactionMigrasi::select(DB::raw("count(*) as orders"))
+            ->where("transactions.restaurant_id", $restaurant->id)
+            ->join("reservations", "transactions.reservation_id", "=", "reservations.id")
+            ->where("reservations.deleted_at", null)
+            ->first();
+
+        return $totalOrder->orders;
     }
 }
