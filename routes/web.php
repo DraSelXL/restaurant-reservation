@@ -176,6 +176,7 @@ Route::prefix('customer')->group(function () {
     Route::get('cancelTransaction', [CustomerController::class,"cancelTransaction"]);
     Route::get('cancelClosestUpcomingTransaction', [CustomerController::class,"cancelClosestUpcomingTransaction"]);
 
+
 });
 
 Route::prefix('restaurant')->controller(RestaurantController::class)->group(function() {
