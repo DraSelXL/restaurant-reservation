@@ -89,7 +89,7 @@
                     </div>
                     <div class="col">
                         <div class="mb-3">
-                            <input type="date" class="form-control p-3" id="reservation_date" name="reservation_date">
+                            <input type="text" class="form-control p-3" id="restaurant_description" name="restaurant_desc" placeholder="Asian, Steak, etc...">
                         </div>
                     </div>
                     <div class="col">

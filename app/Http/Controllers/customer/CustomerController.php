@@ -33,14 +33,31 @@ class CustomerController extends Controller
         $end_price = $request->end_price;
         $description = $request->description;
         $location = $request->location;
-
+        $time = $request->time;
         // NO PRICE FILTER
+<<<<<<< Updated upstream
             $restaurants = restaurantMigrasi::where(
             function ($q) use ($keyword,$description,$location)
+=======
+        if($start_price == null){ $start_price = 0; }
+        if($end_price == null){ $end_price = 2147483647; }
+        // NO TIME FILTER
+        if($time == null) {$time = 0;}
+        else{ $time = substr($time,0,2); }
+
+        $restaurants = restaurantMigrasi::where(
+            function ($q) use ($keyword,$description,$location,$start_price,$end_price,$time)
+>>>>>>> Stashed changes
             {
                 $q
                 ->where('full_name', 'like', "%$keyword%")
                 ->where('address', 'like', "%$location%")
+<<<<<<< Updated upstream
+=======
+                ->where('price', '>', "$start_price")
+                ->where('price', '<', "$end_price")
+                ->where('start_time', '>=', "$time")
+>>>>>>> Stashed changes
                 ->where('description', 'like', "%$description%");
             }
         )->get();
@@ -154,23 +171,6 @@ class CustomerController extends Controller
         ->first();
         return view('customer.customer_profile',compact('currPage','user','activeReservation'));
     }
-    public function editProfile(Request $request)
-    {
-        $user_id = activeUser()->id;
-        $user = userMigrasi::find($user_id);
-        if(password_verify($request->password, $user['password'])) {
-            $user->username = $request->username;
-            $user->full_name = $request->firstname.' '.$request->lastname;
-            $user->phone = $request->phone;
-            $user->address = $request->address;
-            $user->date_of_birth = $request->birthdate;
-            $user->save();
-            return redirect()->back()->with('pesan','Updated Successfully');
-        }
-        else{
-            return redirect()->back()->with('pesan','Updated Unsuccessfully');
-        }
-    }
     public function masterNotification(Request $request)
     {
         $currPage = "notification";
@@ -186,13 +186,13 @@ class CustomerController extends Controller
     }
 
 
-    // HOME FUNCTIONS
+    // HOME PAGE FUNCTIONS
     public function checkAvailability(Request $request)
     {
         $keyword = $request->restaurant_name;
-        $date = $request->reservation_date;
+        $description = $request->restaurant_desc;
         $time = $request->reservation_time;
-        return redirect()->route("customer_search",compact("keyword"));
+        return redirect()->route("customer_search",compact("keyword","time","description"));
     }
     public function masterRegister(Request $request)
     {
@@ -242,7 +242,7 @@ class CustomerController extends Controller
         return redirect()->route("restaurant_home")->with("successMessage","Restaurant account has been registered!");
     }
 
-    // SEARCH/EXPLORE FUNCTIONS
+    // SEARCH/EXPLORE PAGE FUNCTIONS
     public function masterRestaurant(Request $request)
     {
         $currPage = "search";
@@ -257,7 +257,6 @@ class CustomerController extends Controller
         // RETURN REDIRECT TO EXPLORE WITH KEYWORD
         return redirect()->route("customer_search",compact("keyword"));
     }
-
     public function filterRestaurant(Request $request)
     {
         $keyword = $request->keyword;
@@ -268,7 +267,6 @@ class CustomerController extends Controller
         // RETURN REDIRECT TO EXPLORE WITH KEYWORD
         return redirect()->route("customer_search",compact("keyword","start_price","end_price","description","location"));
     }
-
     public function generateMap(Request $request)
     {
         // GENERATE MAP AJAX
@@ -276,8 +274,19 @@ class CustomerController extends Controller
         $restaurant = restaurantMigrasi::find($id);
         $col_length = $restaurant->col;
         $row_length = $restaurant->row;
-
-        return view("customer.partial.restaurat_map",compact("col_length","row_length"));
+        $reserved_table = reservationMigrasi::where(
+            function($q) use($id)
+            {
+                $q
+                ->where("restaurant_id",$id)
+                ->where("payment_status","1");
+            }
+        )->get();
+        $reserved_tableId = [];
+        foreach ($reserved_table as $reserved) {
+            $reserved_tableId[] = $reserved->table_id;
+        }
+        return view("customer.partial.restaurant_map",compact("col_length","row_length","reserved_tableId"));
     }
     public function generateForm(Request $request)
     {
@@ -298,7 +307,6 @@ class CustomerController extends Controller
 
         // return view("customer.partial.restaurant_detail",compact("restaurant"));
     }
-
     public function like_dislike(Request $request)
     {
         // BOOK TABLE
@@ -327,12 +335,14 @@ class CustomerController extends Controller
         }
     }
 
+    // FAVORITE PAGE FUNCTION
     public function favoriteSearch(Request $request)
     {
         $keyword = $request->keyword;
         return redirect()->route("customer_favorite",compact("keyword"));
     }
 
+    // HISTORY PAGE FUNCTION
     public function cancelTransaction(Request $request)
     {
         $reservation_id = $request->reservation_id;
@@ -350,7 +360,6 @@ class CustomerController extends Controller
         ->get();
         return view("customer.partial.active_reservation",compact("activeReservations"));
     }
-
     public function cancelClosestUpcomingTransaction(Request $request)
     {
         $reservation_id = $request->reservation_id;
@@ -369,5 +378,24 @@ class CustomerController extends Controller
         ->orderBy("reservation_date_time")
         ->first();
         return view("customer.partial.closestActive_reservation",compact("activeReservation"));
+    }
+
+    // PROFILE PAGE FUNCTION
+    public function editProfile(Request $request)
+    {
+        $user_id = activeUser()->id;
+        $user = userMigrasi::find($user_id);
+        if(password_verify($request->password, $user['password'])) {
+            $user->username = $request->username;
+            $user->full_name = $request->firstname.' '.$request->lastname;
+            $user->phone = $request->phone;
+            $user->address = $request->address;
+            $user->date_of_birth = $request->birthdate;
+            $user->save();
+            return redirect()->back()->with('pesan','Updated Successfully');
+        }
+        else{
+            return redirect()->back()->with('pesan','Updated Unsuccessfully');
+        }
     }
 }

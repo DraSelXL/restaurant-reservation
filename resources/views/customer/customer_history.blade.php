@@ -148,7 +148,14 @@
                                                         <div class="text-end">
                                                             {{-- <p class="m-0" style="font-family: helvetica_bold;font-size: 1.1em;">Transaction code : 1PKhfWqLiADhSb7</p> --}}
                                                             <p class="m-0" style="font-family: helvetica_regular;">Order Price : Rp {{$reservation->restaurant->price}}</p>
-                                                            <p class="m-0" style="font-family: helvetica_regular;">Reservation date : {{$reservation->reservation_date_time}}</p>
+                                                            <p class="m-0" style="font-family: helvetica_regular;">
+                                                                Reservation date : {{$reservation->reservation_date_time}}
+                                                                @if (substr($reservation->reservation_date_time,11,2) < 12)
+                                                                    am
+                                                                @else
+                                                                    pm
+                                                                @endif
+                                                            </p>
                                                         </div>
                                                     </div>
                                                 </div>
