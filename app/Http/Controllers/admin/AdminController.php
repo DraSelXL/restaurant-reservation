@@ -79,9 +79,8 @@ class AdminController extends Controller
         FROM transactions t
         JOIN users u ON u.id = t.user_id
         JOIN reservations r ON r.id = t.reservation_id
-        WHERE r.payment_status = ?
         GROUP BY t.user_id, restaurant_reservation.u.id
-        ORDER BY u.id",[1]);
+        ORDER BY u.id");
         $length = count($spending);
         return view('admin.admin_customer',compact('currPage','userList','countUser','keyword','spending'));
     }

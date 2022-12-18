@@ -35,10 +35,6 @@ class CustomerController extends Controller
         $location = $request->location;
         $time = $request->time;
         // NO PRICE FILTER
-<<<<<<< Updated upstream
-            $restaurants = restaurantMigrasi::where(
-            function ($q) use ($keyword,$description,$location)
-=======
         if($start_price == null){ $start_price = 0; }
         if($end_price == null){ $end_price = 2147483647; }
         // NO TIME FILTER
@@ -47,17 +43,13 @@ class CustomerController extends Controller
 
         $restaurants = restaurantMigrasi::where(
             function ($q) use ($keyword,$description,$location,$start_price,$end_price,$time)
->>>>>>> Stashed changes
             {
                 $q
                 ->where('full_name', 'like', "%$keyword%")
                 ->where('address', 'like', "%$location%")
-<<<<<<< Updated upstream
-=======
                 ->where('price', '>', "$start_price")
                 ->where('price', '<', "$end_price")
                 ->where('start_time', '>=', "$time")
->>>>>>> Stashed changes
                 ->where('description', 'like', "%$description%");
             }
         )->get();
