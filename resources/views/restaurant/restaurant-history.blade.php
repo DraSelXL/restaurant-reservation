@@ -1,9 +1,27 @@
+@php
+    use App\Http\Controllers\restaurant\RestaurantController;
+@endphp
+
 @extends('layouts.restaurant-sidebar')
+
+@section('dependencies')
+    <script src="https://unpkg.com/jspdf@latest/dist/jspdf.umd.min.js"></script>
+    <script>
+        // Apply the jsPDF class from the library to the window
+        window.jsPDF = window.jspdf.jsPDF;
+    </script>
+@endsection
 
 @section('main-content')
     <main class="p-4">
         <h1>Restaurant History</h1>
         <hr style="margin: 6px 0">
+
+        <div class="w-100 bg-light p-2 my-3 text-end">
+            <span class="my-1">Download history data:</span>
+            <button id="download" class="btn btn-primary">Download</button>
+        </div>
+
         <table class="table table-striped">
             <thead class="table-info">
                 <tr>
@@ -29,6 +47,7 @@
             <button id="pagination-next" class="btn btn-secondary">></button>
         </div>
     </main>
+    <script src="https://unpkg.com/jspdf-autotable"></script>
     <script>
         // Global Variable
         let viewPage = 1;
@@ -42,13 +61,16 @@
             const paginationContainer = $("#pagination-container");
             const previousPage = $("#pagination-previous");
             const nextPage = $("#pagination-next");
+            const downloadButton = $("#download");
 
             // Register Event
             loadPagination(paginationContainer, tableBody, viewPage);
             getReservations(tableBody, viewPage);
 
-            previousPage.on("click", switchPage(viewPage-1, paginationContainer, tableBody))
-            nextPage.on("click", switchPage(viewPage+1, paginationContainer, tableBody))
+            downloadButton.on("click", downloadHistoryData(downloadButton))
+
+            previousPage.on("click", switchPage(--viewPage, paginationContainer, tableBody))
+            nextPage.on("click", switchPage(++viewPage, paginationContainer, tableBody))
         });
 
         /**
@@ -108,6 +130,91 @@
                 getReservations(containerElement, targetPage);
                 loadPagination(paginationContainer, containerElement, targetPage)
                 viewPage = targetPage;
+            }
+        }
+
+        /**
+         * Downloads all restaurant reservation history data and create a pdf which the user can automatically download.
+         *
+         * Uses the jsPDF library to generate the pdf.
+         *
+         * @param {JqueryObject} clickedElement The element that fires the event to provide feedback, avoiding spam when generating.
+         */
+        function downloadHistoryData(clickedElement) {
+            return (event) => {
+                clickedElement.html("Generating...");
+                clickedElement.attr("disabled", true);
+
+                // Default export is a4 paper, portrait, using millimeters for units
+                $.ajax({
+                    url: "/restaurant/getAllRestaurantHistory",
+                    type: "GET",
+                    data: {},
+                    success: function (response) {
+                        // Create the pdf file object
+                        const newDocument = new jsPDF();
+
+                        // Constant variables for the document layout
+                        const HEADER_HEIGHT = 25;
+                        const BODY_PADDING = 13;
+                        const LINE_HEIGHT = 4;
+                        const CHARACTER_WIDTH = 3;
+                        const PAPER_WIDTH = newDocument.internal.pageSize.getWidth();
+                        const PAPER_HEIGHT = newDocument.internal.pageSize.getHeight();
+                        const ALIGN_RIGHT = PAPER_WIDTH - BODY_PADDING;
+                        const CURRENT_DATE = new Date()
+
+                        // Variable to track the content height
+                        let contentHeight = BODY_PADDING;
+                        let restaurantName = "{{ $restaurant->full_name }}";
+                        let currentDateString = `${CURRENT_DATE.getDate()}-${CURRENT_DATE.getMonth() + 1}-${CURRENT_DATE.getFullYear()}`;
+
+                        // Create the heading for the document
+                        newDocument.setFontSize(24);
+                        newDocument.text(restaurantName, BODY_PADDING, contentHeight);
+                        newDocument.text(currentDateString, ALIGN_RIGHT - currentDateString.length * (CHARACTER_WIDTH + 1.5), contentHeight);
+                        contentHeight += 15;
+
+                        newDocument.setFontSize(16);
+                        newDocument.text("Reservation History:", BODY_PADDING, contentHeight);
+                        contentHeight += 5;
+
+                        // Adding the history data to the PDF
+                        try {
+                            newDocument.autoTable({
+                                body: response,
+                                startY: contentHeight,
+                                head:[["id", "reserver", "seats", "reservation_date", "created", "status"]],
+                                columnStyles: {
+                                    0: {halign: 'right', cellWidth: 12},
+                                    1: {halign: 'left', cellWidth: 60},
+                                    2: {halign: 'right', cellWidth: 15},
+                                    3: {halign: 'right', cellWidth: 36},
+                                    4: {halign: 'right', cellWidth: 36},
+                                    5: {halign: 'right'}
+                                },
+                                styles: { fontSize: 10 }
+                            });
+                        }
+                        catch (err) {
+                            console.error(err);
+                        }
+
+                        // Increase the content height based on the amount of data shown in the table
+                        contentHeight += (LINE_HEIGHT * response.length + LINE_HEIGHT * 2)
+
+                        // Save the document and print/save it
+                        newDocument.save();
+
+                        clickedElement.html("Download");
+                        clickedElement.attr("disabled", false);
+                    },
+                    error: function (err) {
+                        console.error(err);
+
+                        clickedElement.html("Error...");
+                    }
+                });
             }
         }
     </script>
