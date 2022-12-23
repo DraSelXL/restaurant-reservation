@@ -50,10 +50,23 @@
                                 <li class="dropdown-item">Hello, {{activeUser()->username}}!</li>
                                 <li class="dropdown-item">Balance : {{activeUser()->balance}}</li>
                                 <li><hr class="dropdown-divider"></li>
-                                <li><a class="dropdown-item" href="{{route('customer_profile')}}">Edit Profile</a></li>
+                                {{-- <li><a class="dropdown-item" href="{{route('customer_profile')}}">Edit Profile</a></li>
                                 <li><a class="dropdown-item" href="#">Top up Balance</a></li>
-                                <li><hr class="dropdown-divider"></li>
+                                <li><hr class="dropdown-divider"></li> --}}
                                 <li><a class="dropdown-item" href="/logout">Logout</a></li>
+                            </ul>
+                        </li>
+                    </div>
+
+                    <div class="hamburger d-lg-none ms-3">
+                        <li class="dropdown-center">
+                            <img class="dropdown-toggle" role="button" data-bs-toggle="dropdown" src="{{ asset('storage/images/customer/more.png') }}" alt="" width="30px" height="30px">
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="{{route('customer_home')}}">Home</a></li>
+                                <li><a class="dropdown-item" href="{{route('customer_search')}}">Search</a></li>
+                                <li><a class="dropdown-item" href="{{route('customer_favorite')}}">Favorite</a></li>
+                                <li><a class="dropdown-item" href="{{route('customer_history')}}">History</a></li>
+                                <li><a class="dropdown-item" href="{{route('customer_profile')}}">Profile</a></li>
                             </ul>
                         </li>
                     </div>

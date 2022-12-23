@@ -20,6 +20,7 @@ class CustomerController extends Controller
     {
         $currPage = "home";
         $user = activeUser();
+
         return view('customer.customer_home',compact('currPage','user'));
     }
     public function masterExplore(Request $request)
@@ -53,7 +54,6 @@ class CustomerController extends Controller
                 ->where('description', 'like', "%$description%");
             }
         )->get();
-
 
         $reservations = reservationMigrasi::select("restaurant_id")
             ->selectRaw("count(restaurant_id) as total_reservation")
@@ -166,8 +166,8 @@ class CustomerController extends Controller
     public function masterNotification(Request $request)
     {
         $currPage = "notification";
-        $user_notifications = postMigrasi::where("user_id",activeUser()->id)->get();
-        $developer_notifications = postMigrasi::where("user_id","0")->get();
+        $user_notifications = postMigrasi::where("user_id",activeUser()->id)->orderBy("created_at","desc")->get();
+        $developer_notifications = postMigrasi::where("user_id","0")->orderBy("created_at","desc")->get();
         foreach ($user_notifications as $user_notif) {
             $notif = postMigrasi::find($user_notif->id);
             $notif->status = 1;
@@ -264,14 +264,17 @@ class CustomerController extends Controller
     {
         // GENERATE MAP AJAX
         $id = $request->restaurant_id;
+        $date = $request->reservation_date;
+
         $restaurant = restaurantMigrasi::find($id);
         $col_length = $restaurant->col;
         $row_length = $restaurant->row;
         $reserved_table = reservationMigrasi::where(
-            function($q) use($id)
+            function($q) use($id,$date)
             {
                 $q
                 ->where("restaurant_id",$id)
+                ->where("reservation_date_time","like","%$date%")
                 ->where("payment_status","1");
             }
         )->get();

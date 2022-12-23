@@ -231,7 +231,7 @@
         function open_popup(id){
             $(".popup_container").removeClass("d-none",function(){
                 let restaurant_id = id;
-                generatePopUpDetail(restaurant_id);
+                generatePopUpDetail(restaurant_id,Date.now());
             });
         }
         function close_popup(){
@@ -239,16 +239,21 @@
             $(".popup_container").addClass("d-none");
             $(".blank").animate({height : '90vh'});
         }
-        function generatePopUpDetail(restaurant_id){
+        function generatePopUpDetail(restaurant_id,reservation_date){
             let map_generated = false;
             let form_generated = false;
+
+            // TODAY DATE
+            var today = new Date();
+            var currentDate = today.getFullYear()+"-"+(today.getMonth()+1)+"-"+today.getDate();
 
             // MAP AJAX
             $.ajax({
                 type: "get",
                 url: "/customer/generateMap",
                 data: {
-                    'restaurant_id': restaurant_id
+                    'restaurant_id': restaurant_id,
+                    'reservation_date': currentDate
                 },
                 success: function(response) {
                     // GENERATE MAP
@@ -323,6 +328,22 @@
                         $("#dislike_"+restaurant_id).prop("src","{{asset('storage/images/customer/search/fav.png')}}");
                         $("#dislike_"+restaurant_id).prop("id","like_"+restaurant_id);
                     }
+                },
+            });
+        }
+        function changeReservationDate(restaurant_id,reservation_date){
+            // GENERATE MAP BASED ON DATE VALUE AJAX
+            $.ajax({
+                type: "get",
+                url: "/customer/generateMap",
+                data: {
+                    'restaurant_id': restaurant_id,
+                    'reservation_date': reservation_date
+                },
+                success: function(response) {
+                    // GENERATE MAP
+                    $("#map_container").html(response);
+                    map_generated = true;
                 },
             });
         }
