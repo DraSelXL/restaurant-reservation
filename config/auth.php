@@ -65,10 +65,6 @@ return [
             'model' => App\Models\Migrasi\userMigrasi::class
         ],
 
-        // 'users' => [
-        //     'driver' => 'database',
-        //     'table' => 'users',
-        // ],
     ],
 
     /*

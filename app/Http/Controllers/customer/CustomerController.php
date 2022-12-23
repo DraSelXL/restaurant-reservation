@@ -377,7 +377,17 @@ class CustomerController extends Controller
     {
         $user_id = activeUser()->id;
         $user = userMigrasi::find($user_id);
+        $request->validate([
+            'password'=>'required'
+        ]);
         if(password_verify($request->password, $user['password'])) {
+            // INPUT IMAGE
+            if($request->foto != null){
+                $file = $request->file("foto");
+                $file_name = "pp.".$file->getClientOriginalExtension();
+                $path = "images/customer/".$user->full_name;
+                $file->storeAs($path,$file_name,"public");
+            }
             $user->username = $request->username;
             $user->full_name = $request->firstname.' '.$request->lastname;
             $user->phone = $request->phone;

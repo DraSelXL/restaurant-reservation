@@ -32,14 +32,14 @@ use Illuminate\Support\Facades\Hash;
         - Browse restoran (catalog)                                             -- DONE
         - Browse rekomendasi                                                    -- DONE
         - Mencari restoran (searchbar)                                          -- DONE
-        - Filter restoran (Review, harga, meja tersedia)                        --
-        - Membayar dengan e-money atau e-banking (API midtrans/ipayment)        --
+        - Filter restoran (Review, harga, meja tersedia)                        -- DONE
+        - Membayar dengan e-money atau e-banking (API midtrans/ipayment)        -- DONE
         - Top-up e-money                                                        --
-        - Favorite restoran                                                     --
-        - Melakukan reservasi (Book table yang available)                       --
+        - Favorite restoran                                                     -- DONE
+        - Melakukan reservasi (Book table yang available)                       -- DONE
         - Melihat sejarah reservasi (Transaction History)                       -- DONE
         - Melihat reservasi saat ini (Active Transaction)                       -- DONE
-        - Membatalkan reservasi saat ini (Uang reservasi tidak dikembalikan)    --
+        - Membatalkan reservasi saat ini (Uang reservasi tidak dikembalikan)    -- DONE
         - CRUD review kepada restoran yang sudah pernah direservasi             --
 
         <> Tambahan :
@@ -50,11 +50,11 @@ use Illuminate\Support\Facades\Hash;
 
         <> Proposal :                                                           STATUS
         - Melihat reservasi dan transaksi                                       --
-        - Mengganti jumlah atau layout dari meja                                --
-        - Menambah atau mengganti deskripsi restoran                            --
-        - Menambah atau mengganti waktu aktif restoran                          --
-        - Mengganti jumlah yang harus dibayar di aplikasi                       --
-        - Menandai review spam agar di review oleh admin                        --
+        - Mengganti jumlah atau layout dari meja                                -- DONE
+        - Menambah atau mengganti deskripsi restoran                            -- DONE
+        - Menambah atau mengganti waktu aktif restoran                          -- DONE
+        - Mengganti jumlah yang harus dibayar di aplikasi                       -- DONE
+        - Menandai review spam agar di review oleh admin                        -- DONE
 
         <> Tambahan :
         - Melihat dashboard/ statistic restoran                                 --
@@ -79,7 +79,7 @@ use Illuminate\Support\Facades\Hash;
         - Developer Post/Notification                                           -- DONE
 */
 
-Route::get('/', function () { return redirect()->route("index"); });
+Route::middleware(['guest'])->get('/', function () { return redirect()->route("index"); });
 
 Route::get('/logout', [IndexController::class,'logout']);
 
@@ -90,12 +90,12 @@ Route::prefix('/')->group(function () {
         2. checkLogin : login algrorithm
         3. checkRegister : register algorithm
     */
-    Route::get('index', [IndexController::class,'masterIndex'])->name("index");
+    Route::middleware(['guest'])->get('index', [IndexController::class,'masterIndex'])->name("index");
     Route::post('checkLogin', [IndexController::class,'checkLogin']);
     Route::post('checkRegister', [IndexController::class,'checkRegister']);
 });
 
-Route::prefix('admin')->group(function () {
+Route::prefix('admin')->middleware(['CheckUser:Admin'])->group(function () {
     /*
         Admin Route :
         1. dashboard : summary of sales, order, growth, top 10 restaurant and user activity
@@ -125,7 +125,7 @@ Route::prefix('admin')->group(function () {
     });
 });
 
-Route::prefix('customer')->group(function () {
+Route::prefix('customer')->middleware(['CheckUser:Customer'])->group(function () {
     /*
         Customer Route :
         1. home : showcase
@@ -179,7 +179,7 @@ Route::prefix('customer')->group(function () {
 
 });
 
-Route::prefix('restaurant')->controller(RestaurantController::class)->group(function() {
+Route::prefix('restaurant')->middleware(['CheckUser:Admin'])->controller(RestaurantController::class)->group(function() {
     Route::get('home', 'getHomePage')->name("restaurant_home");
     Route::get('history', 'getHistoryPage');
     Route::get('statistic', 'getStatisticPage');

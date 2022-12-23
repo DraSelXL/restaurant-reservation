@@ -45,7 +45,7 @@
 
                     <div class="profile">
                         <li class="dropdown-center">
-                            <img class="dropdown-toggle" role="button" data-bs-toggle="dropdown" src="{{asset("storage/images/customer/pp.jpg")}}" alt="" width="45px" height="45px" style="border-radius: 50%">
+                            <img class="dropdown-toggle" role="button" data-bs-toggle="dropdown" src="{{ asset('storage/images/customer/'.activeUser()->full_name.'/pp.jpg') }}" alt="" width="45px" height="45px" style="border-radius: 50%">
                             <ul class="dropdown-menu">
                                 <li class="dropdown-item">Hello, {{activeUser()->username}}!</li>
                                 <li class="dropdown-item">Balance : {{activeUser()->balance}}</li>

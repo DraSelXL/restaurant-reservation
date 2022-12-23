@@ -68,7 +68,7 @@
                 {{-- LEFT CONTENT --}}
                 <div class="col-sm-12 col-md-8 h-100">
 
-                    <form action="{{url('customer/editProfile')}}" method="post">
+                    <form action="{{url('customer/editProfile')}}" enctype="multipart/form-data" method="post">
                         @csrf
                         <div class="mb-3">
                             <p class="m-0" style="font-size: 2.5em;font-weight: bold;">Profile</p>
@@ -82,9 +82,16 @@
                             </div>
                             <div class="col d-flex align-items-center">
                                 <img class="dropdown-toggle" role="button" data-bs-toggle="dropdown"
-                                    src="{{ asset('storage/images/customer/pp.jpg') }}" alt="" width="70px" height="70px"
+                                    src="{{ asset('storage/images/customer/'.$user['full_name'].'/pp.jpg') }}" alt="" width="70px" height="70px"
                                     style="border-radius: 50%">
                             </div>
+                        </div>
+                        <div class="row mb-3">
+                            <label class="form-label">Upload user photo(file of jpg/png/jpeg): </label>
+                            <input type="file" name="foto" id="" class="form-control">
+                            @error('foto')
+                                @include('partial.validationMessage')
+                            @enderror
                         </div>
                         {{-- NAME --}}
                         <div class="row mb-3">
