@@ -110,11 +110,19 @@
                                     <input class="w-100" type="text" name="username" value="{{old('username')}}" id="username"><span class="highlight"></span><span class="bar"></span>
                                     <label>Username</label>
                                 </div>
+
                                 <div class="col-6 group">
                                     <input class="w-100" type="text" name="phone" value="{{old('phone')}}" id="phone"><span class="highlight"></span><span class="bar"></span>
                                     <label>Phone</label>
                                 </div>
-
+                                <div class="col-6 group">
+                                    <input class="w-100" type="text" name="email" value="{{old('email')}}" id="email"><span class="highlight"></span><span class="bar"></span>
+                                    <label>Email</label>
+                                </div>
+                                <div class="col-6 group">
+                                    <input class="w-100" type="text" name="confirmemail" value="{{old('confirmemail')}}" id="confirmemail"><span class="highlight"></span><span class="bar"></span>
+                                    <label>Confirm Email</label>
+                                </div>
                                 <div class="col-6 group">
                                     <input class="w-100" type="password" name="password" id="password"><span class="highlight"></span><span class="bar"></span>
                                     <label>Password</label>

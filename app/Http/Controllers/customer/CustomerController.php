@@ -225,6 +225,7 @@ class CustomerController extends Controller
         $new_restaurant->shifts = $request->shift;
         $new_restaurant->start_time = $request->open_at."";
         $new_restaurant->description = $request->description;
+        $new_restaurant->verified_at = now();
         $new_restaurant->save();
 
         // Store the restaurant information in the session

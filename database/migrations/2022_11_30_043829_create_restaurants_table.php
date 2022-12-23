@@ -26,7 +26,7 @@ return new class extends Migration
             $table->integer("shifts");
             $table->integer("price");
             $table->string("description");
-
+            $table->dateTime("verified_at")->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

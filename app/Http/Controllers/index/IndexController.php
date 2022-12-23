@@ -3,10 +3,13 @@
 namespace App\Http\Controllers\index;
 
 use App\Http\Controllers\Controller;
+use App\Mail\UserVerifyMail;
 use App\Models\Migrasi\userMigrasi;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Route;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 
 class IndexController extends Controller
 {
@@ -30,12 +33,17 @@ class IndexController extends Controller
         ];
         if(Auth::attempt($credential)){
             // Check user role
-            if(activeUser()->role->name == "Admin"){
-                return redirect()->route("admin_dashboard");
-            }else if(activeUser()->role->name == "Customer"){
-                return redirect()->route("customer_home");
-            }else if(activeUser()->role->name == "Restaurant"){
-                return redirect()->route("restaurant_home");
+            if(activeUser()->verified_at == null){
+                return redirect()->back();
+            }
+            else{
+                if(activeUser()->role->name == "Admin"){
+                    return redirect()->route("admin_dashboard");
+                }else if(activeUser()->role->name == "Customer"){
+                    return redirect()->route("customer_home");
+                }else if(activeUser()->role->name == "Restaurant"){
+                    return redirect()->route("restaurant_home");
+                }
             }
         }else{
             return redirect()->route("index")->with("errorMessage","User not found!");
@@ -50,6 +58,8 @@ class IndexController extends Controller
             'lastname'=>'required',
             'username'=>'required',
             'phone'=>'required',
+            'email'=> ['required','email'],
+            'confirmemail'=>'same:email',
             'password'=>'required|confirmed',
         ]);
 
@@ -60,13 +70,18 @@ class IndexController extends Controller
         $new_user->full_name = $request->firstname.' '.$request->lastname;
         $new_user->date_of_birth = date('Y-m-d H:i:s');
         $new_user->address = "";
-        $new_user->email = "";
+        $new_user->email = $request->email;
         $new_user->phone = $request->phone;
         $new_user->gender = 0;
         $new_user->balance = 0;
         $new_user->blocked = 0;
         $new_user->role_id = 2;
         $new_user->save();
+
+        // dd(route('verify',$new_user->id));
+
+        Mail::to($request->email)
+        ->queue(new UserVerifyMail(route('verify',$new_user->id)));
         return redirect()->back();
     }
 

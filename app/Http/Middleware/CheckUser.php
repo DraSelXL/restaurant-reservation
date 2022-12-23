@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class CheckUser
 {
@@ -16,11 +17,11 @@ class CheckUser
      */
     public function handle(Request $request, Closure $next, $role)
     {
-        if (auth()->user()->role->name == $role){
+        if (auth()->user()->role->name == $role && auth()->user()->verified_at != null){
             return $next($request);
         }
         else{
-            dd(auth()->user()->role->name);
+            dd(auth()->user()->verified_at);
         }
         abort(403);
     }

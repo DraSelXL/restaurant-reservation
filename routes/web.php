@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\admin\AdminController;
 use App\Http\Controllers\customer\CustomerController;
+use App\Http\Controllers\customer\VerifyController;
 use App\Http\Controllers\index\IndexController;
 use App\Http\Controllers\IpaymuController;
 use App\Http\Controllers\restaurant\RestaurantController;
@@ -179,7 +180,7 @@ Route::prefix('customer')->middleware(['CheckUser:Customer'])->group(function ()
 
 });
 
-Route::prefix('restaurant')->middleware(['CheckUser:Admin'])->controller(RestaurantController::class)->group(function() {
+Route::prefix('restaurant')->middleware(['CheckUser:Restaurant'])->controller(RestaurantController::class)->group(function() {
     Route::get('home', 'getHomePage')->name("restaurant_home");
     Route::get('history', 'getHistoryPage');
     Route::get('statistic', 'getStatisticPage');
@@ -206,3 +207,5 @@ Route::prefix('restaurant')->middleware(['CheckUser:Admin'])->controller(Restaur
     // Update the restaurant settings
     Route::post('/updateRestaurant', 'updateRestaurant');
 });
+
+Route::get('/verify/{token}',[VerifyController::class,'verify'])->name('verify');

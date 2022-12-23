@@ -40,6 +40,7 @@ class DatabaseSeeder extends Seeder
             'gender'=> 1,
             'balance'=> 12345,
             'role_id'=> 3,
+            'verified_at'=>now(),
             'created_at'=> now(),
             'updated_at'=> now()],
 
@@ -53,6 +54,7 @@ class DatabaseSeeder extends Seeder
             'gender'=> 1,
             'balance'=> 532623,
             'role_id'=> 3,
+            'verified_at'=>now(),
             'created_at'=> now(),
             'updated_at'=> now()],
 
@@ -66,6 +68,7 @@ class DatabaseSeeder extends Seeder
             'gender'=> 1,
             'balance'=> 123141,
             'role_id'=> 3,
+            'verified_at'=>now(),
             'created_at'=> now(),
             'updated_at'=> now()],
 
@@ -79,6 +82,7 @@ class DatabaseSeeder extends Seeder
             'gender'=> 2,
             'balance'=> 123512512,
             'role_id'=> 2,
+            'verified_at'=>now(),
             'created_at'=> now(),
             'updated_at'=> now()],
 
@@ -92,6 +96,7 @@ class DatabaseSeeder extends Seeder
             'gender'=> 1,
             'balance'=> 1341414,
             'role_id'=> 2,
+            'verified_at'=>now(),
             'created_at'=> now(),
             'updated_at'=> now()],
 
@@ -105,6 +110,7 @@ class DatabaseSeeder extends Seeder
             'gender'=> 2,
             'balance'=> 1231,
             'role_id'=> 2,
+            'verified_at'=>now(),
             'created_at'=> now(),
             'updated_at'=> now()],
 
@@ -118,6 +124,7 @@ class DatabaseSeeder extends Seeder
             'gender'=> 1,
             'balance'=> 1123231,
             'role_id'=> 2,
+            'verified_at'=>now(),
             'created_at'=> now(),
             'updated_at'=> now()],
 
@@ -131,6 +138,7 @@ class DatabaseSeeder extends Seeder
             'gender'=> 2,
             'balance'=> 123141,
             'role_id'=> 2,
+            'verified_at'=>now(),
             'created_at'=> now(),
             'updated_at'=> now()],
 
@@ -144,6 +152,7 @@ class DatabaseSeeder extends Seeder
             'gender'=> 1,
             'balance'=> 324515,
             'role_id'=> 2,
+            'verified_at'=>now(),
             'created_at'=> now(),
             'updated_at'=> now()],
 
@@ -157,6 +166,7 @@ class DatabaseSeeder extends Seeder
             'gender'=> 1,
             'balance'=> 111111,
             'role_id'=> 1,
+            'verified_at'=>now(),
             'created_at'=> now(),
             'updated_at'=> now()],
         ]);
@@ -173,6 +183,7 @@ class DatabaseSeeder extends Seeder
             'shifts'=>9,
             'price'=>20000,
             'description'=>"Magnam cupiditate odit labore voluptates dolore temporibus nam voluptas qui et quos temporibus quos et debitis unde atque ut sed quam molestiae ut.",
+            'verified_at'=>now(),
             'created_at'=>now(),
             'updated_at'=>now()],
 
@@ -188,6 +199,7 @@ class DatabaseSeeder extends Seeder
             'shifts'=>8,
             'price'=>20000,
             'description'=>"Totam quia exercitationem voluptates blanditiis et non quibusdam omnis est commodi eum quia a omnis deserunt molestias amet illum officia excepturi voluptatibus impedit.",
+            'verified_at'=>now(),
             'created_at'=>now(),
             'updated_at'=>now()],
 
@@ -203,6 +215,7 @@ class DatabaseSeeder extends Seeder
             'shifts'=>10,
             'price'=>20000,
             'description'=>"Enim a explicabo assumenda autem neque magnam ipsa veritatis itaque quos error est totam harum sunt error nulla.",
+            'verified_at'=>now(),
             'created_at'=>now(),
             'updated_at'=>now()],
         ]);
