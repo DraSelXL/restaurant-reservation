@@ -37,6 +37,18 @@
             font-weight: 600;
             cursor: pointer;
         }
+
+        .content{
+            height: calc(100vh - 80px);
+        }
+        @media (max-width: 1025px){
+            .content{
+                height: 100%;
+            }
+        }
+        @media (max-width: 481px){
+
+        }
     </style>
 @endsection
 
@@ -63,10 +75,10 @@
         {{-- NAVBAR --}}
         @include('customer.partial.navbar')
         {{-- CONTENT --}}
-        <div class="content py-4" style="height: calc(100vh - 80px)">
+        <div class="content py-4" style="">
             <div class="row m-0 h-100">
                 {{-- LEFT CONTENT --}}
-                <div class="col-sm-12 col-md-8 h-100">
+                <div class="col-sm-12 col-md-6 h-100 mb-4">
 
                     <form action="{{url('customer/editProfile')}}" enctype="multipart/form-data" method="post">
                         @csrf
@@ -80,18 +92,20 @@
                             <div class="col-4 d-flex align-items-center">
                                 <p class="m-0 ">Profile Picture</p>
                             </div>
-                            <div class="col d-flex align-items-center">
-                                <img class="dropdown-toggle" role="button" data-bs-toggle="dropdown"
-                                    src="{{ asset('storage/images/customer/'.$user['full_name'].'/pp.jpg') }}" alt="" width="70px" height="70px"
-                                    style="border-radius: 50%">
+                            <div class="col d-flex">
+                                <div class="row m-0 w-100">
+                                    <div class="col-sm-6 col-lg-4">
+                                        <img class="dropdown-toggle" role="button" data-bs-toggle="dropdown" src="{{ asset('storage/images/customer/'.$user['full_name'].'/pp.jpg') }}" alt="" width="70px" height="70px" style="border-radius: 50%">
+                                    </div>
+                                    <div class="col-sm-12 col-lg-8 p-0">
+                                        <label class="form-label">Upload user photo(file of jpg/png/jpeg): </label>
+                                        <input type="file" name="foto" id="" class="form-control w-100">
+                                        @error('foto')
+                                            @include('partial.validationMessage')
+                                        @enderror
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                        <div class="row mb-3">
-                            <label class="form-label">Upload user photo(file of jpg/png/jpeg): </label>
-                            <input type="file" name="foto" id="" class="form-control">
-                            @error('foto')
-                                @include('partial.validationMessage')
-                            @enderror
                         </div>
                         {{-- NAME --}}
                         <div class="row mb-3">
@@ -168,7 +182,7 @@
                 </div>
 
                 {{-- RIGHT CONTENT --}}
-                <div class="col-sm-12 col-md-4 h-100 overflow-auto d-flex flex-column" >
+                <div class="col-sm-12 col-md-6 h-100 overflow-auto d-flex flex-column" >
                     <div class="mb-3">
                         <p class="m-0" style="font-size: 2em;font-weight: bold;">Upcoming Reservation</p>
                         <p class="m-0">This is the ticket of your closest date table reservation</p>

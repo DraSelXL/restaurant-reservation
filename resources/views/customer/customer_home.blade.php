@@ -31,6 +31,31 @@
             cursor: pointer;
         }
 
+        .banner{
+            height: 60vh;
+        }
+        .banner_text .title{
+            font-size: 3.5em;
+        }
+        .banner_text .subtitle{
+        }
+        @media (max-width: 1025px){
+            .banner{
+                height: 100%;
+            }
+            .banner_text .title{
+                font-size: 3em;
+            }
+        }
+        @media (max-width: 481px){
+            .banner{
+                height: 100%;
+            }
+            .banner_text .title{
+                font-size: 2.5em;
+            }
+        }
+
     </style>
 @endsection
 
@@ -47,15 +72,18 @@
         {{-- NAVBAR --}}
         @include('customer.partial.navbar')
         {{-- JUMBOTRON --}}
-        <div class="jumbotron row m-0 w-100" style="height: 60vh;">
-            <div class="col-6 d-flex justify-content-end align-items-center" >
+        <div class="jumbotron banner row m-0 w-100">
+            <div class="col-md-12 col-lg-6 d-flex justify-content-end align-items-center d-lg-none ">
+                <img src="{{asset('storage/images/customer/banner1.png')}}" width="100%" alt="">
+            </div>
+            <div class="col-md-12 col-lg-6 d-flex justify-content-end align-items-center" >
                 <div class="left_content">
 
                     {{-- BANNER TEXT --}}
                     <div class="banner_text">
-                        <p class="text-end " style="font-size: 3.5em;font-family: helvetica_bold">A New Way</p>
-                        <p class="text-end " style="font-size: 3.5em;font-family: helvetica_bold;margin-top:-20px;">To Order a Table</p>
-                        <p class="text-end " style="font-family: helvetica_regular;">Lorem ipsum dolor sit amet consectetur adipisicing elit. Earum dignissimos nobis ad sequi aliquid impedit iusto officia ea enim? Cum eius dolore labore tempore assumenda, quia quas cupiditate? Officia, voluptatum.</p>
+                        <p class="title text-end" style="font-family: helvetica_bold">A New Way</p>
+                        <p class="title text-end" style="font-family: helvetica_bold;margin-top:-20px;">To Order a Table</p>
+                        <p class="subtitle text-end" style="font-family: helvetica_regular;">Lorem ipsum dolor sit amet consectetur adipisicing elit. Earum dignissimos nobis ad sequi aliquid impedit iusto officia ea enim? Cum eius dolore labore tempore assumenda, quia quas cupiditate? Officia, voluptatum.</p>
                     </div>
 
                     {{-- BUTTON --}}
@@ -71,7 +99,7 @@
 
                 </div>
             </div>
-            <div class="col-6 d-flex justify-content-end align-items-center">
+            <div class="col-md-12 col-lg-6 d-flex justify-content-end align-items-center d-none d-lg-flex">
                 <img src="{{asset('storage/images/customer/banner1.png')}}" width="100%" alt="">
             </div>
         </div>
@@ -82,22 +110,22 @@
             <form class="mt-3" method="POST" action="/customer/checkAvailability">
                 @csrf
                 <div class="row m-0">
-                    <div class="col">
+                    <div class="col-sm-12 col-md-4 col-lg-3">
                         <div class="mb-3">
                             <input type="text" class="form-control p-3" id="restaurant_name" name="restaurant_name" placeholder="Restaurant Name">
                         </div>
                     </div>
-                    <div class="col">
+                    <div class="col-sm-12 col-md-4 col-lg-3">
                         <div class="mb-3">
                             <input type="text" class="form-control p-3" id="restaurant_description" name="restaurant_desc" placeholder="Asian, Steak, etc...">
                         </div>
                     </div>
-                    <div class="col">
+                    <div class="col-sm-12 col-md-4 col-lg-3">
                         <div class="mb-3">
                             <input type="time" class="form-control p-3" id="reservation_time" name="reservation_time">
                         </div>
                     </div>
-                    <div class="col">
+                    <div class="col-sm-12 col-lg-3">
                         <button type="submit" class="btn text-light w-100 p-3" style="background-color: #ed3b27">Check Availability</button>
                     </div>
                 </div>
@@ -106,22 +134,22 @@
         {{-- PARALAX --}}
         <div class="paralax mt-5">
             <div class="row m-0">
-                <div class="col mx-2 text-center rounded-4 p-4" >
+                <div class="col-sm-12 col-md-6 col-lg-3 text-center rounded-4 p-4" >
                     <img src="{{asset('storage/images/customer/home/order.png')}}" alt="">
                     <h3>Order</h3>
                     <p class="my-2">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Debitis repellendus aspernatur voluptatem ex ea minima.</p>
                 </div>
-                <div class="col mx-2 text-center rounded-4 p-4">
+                <div class="col-sm-12 col-md-6 col-lg-3 text-center rounded-4 p-4">
                     <img src="{{asset('storage/images/customer/home/ticket.png')}}" alt="">
                     <h3>Ticket</h3>
                     <p class="my-2">Lorem ipsum dolor sit amet consectetur adipisicing elit. Porro, cumque nesciunt dolorem hic fugit officiis.</p>
                 </div>
-                <div class="col mx-2 text-center rounded-4 p-4">
+                <div class="col-sm-12 col-md-6 col-lg-3 text-center rounded-4 p-4">
                     <img src="{{asset('storage/images/customer/home/meet.png')}}" alt="">
                     <h3>Confirm</h3>
                     <p class="my-2">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Debitis repellendus aspernatur voluptatem ex ea minima.</p>
                 </div>
-                <div class="col mx-2 text-center rounded-4 p-4">
+                <div class="col-sm-12 col-md-6 col-lg-3 text-center rounded-4 p-4">
                     <img src="{{asset('storage/images/customer/home/dine.png')}}" alt="">
                     <h3>Dine</h3>
                     <p class="my-2">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Debitis repellendus aspernatur voluptatem ex ea minima.</p>
@@ -129,18 +157,18 @@
             </div>
         </div>
         {{-- JUMBOTRON --}}
-        <div class="jumbotron row m-0 w-100 mb-5" style="height: 60vh;">
-            <div class="col-6 d-flex justify-content-end align-items-center">
+        <div class="jumbotron banner row m-0 w-100 mb-5">
+            <div class="col-md-12 col-lg-6 d-flex justify-content-end align-items-center">
                 <img src="{{asset('storage/images/customer/banner2.png')}}" width="100%" alt="">
             </div>
-            <div class="col-6 d-flex justify-content-end align-items-center" >
+            <div class="col-md-12 col-lg-6 d-flex justify-content-end align-items-center" >
                 <div class="right_content">
 
                     {{-- BANNER TEXT --}}
                     <div class="banner_text">
-                        <p class="text-start " style="font-size: 3.5em;font-family: helvetica_bold">Restaurant Owner?</p>
-                        <p class="text-start " style="font-size: 3.5em;font-family: helvetica_bold;margin-top:-20px;">Open Table now!</p>
-                        <p class="text-start " style="font-family: helvetica_regular;">Lorem ipsum dolor sit amet consectetur adipisicing elit. Earum dignissimos nobis ad sequi aliquid impedit iusto officia ea enim? Cum eius dolore labore tempore assumenda, quia quas cupiditate? Officia, voluptatum.</p>
+                        <p class="title text-start " style="font-family: helvetica_bold">Restaurant Owner?</p>
+                        <p class="title text-start " style="font-family: helvetica_bold;margin-top:-20px;">Open Table now!</p>
+                        <p class="subtitle text-start " style="font-family: helvetica_regular;">Lorem ipsum dolor sit amet consectetur adipisicing elit. Earum dignissimos nobis ad sequi aliquid impedit iusto officia ea enim? Cum eius dolore labore tempore assumenda, quia quas cupiditate? Officia, voluptatum.</p>
                     </div>
 
                     {{-- BUTTON --}}
@@ -185,7 +213,7 @@
 
                         </div>
                     </div>
-                    <div class="col-6">
+                    <div class="col-6 d-none d-md-block">
                         <p class="m-0" style="font-size: 1.5em;font-family: helvetica_regular;">Reviews</p>
                         <form class="mt-3" action="">
                             <div class="input-group mb-3">
