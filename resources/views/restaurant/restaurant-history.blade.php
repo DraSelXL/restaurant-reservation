@@ -17,9 +17,11 @@
         <h1>Restaurant History</h1>
         <hr style="margin: 6px 0">
 
-        <div class="w-100 bg-light p-2 my-3 text-end">
-            <span class="my-1">Download history data:</span>
-            <button id="download" class="btn btn-primary">Download</button>
+        <div class="card w-100 bg-light my-3 text-end">
+            <div class="card-body d-flex justify-content-end align-center">
+                <span class="align-self-center me-2">Download All History Data:</span>
+                <button id="download" class="btn btn-primary">Download</button>
+            </div>
         </div>
 
         <table class="table table-striped">
@@ -40,11 +42,11 @@
 
         {{-- Pagination Navigation Buttons --}}
         <div class="d-flex justify-content-center align-item-center">
-            <button id="pagination-previous" class="btn btn-secondary"><</button>
+            {{-- <button id="pagination-previous" class="btn btn-secondary"><</button> --}}
             <div id="pagination-container" class="pagination-buttons mx-1">
                 {{-- The pagination buttons will be contained here --}}
             </div>
-            <button id="pagination-next" class="btn btn-secondary">></button>
+            {{-- <button id="pagination-next" class="btn btn-secondary">></button> --}}
         </div>
     </main>
     <script src="https://unpkg.com/jspdf-autotable"></script>
@@ -59,8 +61,8 @@
             // Intialize element variables
             const tableBody = $("#tableBody");
             const paginationContainer = $("#pagination-container");
-            const previousPage = $("#pagination-previous");
-            const nextPage = $("#pagination-next");
+            // const previousPage = $("#pagination-previous");
+            // const nextPage = $("#pagination-next");
             const downloadButton = $("#download");
 
             // Register Event
@@ -69,8 +71,8 @@
 
             downloadButton.on("click", downloadHistoryData(downloadButton))
 
-            previousPage.on("click", switchPage(--viewPage, paginationContainer, tableBody))
-            nextPage.on("click", switchPage(++viewPage, paginationContainer, tableBody))
+            // previousPage.on("click", switchPage(--viewPage, paginationContainer, tableBody))
+            // nextPage.on("click", switchPage(++viewPage, paginationContainer, tableBody))
         });
 
         /**
@@ -87,6 +89,7 @@
                     page: page
                 },
                 success: function (response) {
+                    viewPage = page; // Set the current page to the
                     if (response != "") {
                         containerElement.html(response);
                     }

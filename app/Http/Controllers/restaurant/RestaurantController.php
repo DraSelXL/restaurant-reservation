@@ -22,7 +22,7 @@ class RestaurantController extends Controller
     private static $ACTIVE_STATISTIC = "statistic";
 
     /** Tells any type of pagination that the limit of pagination is 50 */
-    public static $PAGINATION_LIMIT = 50;
+    public static $PAGINATION_LIMIT = 5;
 
     /**
      * Retrieve the current logged restaurant account and return it to the caller of the function.
@@ -200,43 +200,58 @@ class RestaurantController extends Controller
     {
         $restaurant = $this->getAuthRestaurant($request);
 
-        $reservations = reservationMigrasi::withTrashed()
+        if (!isset($request->timeLimit)) {
+            $reservations = reservationMigrasi::withTrashed()
             ->join("users", "reservations.user_id", "=", "users.id")
             ->join("tables", "reservations.table_id", "=", "tables.id")
-            ->select("reservations.id", "users.full_name", "tables.seats", "reservations.reservation_date_time", "reservations.created_at", "reservations.reservation_status", "reservations.deleted_at", DB::raw('CASE
+            ->select("reservations.id", "users.full_name", "tables.seats", "reservations.reservation_date_time", "reservations.created_at", "reservations.payment_status", "reservations.deleted_at", DB::raw('CASE
                 WHEN reservations.deleted_at <> NULL THEN "Rejected"
                 ELSE "Accepted"
             END as "status"'))
             ->where("reservations.restaurant_id", $restaurant->id)
             ->orderBy("reservation_date_time", "desc")
             ->get();
+        }
+        else {
+            $reservations = reservationMigrasi::withTrashed()
+            ->join("users", "reservations.user_id", "=", "users.id")
+            ->join("tables", "reservations.table_id", "=", "tables.id")
+            ->select("reservations.id", "users.full_name", "tables.seats", "reservations.reservation_date_time", "reservations.created_at", "reservations.payment_status", "reservations.deleted_at", DB::raw('CASE
+                WHEN reservations.deleted_at <> NULL THEN "Rejected"
+                ELSE "Accepted"
+            END as "status"'))
+            ->where("reservations.restaurant_id", $restaurant->id)
+            ->where("reservations.created_at", ">=", DB::raw("DATE_SUB(NOW(), 1 YEAR)"))
+            ->orderBy("reservation_date_time", "desc")
+            ->get();
+        }
 
-            $data = [];
-            for ($i = 0; $i < count($reservations); $i++) {
-                $shortenedName = substr($reservations[$i]['full_name'], 0, 28);
-                if ($shortenedName != $reservations[$i]['full_name']) $shortenedName .= "...";
+        $data = [];
+        for ($i = 0; $i < count($reservations); $i++) {
+            $shortenedName = substr($reservations[$i]['full_name'], 0, 28);
+            if ($shortenedName != $reservations[$i]['full_name']) $shortenedName .= "...";
 
-                $reservationDate = date_format(date_create($reservations[$i]['reservation_date_time']), "d-m-Y h:i");
+            $reservationDate = date_format(date_create($reservations[$i]['reservation_date_time']), "d-m-Y h:i");
 
-                $reservationCreated = date_format(date_create($reservations[$i]['created_at']), "d-m-Y h:i");
+            $reservationCreated = date_format(date_create($reservations[$i]['created_at']), "d-m-Y h:i");
 
-                // $data[] = [
-                //     "id" => $reservations[$i]['id'] . "",
-                //     "reserver" => $shortenedName,
-                //     "seats" => $reservations[$i]['seats'] . "",
-                //     "reservation_date" => $reservationDate,
-                //     "created" => $reservationCreated,
-                //     "status" => $reservations[$i]['status']
-                // ];
-                $data[] = [
-                    $reservations[$i]['id'] . "",
-                    $shortenedName,
-                    $reservations[$i]['seats'] . "",
-                    $reservationDate,
-                    $reservationCreated,
-                    $reservations[$i]['status']
-                ];
-            }
+            // $data[] = [
+            //     "id" => $reservations[$i]['id'] . "",
+            //     "reserver" => $shortenedName,
+            //     "seats" => $reservations[$i]['seats'] . "",
+            //     "reservation_date" => $reservationDate,
+            //     "created" => $reservationCreated,
+            //     "status" => $reservations[$i]['status']
+            // ];
+            $data[] = [
+                $reservations[$i]['id'] . "",
+                $shortenedName,
+                $reservations[$i]['seats'] . "",
+                $reservationDate,
+                $reservationCreated,
+                $reservations[$i]['status']
+            ];
+        }
 
         return $data;
     }
