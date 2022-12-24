@@ -22,7 +22,7 @@ class RestaurantController extends Controller
     private static $ACTIVE_STATISTIC = "statistic";
 
     /** Tells any type of pagination that the limit of pagination is 50 */
-    public static $PAGINATION_LIMIT = 5;
+    public static $PAGINATION_LIMIT = 50;
 
     /**
      * Retrieve the current logged restaurant account and return it to the caller of the function.
@@ -65,7 +65,8 @@ class RestaurantController extends Controller
     public function getStatisticPage(Request $request)
     {
         return view('restaurant.restaurant-statistic', [
-            'active' => RestaurantController::$ACTIVE_STATISTIC
+            'active' => RestaurantController::$ACTIVE_STATISTIC,
+            'restaurant' => $this->getAuthRestaurant($request)
         ]);
     }
 

@@ -21,7 +21,7 @@ class CheckUser
             return $next($request);
         }
         else{
-            dd(auth()->user()->verified_at);
+            // dd(auth()->user()->verified_at);
         }
         abort(403);
     }

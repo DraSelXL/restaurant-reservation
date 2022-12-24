@@ -2,6 +2,10 @@
 
 @section("dependencies")
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+    <script src="https://unpkg.com/jspdf@latest/dist/jspdf.umd.min.js"></script>
+    <script>
+        window.jsPDF = window.jspdf.jsPDF
+    </script>
 @endsection
 
 @section("custom-css-extended")
@@ -29,6 +33,12 @@
 @section('main-content')
     <main class="p-4">
         <div class="container">
+            <div class="card">
+                <div class="card-body d-flex justify-content-end">
+                    <span class="align-self-center me-2">Download statistic data:</span>
+                    <button class="btn btn-primary" id="download">Download</button>
+                </div>
+            </div>
             <div class="d-flex mb-5">
                 {{-- Card to represent total revenue --}}
                 <div class="col">
@@ -91,6 +101,7 @@
         </div>
     </main>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.js" integrity="sha512-NmIoYvVsh1mGumphmTK9rc11ia21MZKRPsQV8RUn0x+sN6rxcBtST1Y5fw4WSiAzlryxCtPy00QoPfadNaq6gQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script>
         // Global Variable
         const MONTHLY_FILTER = 1;
@@ -105,6 +116,7 @@
             const orderPlaceholder = $("#order-placeholder");
             const growthPlaceholder = $("#growth-placeholder");
             const yearInput = $("#year-input");
+            const downloadButton = $("#download");
 
             // Initialize Variables
             let xValues = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
@@ -115,6 +127,7 @@
             // Register Events
             // Assign event handler
             yearInput.on("change", changeGraphYear(yearInput, xValues));
+            downloadButton.on("click", downloadStatisticData(downloadButton, yearInput));
 
             // Fire events
             loadGraph(xValues, yValues); // Load the graph as soon as the page loads
@@ -234,6 +247,190 @@
                     getYearRevenueData(year, xValues);
                 }
             }
+        }
+
+        /**
+         * Downloads all restaurant reservation history data and create a pdf which the user can automatically download.
+         *
+         * Uses the jsPDF library to generate the pdf.
+         *
+         * @param {JqueryObject} clickedElement The element that fires the event to provide feedback, avoiding spam when generating.
+         * @param {JqueryObject} yearInput      The element which contains the target year value.
+         */
+         function downloadStatisticData(clickedElement, yearInput) {
+            return (event) => {
+                clickedElement.html("Generating...");
+                clickedElement.attr("disabled", true);
+
+                // Varibles of the required values
+                let sales = null;
+                let growth = null;
+                let orders = null;
+                let revenuePerMonth = null;
+                let failedMessage = null;
+
+                // Fetch the total revenue of the restaurant
+                $.ajax({
+                    type: "get",
+                    url: "/restaurant/totalRevenue",
+                    data: {},
+                    success: function (response) {
+                        sales = response;
+                    },
+                    error: function (err) {
+                        failedMessage ??= err;
+                    }
+                });
+                // Fetch the total order of the restaurant
+                $.ajax({
+                    type: "get",
+                    url: "/restaurant/totalOrder",
+                    data: {},
+                    success: function (response) {
+                        orders = response;
+                    },
+                    error: function (err) {
+                        failedMessage ??= err;
+                    }
+                });
+                // Fetch the total growth of the restaurant
+                $.ajax({
+                    type: "get",
+                    url: "/restaurant/audienceGrowth",
+                    data: {},
+                    success: function (response) {
+                        growth = response;
+                    },
+                    error: function (err) {
+                        failedMessage ??= err;
+                    }
+                });
+                // Fetch the revenue per month of the restaurant
+                $.ajax({
+                    type: "get",
+                    url: "/restaurant/revenue",
+                    data: {
+                        year: Number(yearInput.val())
+                    },
+                    success: function (response) {
+                        revenuePerMonth = response;
+                    },
+                    error: function (err) {
+                        failedMessage ??= err;
+                    }
+                });
+
+                // Validate all the data before printing the document
+                let passedTime = 0;
+                const timer = setInterval(() => {
+                    // Check whether the timer has timeout'd.
+                    if (passedTime < 5) {
+                        passedTime++;
+                    }
+                    else if (failedMessage != null) {
+                        clearInterval(timer)
+                        alert(failedMessage);
+                    }
+                    else {
+                        clearInterval(timer)
+                        alert("Timeout while generating PDF! (Unknown Error)");
+
+                        // Make the download button clickable again after the timeout
+                        clickedElement.html("Download");
+                        clickedElement.attr("disabled", false);
+
+                        return;
+                    }
+
+                    // Validate the data, if all data is validated, print the pdf
+                    if (validateStatisticData(sales, orders, growth, revenuePerMonth)) {
+                        clearInterval(timer); // Stop the timer
+
+                        // Create the pdf file object
+                        const newDocument = new jsPDF();
+
+                        // Constant variables for the document layout
+                        const HEADER_HEIGHT = 25;
+                        const BODY_PADDING = 13;
+                        const LINE_HEIGHT = 4;
+                        const CHARACTER_WIDTH = 3;
+                        const PAPER_WIDTH = newDocument.internal.pageSize.getWidth();
+                        const PAPER_HEIGHT = newDocument.internal.pageSize.getHeight();
+                        const ALIGN_RIGHT = PAPER_WIDTH - BODY_PADDING;
+                        const CURRENT_DATE = new Date()
+
+                        // Variable to track the content height
+                        let contentHeight = BODY_PADDING;
+                        let restaurantName = "{{ $restaurant->full_name }}";
+                        let currentDateString = `${CURRENT_DATE.getDate()}-${CURRENT_DATE.getMonth() + 1}-${CURRENT_DATE.getFullYear()}`;
+
+                        // Create the heading for the document
+                        newDocument.setFontSize(24);
+                        newDocument.text(restaurantName, BODY_PADDING, contentHeight);
+                        newDocument.text(currentDateString, ALIGN_RIGHT - currentDateString.length * (CHARACTER_WIDTH + 1.5), contentHeight);
+                        contentHeight += 15;
+
+                        newDocument.setFontSize(16);
+                        newDocument.text("Reservation Statistics:", BODY_PADDING, contentHeight);
+                        contentHeight += 5;
+
+                        newDocument.autoTable({
+                            body: [[
+                                `Rp. ${new Intl.NumberFormat('id-ID').format(sales)}`,
+                                orders,
+                                growth,
+                            ]],
+                            startY: contentHeight,
+                            head: [["sales", "orders", "growth"]],
+                            styles: {
+                                fontSize: 12
+                            }
+                        });
+                        contentHeight += 25;
+
+                        newDocument.setFontSize(16);
+                        newDocument.text(`Revenue Per Month as of ${yearInput.val()}: `, BODY_PADDING, contentHeight);
+                        contentHeight += 4;
+
+                        // Combine data
+                        const months = ["January", "February", "March", "April", "Mei", "June", "July", "August", "September", "October", "November", "December"];
+                        const data = []
+                        for (let i = 0; i < months.length; i++) {
+                            data.push([months[i], `Rp. ${Intl.NumberFormat('id-ID').format(revenuePerMonth[i])}`]);
+                        }
+
+                        newDocument.autoTable({
+                            body: data,
+                            startY: contentHeight,
+                            head: [["month", "revenue"]],
+                            styles: {
+                                fontSize: 12
+                            }
+                        });
+                        contentHeight += 15;
+
+                        // Increase the content height based on the amount of data shown in the table
+                        // contentHeight += (LINE_HEIGHT * response.length + LINE_HEIGHT * 2)
+
+                        // Save the document and print/save it
+                        newDocument.save();
+
+                        clickedElement.html("Download");
+                        clickedElement.attr("disabled", false);
+                    }
+                }, 1000)
+            }
+        }
+
+        /**
+         * Checks the values given in the arguments whether they have been filled or not.
+         * If any one of the data is empty, then the validation returns false.
+         */
+        function validateStatisticData(sales, orders, growth, revenuePerMonth) {
+            if (sales !== null && growth !== null && orders !== null && revenuePerMonth !== null) {
+                return true;
+            }
+            else return false;
         }
     </script>
 @endsection
