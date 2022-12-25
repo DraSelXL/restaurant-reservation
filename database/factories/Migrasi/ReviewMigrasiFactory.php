@@ -21,6 +21,9 @@ class ReviewMigrasiFactory extends Factory
             'restaurant_id'=>$this->faker->numberBetween(1,3),
             'rating'=>$this->faker->numberBetween(3,5),
             'message'=>$this->faker->sentence(),
+
+            'created_at'=>$this->faker->dateTimeBetween("-1 years","now"),
+            'updated_at'=>$this->faker->dateTimeBetween("-2 months","now"),
         ];
     }
 }

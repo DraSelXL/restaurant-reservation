@@ -19,6 +19,8 @@ return new class extends Migration
             $table->integer("restaurant_id");
             $table->integer("rating");
             $table->string("message");
+            $table->timestamps();
+            $table->softDeletes();
         });
     }
 
