@@ -128,7 +128,7 @@
                                     <td>{{$topSale->full_name}}</td>
                                     <td>{{$topSale->address}}</td>
                                     <td>Rp. {{$totalIncome[$key]->sum}},00</td>
-                                    <td>{{$totalOrder[$key]->totalorder}} Orders</td>
+                                    <td>{{$temp[$key]}} Orders</td>z
                                 </tr>
                             @endforeach
                         </tbody>

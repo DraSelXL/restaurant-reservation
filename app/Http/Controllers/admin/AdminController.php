@@ -44,8 +44,27 @@ class AdminController extends Controller
         WHERE r2.payment_status = ?
         GROUP BY r.id
         ORDER BY totalorder desc",[1]);
+        $tes = userMigrasi::all()->count();
+        $temp = [];
+        $int = -1;
+        for ($i=0; $i < $tes; $i++) {
+            foreach ($totalOrder as $key =>$total) {
+                if($i == $total->id){
+                    $int = $total->totalorder;
+                }
+            }
+            if($int != -1){
+                $temp[] = $int;
+            }
+            else{
+                $temp[] = 0;
+            }
+            $int = -1;
+        }
+
+        // dd($totalOrder,$temp);
         return view('admin.admin_dashboard',compact('currPage','totaltransactions',
-        'countTotalOrder','audienceGrowth','topSales','totalIncome','totalOrder'));
+        'countTotalOrder','audienceGrowth','topSales','totalIncome','temp'));
     }
     public function masterCustomer(Request $request)
     {
