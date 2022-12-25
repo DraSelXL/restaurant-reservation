@@ -76,7 +76,23 @@
                                     </div>
                                     <div class="order_info">
                                         <p class="m-0">Table Number : {{$transaction->reservation->table->seats}}</p>
-                                        <p class="m-0">Order Price : {{$transaction->payment_amount}}</p>
+                                        <p class="m-0">Order Price : Rp. {{ number_format($transaction->payment_amount, 0, ",", ".") }}</p>
+
+                                        @php
+                                            // Check whether this customer has finished transaction when creating the reservation. If have, able to make a review.
+                                            $pastSuccessfulResevation = DB::table('reservations')->where('user_id', '=', $transaction->user_id)->where('restaurant_id', '=', $transaction->reservation->restaurant_id)->where('payment_status', 1)->first();
+
+                                            if (isset($pastSuccessfulResevation)) {
+                                                // Check whether the customer has a review on this restaurant before or not...
+                                                $pastReview = DB::table('reviews')->where('user_id', '=', $transaction->user_id)->where('restaurant_id', '=', $transaction->reservation->restaurant_id)->first();
+
+                                                if (isset($pastReview)) {
+                                                    @endphp
+                                                    <a href="/customer/restaurant/{{$restaurant_name}}#reviews"><button class="btn text-light" style="background-color: #6C4AB6;">See Reviews</button></a>
+                                                    @php
+                                                }
+                                            }
+                                        @endphp
                                         {{-- <p class="m-0">Status : Pending</p> --}}
                                     </div>
                                 </div>

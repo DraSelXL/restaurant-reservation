@@ -177,7 +177,9 @@ Route::prefix('customer')->middleware(['CheckUser:Customer'])->group(function ()
     Route::get('cancelTransaction', [CustomerController::class,"cancelTransaction"]);
     Route::get('cancelClosestUpcomingTransaction', [CustomerController::class,"cancelClosestUpcomingTransaction"]);
 
-
+    // Review Manipulation
+    Route::post("/editReview/{restaurantId}", [CustomerController::class, "editReview"]);
+    Route::post("/addReview/{restaurantId}", [CustomerController::class, "addReview"]);
 });
 
 Route::prefix('restaurant')->middleware(['CheckUser:Restaurant'])->controller(RestaurantController::class)->group(function() {

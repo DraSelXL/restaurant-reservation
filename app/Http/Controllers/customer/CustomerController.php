@@ -7,6 +7,7 @@ use App\Models\Migrasi\favouriteMigrasi;
 use App\Models\Migrasi\postMigrasi;
 use App\Models\Migrasi\reservationMigrasi;
 use App\Models\Migrasi\restaurantMigrasi;
+use App\Models\Migrasi\reviewMigrasi;
 use App\Models\Migrasi\transactionMigrasi;
 use App\Models\Migrasi\userMigrasi;
 use App\Rules\ImageCount;
@@ -240,9 +241,18 @@ class CustomerController extends Controller
     {
         $currPage = "search";
         $restaurant_name = $request->restaurant_name;
-        $restaurant = restaurantMigrasi::where('full_name',$restaurant_name)->first();
+        $restaurant = restaurantMigrasi::where('full_name', $restaurant_name)->first();
 
-        return view('customer.customer_restaurant',compact('currPage','restaurant'));
+        $restaurantReviews = reviewMigrasi::where('restaurant_id', $restaurant->id)->get();
+        $userReview = reviewMigrasi::where('restaurant_id', $restaurant->id)->where('user_id', auth("web")->id())->first();
+
+        $reservation = reservationMigrasi::where('restaurant_id', $restaurant->id)->where('user_id', auth("web")->id())->first();
+
+        if (isset($reservation))
+            $canReview = true;
+        else $canReview = false;
+
+        return view('customer.customer_restaurant', compact('currPage', 'restaurant', 'restaurantReviews', 'userReview', 'canReview'));
     }
     public function searchRestaurant(Request $request)
     {
@@ -403,5 +413,41 @@ class CustomerController extends Controller
         else{
             return redirect()->back()->with('pesan','Updated Unsuccessfully');
         }
+    }
+
+    /**
+     * Edits an existing review.
+     */
+    public function editReview(Request $request)
+    {
+        $request->validate(['rating' => 'required|numeric']);
+
+        $loggedUserId = auth("web")->id();
+
+        $review = reviewMigrasi::where("user_id", $loggedUserId)->where("restaurant_id", $request->restaurantId)->first();
+        $review->rating = $request->rating;
+        $review->message = $request->message;
+        $review->save();
+
+        return redirect()->back();
+    }
+
+    /**
+     * Adds a review.
+     */
+    public function addReview(Request $request)
+    {
+        $request->validate(['rating' => 'required|numeric']);
+
+        $loggedUserId = auth("web")->id();
+
+        $review = new reviewMigrasi();
+        $review->user_id = $loggedUserId;
+        $review->restaurant_id = $request->restaurantId;
+        $review->rating = $request->rating;
+        $review->message = $request->message;
+        $review->save();
+
+        return redirect()->back();
     }
 }

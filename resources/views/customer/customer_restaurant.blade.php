@@ -38,6 +38,18 @@
             height: 100%;
         }
     </style>
+
+    {{-- Make the google material symbols filled --}}
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings:
+            'FILL' 1,
+            'wght' 400,
+            'GRAD' 0,
+            'opsz' 48
+        }
+    </style>
+
 @endsection
 
 @section('dependencies')
@@ -112,6 +124,104 @@
                     <button class="btn btn-light h-100 w-100" onclick="open_popup({{$restaurant->id}})">Book table!</button>
                 </div>
             </div>
+        </div>
+
+        {{-- Reviews --}}
+        <div id="reviews" class="container-fluid bg-dark px-5 py-3">
+            {{-- Restaurant Reviews --}}
+            <h1 class="text-white mb-3">Reviews</h1>
+
+            {{-- Authenticated Review --}}
+            @if ($canReview)
+                {{-- If user can review, show the review box --}}
+                @if (isset($userReview))
+                    <hr class="text-light">
+                    <h3 class="text-white">Your Review</h3>
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <div class="card-title">
+                                <h5><span class="material-symbols-outlined me-2" style="vertical-align: text-bottom">account_circle</span>{{ $userReview->user->full_name }}</h5>
+                            </div>
+                            <div class="review-container">
+                                <div class="rating-container">
+                                    @for ($i = 0; $i < $userReview->rating; $i++)
+                                        <span class="material-symbols-outlined text-warning" style="vertical-align: text-bottom">star_rate</span>
+                                    @endfor
+                                    <span>{{ date_format(date_create($userReview->updated_at), "d/m/Y") }}</span>
+                                </div>
+                                <div class="card-text">{{ $userReview->message }}</div>
+                                <div class="d-flex justify-content-end"><button id="editReview" class="btn btn-dark" onclick="editReview(event)">Edit</button></div>
+                            </div>
+                            <div id="editForm" class="d-none">
+                                <div class="rating-container">
+                                    <form action="/customer/editReview/{{ $restaurant->id }}" method="POST">
+                                        @csrf
+                                        <div class="row mt-2">
+                                            <div class="col-auto d-inline-flex align-items-center">
+                                                <label for="rating" class="me-2">Rating:</label>
+                                                <input type="number" name="rating" id="rating" class="form-control" value="{{ $userReview->rating }}" max="5" min="1" required>
+                                            </div>
+                                        </div>
+                                        @error('rating')
+                                            <div class="text-danger mb-2"><em>{{ $message }}</em></div>
+                                        @enderror
+                                        <div class="form-floating mt-2">
+                                            <textarea class="form-control" placeholder="Leave a rating message" id="ratingMessage" name="message">{{ $userReview->message }}</textarea>
+                                            <label for="ratingMessage">Message</label>
+                                        </div>
+                                        <input type="submit" value="Submit" class="btn btn-primary mt-2">
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                @else
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <div class="card-title"><h3>Write your review:</h3></div>
+                        <div class="rating-container">
+                            <form action="/customer/addReview/{{ $restaurant->id }}" method="POST">
+                                @csrf
+                                <div class="row mt-2">
+                                    <div class="col-auto d-inline-flex align-items-center">
+                                        <label for="rating" class="me-2">Rating:</label>
+                                        <input type="number" name="rating" id="rating" class="form-control" max="5" min="1" required>
+                                    </div>
+                                </div>
+                                @error('rating')
+                                    <div class="text-danger mb-2"><em>{{ $message }}</em></div>
+                                @enderror
+                                <div class="form-floating mt-2">
+                                    <textarea class="form-control" placeholder="Leave a rating message" id="ratingMessage" name="message"></textarea>
+                                    <label for="ratingMessage">Message</label>
+                                </div>
+                                <input type="submit" value="Submit" class="btn btn-primary mt-2">
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                @endif
+
+                <hr class="text-light">
+                <h3 class="text-white">Other Reviews:</h3>
+            @endif
+
+            @foreach ($restaurantReviews as $review)
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <div class="card-title">
+                            <h5><span class="material-symbols-outlined me-2" style="vertical-align: text-bottom">account_circle</span>{{ $review->user->full_name }}</h5>
+                        </div>
+                        <div class="rating-container">
+                            @for ($i = 0; $i < $review->rating; $i++)
+                                <span class="material-symbols-outlined text-warning" style="vertical-align: text-bottom">star_rate</span>
+                            @endfor
+                            <span>{{ date_format(date_create($review->updated_at), "d/m/Y") }}</span>
+                        </div>
+                        <div class="card-text">{{ $review->message }}</div>
+                    </div>
+                </div>
+            @endforeach
         </div>
     </div>
 
@@ -230,6 +340,18 @@
                     }
                 },
             });
+        }
+
+        /**
+         * Hide the static display of the authenticated user display and show a form to change the user review.
+         *
+         * @param {EventObject} event The event that is firing when editing the user review.
+         */
+        function editReview(event) {
+            const reviewBody = event.target.parentNode.parentNode;
+            const editForm = event.target.parentNode.parentNode.parentNode.querySelector("#editForm");
+            reviewBody.innerHTML = "";
+            editForm.classList.remove("d-none");
         }
     </script>
 @endsection
