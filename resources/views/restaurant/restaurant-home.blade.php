@@ -385,7 +385,7 @@
                 url: "/restaurant/getReservations",
                 data: {},
                 success: function (response, status) {
-                    if (response !== "") {
+                    if (response != "") {
                         containerElement.html(response);
                     }
                     else containerElement.html("<h2>No reservations has been made!</h2>");

@@ -3,9 +3,11 @@
 namespace App\Http\Controllers\restaurant;
 
 use App\Http\Controllers\Controller;
+use App\Models\Migrasi\postMigrasi;
 use App\Models\Migrasi\reservationMigrasi;
 use App\Models\Migrasi\restaurantMigrasi;
 use App\Models\Migrasi\transactionMigrasi;
+use App\Models\Migrasi\userMigrasi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -76,6 +78,19 @@ class RestaurantController extends Controller
     public function confirmReservation(Request $request)
     {
         // TODO: Confirm the status of the reservation and update the database.
+        $reservation = reservationMigrasi::find($request->id);
+        $restaurant = restaurantMigrasi::find($reservation->restaurant_id);
+        $user = userMigrasi::find($reservation->user_id);
+        
+        postMigrasi::create([
+            'title'=> 'Reservation Acceptance',
+            'caption' => "Hello dear mr/mrs $user->full_name thankyou for your reservation we wellcome you to come on $reservation->reservation_date_time",
+            'user_id' => $user->id,
+            'status' => 0
+        ]);
+        $reservation->payment_status = 3;
+        $reservation->save();
+        return redirect()->back();
     }
 
     /**
@@ -84,6 +99,26 @@ class RestaurantController extends Controller
     public function rejectReservation(Request $request)
     {
         // TODO: Reject the status of the reservation and update the database.
+        $reservation = reservationMigrasi::find($request->id);
+        $restaurant = restaurantMigrasi::find($reservation->restaurant_id);
+        $user = userMigrasi::find($reservation->user_id);
+        // dd($restaurant->id);
+        $transaction = transactionMigrasi::create([
+            'user_id' => $user->id,
+            'restaurant_id' => $restaurant->id,
+            'reservation_id' => $reservation->id,
+            'payment_amount' => $restaurant->price,
+            'payment_date_at' => now()
+        ]);
+        postMigrasi::create([
+            'title'=> 'Reservation Refusal',
+            'caption' => "Hello dear mr/mrs $user->full_name we apologize for the refusal of the reservation",
+            'user_id' => $user->id,
+            'status' => 0
+        ]);
+        $reservation->payment_status = 2;
+        $reservation->save();
+        return redirect()->back();
     }
 
     /**
@@ -155,10 +190,9 @@ class RestaurantController extends Controller
 
         // Get reservations in ascending order and more than today
         $reservations = reservationMigrasi::where("restaurant_id", $restaurant->id)
-            ->where("reservation_date_time", ">=", DB::raw("NOW()"))
+            ->where('payment_status','=','1')
             ->orderBy("reservation_date_time", "asc")
             ->get();
-
         return view('restaurant.partial.reservation-card', ["reservations" => $reservations]);
     }
 

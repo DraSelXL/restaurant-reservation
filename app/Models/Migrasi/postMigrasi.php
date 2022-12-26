@@ -13,7 +13,12 @@ class postMigrasi extends Model
     use SoftDeletes;
 
     protected $table = "posts";
-
+    protected $fillable = [
+        'title',
+        'caption',
+        'user_id',
+        'status'
+    ];
 
     public function user()
     {

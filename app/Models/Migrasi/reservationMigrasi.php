@@ -12,6 +12,12 @@ class reservationMigrasi extends Model
     use SoftDeletes;
     protected $table = "reservations";
     protected $primaryKey = "id";
+    protected $fillable = [
+        'user_id',
+        'restaurant_id',
+        'table_id',
+        'reservation_date_time'
+    ];
     public function restaurant()
     {
         return $this->hasOne(restaurantMigrasi::class,"id","restaurant_id");

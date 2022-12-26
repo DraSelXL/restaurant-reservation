@@ -12,7 +12,13 @@ class transactionMigrasi extends Model
     use SoftDeletes;
     protected $table = "transactions";
     protected $primaryKey = "id";
-
+    protected $fillable = [
+        'user_id',
+        'restaurant_id',
+        'reservation_id',
+        'payment_amount',
+        'payment_date_at'
+    ];
     public function reservation()
     {
         return $this->hasOne(reservationMigrasi::class,"id","reservation_id");
