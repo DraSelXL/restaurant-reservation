@@ -138,7 +138,80 @@ class AdminController extends Controller
         };
         //dd($allRestaurant);
         $countRestaurant = restaurantMigrasi::all()->count();
-        return view('admin.admin_restaurant',compact('currPage','allRestaurant','countRestaurant','keyword'));
+        $lastWeek = DB::select("select ifnull(sum(payment_amount),0) as sum, ifnull(r2.id,0) as id
+        from transactions t
+        join restaurants r2 on t.restaurant_id = r2.id
+        join reservations r on r.id = t.reservation_id
+        where r.payment_status = 1
+        and payment_date_at between date_sub(now(), interval 1 week) and NOW()
+        group by r2.id");
+        $tes = restaurantMigrasi::all()->count();
+        $tempLastWeek = [];
+        $int = -1;
+        for ($i=1; $i <= $tes; $i++) {
+            foreach ($lastWeek as $key =>$lastweek) {
+                if($i == $lastweek->id){
+                    $int = $lastweek->sum;
+                }
+            }
+            if($int != -1){
+                $tempLastWeek[] = $int;
+            }
+            else{
+                $tempLastWeek[] = 0;
+            }
+            $int = -1;
+        }
+        //========================================================
+        $lastMonth = DB::select("select ifnull(sum(payment_amount),0) as sum, ifnull(r2.id,0) as id
+        from transactions t
+        join restaurants r2 on t.restaurant_id = r2.id
+        join reservations r on r.id = t.reservation_id
+        where r.payment_status = 1
+        and payment_date_at between date_sub(now(), interval 1 month) and NOW()
+        group by r2.id");
+        $tempLastMonth = [];
+        $int = -1;
+        for ($i=1; $i <= $tes; $i++) {
+            foreach ($lastMonth as $key =>$lastmonth) {
+                if($i == $lastmonth->id){
+                    $int = $lastmonth->sum;
+                }
+            }
+            if($int != -1){
+                $tempLastMonth[] = $int;
+            }
+            else{
+                $tempLastMonth[] = 0;
+            }
+            $int = -1;
+        }
+        //===========================================================
+        $Today = DB::select("select ifnull(sum(payment_amount),0) as sum, ifnull(r2.id,0) as id
+        from transactions t
+        join restaurants r2 on t.restaurant_id = r2.id
+        join reservations r on r.id = t.reservation_id
+        where r.payment_status = 1
+        and payment_date_at between date_sub(now(), interval 1 day) and NOW()
+        group by r2.id");
+        $tempToday = [];
+        $int = -1;
+        for ($i=1; $i <= $tes; $i++) {
+            foreach ($Today as $key =>$today) {
+                if($i == $today->id){
+                    $int = $today->sum;
+                }
+            }
+            if($int != -1){
+                $tempToday[] = $int;
+            }
+            else{
+                $tempToday[] = 0;
+            }
+            $int = -1;
+        }
+        return view('admin.admin_restaurant',compact('currPage','allRestaurant','countRestaurant','keyword','tempLastWeek','tempLastMonth',
+    'tempToday'));
     }
 
     public function banRestaurant(Request $request)
