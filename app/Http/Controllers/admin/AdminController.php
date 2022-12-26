@@ -93,13 +93,13 @@ class AdminController extends Controller
             })
             ->get();
         $countUser = $userList->count();
-        $spending = DB::select("select u.id AS id,
-        case when SUM(t.payment_amount) > 0 then SUM(t.payment_amount) ELSE '0' END AS sum
-        FROM transactions t
-        JOIN users u ON u.id = t.user_id
-        JOIN reservations r ON r.id = t.reservation_id
-        GROUP BY t.user_id, restaurant_reservation.u.id
-        ORDER BY u.id");
+        $spending = DB::select(DB::raw("select users.id AS id,
+        case when SUM(transactions.payment_amount) > 0 then SUM(transactions.payment_amount) ELSE '0' END AS sum
+        FROM transactions
+        JOIN users ON users.id = transactions.user_id
+        JOIN reservations ON reservations.id = transactions.reservation_id
+        GROUP BY transactions.user_id, users.id
+        ORDER BY users.id"));
         $length = count($spending);
         return view('admin.admin_customer',compact('currPage','userList','countUser','keyword','spending'));
     }
