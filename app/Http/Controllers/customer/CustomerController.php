@@ -229,6 +229,12 @@ class CustomerController extends Controller
         $new_restaurant->verified_at = now();
         $new_restaurant->save();
 
+        // Change user role
+        $userId = auth()->id();
+        $authUser = userMigrasi::find($userId);
+        $authUser->role_id = 3;
+        $authUser->save();
+
         // Store the restaurant information in the session
         $request->session()->put("OPEN_TABLE_RESTAURANT_INFO", $new_restaurant);
 
