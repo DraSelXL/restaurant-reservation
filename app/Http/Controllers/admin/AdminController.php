@@ -101,7 +101,25 @@ class AdminController extends Controller
         GROUP BY t.user_id, restaurant_reservation.u.id
         ORDER BY u.id");
         $length = count($spending);
-        return view('admin.admin_customer',compact('currPage','userList','countUser','keyword','spending'));
+        $tes = userMigrasi::all()->count();
+        $tempSpending = [];
+        $int = -1;
+        for ($i=4; $i <= $tes-1; $i++) {
+            foreach ($spending as $key =>$spendings) {
+                if($i == $spendings->id){
+                    $int = $spendings->sum;
+                }
+            }
+            if($int != -1){
+                $tempSpending[] = $int;
+            }
+            else{
+                $tempSpending[] = 0;
+            }
+            $int = -1;
+        }
+        // dd($spending,$tempSpending);
+        return view('admin.admin_customer',compact('currPage','userList','countUser','keyword','tempSpending'));
     }
 
     public function banUser(Request $request)
