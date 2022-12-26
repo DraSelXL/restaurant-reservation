@@ -17,11 +17,13 @@ class CheckUser
      */
     public function handle(Request $request, Closure $next, $role)
     {
-        if (auth()->user()->role->name == $role && auth()->user()->verified_at != null){
-            return $next($request);
-        }
-        else{
-            // dd(auth()->user()->verified_at);
+        if (auth()->check()) {
+            if (auth()->user()->role->name == $role && auth()->user()->verified_at != null){
+                return $next($request);
+            }
+            else{
+                // dd(auth()->user()->verified_at);
+            }
         }
         abort(403);
     }
