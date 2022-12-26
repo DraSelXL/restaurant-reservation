@@ -165,9 +165,9 @@
                                     <td>{{$restaurant->full_name}}</td>
                                     <td>{{$restaurant->address}}</td>
                                     <td>27/11/2022</td>
-                                    <td>388$</td>
-                                    <td>1798$</td>
-                                    <td>56$</td>
+                                    <td>Rp. {{$tempLastWeek[$key]}},00</td>
+                                    <td>Rp. {{$tempLastMonth[$key]}},00</td>
+                                    <td>Rp. {{$tempToday[$key]}},00</td>
                                     <td>
                                         @if ($restaurant->trashed())
                                             <a href="{{url("admin/restaurant/banRestaurant/$restaurant->id")}}" class="btn btn-success">Unban</a>
