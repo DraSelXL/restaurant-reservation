@@ -429,6 +429,12 @@ class CustomerController extends Controller
         $review->message = $request->message;
         $review->save();
 
+        // Calculate the average review of the restaurant
+        $restaurant = restaurantMigrasi::where("id", $request->restaurantId)->first();
+        $newAverage = number_format(reviewMigrasi::select(DB::raw('AVG(rating) as average'))->where("restaurant_id", $request->restaurantId)->first()->average, 1, '.', ',');
+        $restaurant->average_rating = $newAverage;
+        $restaurant->save();
+
         return redirect()->back();
     }
 
@@ -447,6 +453,12 @@ class CustomerController extends Controller
         $review->rating = $request->rating;
         $review->message = $request->message;
         $review->save();
+
+        // Calculate the average review of the restaurant
+        $restaurant = restaurantMigrasi::where("id", $request->restaurantId)->first();
+        $newAverage = number_format(reviewMigrasi::select(DB::raw('AVG(rating) as average'))->where("restaurant_id", $request->restaurantId)->first()->average, 1, '.', ',');
+        $restaurant->average_rating = $newAverage;
+        $restaurant->save();
 
         return redirect()->back();
     }
