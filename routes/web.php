@@ -180,6 +180,9 @@ Route::prefix('customer')->middleware(['CheckUser:Customer'])->group(function ()
     // Review Manipulation
     Route::post("/editReview/{restaurantId}", [CustomerController::class, "editReview"]);
     Route::post("/addReview/{restaurantId}", [CustomerController::class, "addReview"]);
+
+    // Ipaymu Controller
+    Route::post('payment', [IpaymuController::class,'serveTable'])->name('serveTable');
 });
 
 Route::prefix('restaurant')->middleware(['CheckUser:Restaurant'])->controller(RestaurantController::class)->group(function() {

@@ -61,7 +61,7 @@ class IpaymuController extends Controller
         // BOOK TABLE
         $user = activeUser();
         $id = $request->restaurant_id;
-
+        // dd($id);
         $restaurant = restaurantMigrasi::find($id);
         // dd($restaurant->full_name);
         $table_number = $request->table_number;
@@ -71,9 +71,9 @@ class IpaymuController extends Controller
         $body['product']    = array($restaurant->full_name);
         $body['qty']        = array('1');
         $body['price']      = array($restaurant->price);
-        $body['returnUrl']  = 'http://localhost:8000/customer/explore';
-        $body['cancelUrl']  = 'http://localhost:8000/customer/explore';
-        $body['notifyUrl']  = 'https://9909-158-140-167-57.ap.ngrok.io/api/customer/successPayment';
+        $body['returnUrl']  = 'https://8685-103-155-191-118.ap.ngrok.io/customer/explore';
+        $body['cancelUrl']  = 'https://8685-103-155-191-118.ap.ngrok.io/customer/explore';
+        $body['notifyUrl']  = 'https://8685-103-155-191-118.ap.ngrok.io/api/customer/successPayment';
         $body['buyerName'] = $user->full_name;
         $body['buyerPhone'] = $user->phone;
         $body['buyerEmail'] = $user->email;
